@@ -400,7 +400,7 @@ export const NOTIFICATION_CHANNELS = ['in_app', 'email', 'sms', 'push', 'whatsap
 export type NotificationChannel = (typeof NOTIFICATION_CHANNELS)[number];
 
 /** Consent --------------------------------------------------------------------- */
-export const CONSENT_TYPES = ['terms', 'privacy', 'ai_processing', 'ai_message_analysis', 'family_access', 'marketing_email', 'marketing_sms', 'whatsapp', 'identity_verification', 'data_sharing_partner'] as const;
+export const CONSENT_TYPES = ['terms', 'privacy', 'ai_processing', 'ai_message_analysis', 'family_access', 'marketing_email', 'marketing_sms', 'whatsapp', 'identity_verification', 'data_sharing_partner', 'product_analytics'] as const;
 export type ConsentType = (typeof CONSENT_TYPES)[number];
 
 /** Billing --------------------------------------------------------------------- */

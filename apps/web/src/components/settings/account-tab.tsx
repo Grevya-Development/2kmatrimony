@@ -1,5 +1,6 @@
 'use client';
 import * as React from 'react';
+import { resetAnalytics } from '@/lib/analytics';
 import { toast } from 'sonner';
 import { useMe } from '@/components/shell/me-context';
 import { api, ApiClientError } from '@/lib/api';
@@ -42,7 +43,7 @@ export function AccountTab() {
       {me.user.email && <PasswordCard />}
       <Card><CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div><h2 className="font-serif text-2xl">Sign out everywhere</h2><p className="text-sm text-muted">Ends sessions on all devices, including this one.</p></div>
-        <Button variant="secondary" onClick={async () => { await supabase.auth.signOut({ scope: 'global' }); window.location.href = '/login'; }}>Sign out all devices</Button>
+        <Button variant="secondary" onClick={async () => { resetAnalytics(); await supabase.auth.signOut({ scope: 'global' }); window.location.href = '/login'; }}>Sign out all devices</Button>
       </CardContent></Card>
     </div>
   );

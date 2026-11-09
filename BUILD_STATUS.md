@@ -9,8 +9,8 @@ Legend: ✅ done & tested · ⚙️ built, needs credentials or provider setup �
 |---|---|
 | Migrations from scratch (`supabase db reset`, 21 files) | ✅ all apply; `db lint` clean (1 informational warning: unused variable in `billing_activate_payment`) |
 | TypeScript (shared, matching, web, mobile) | ✅ 0 errors |
-| Unit tests | ✅ 118 passed (shared 9 · matching 17 · web 67 · mobile 25) |
-| API integration tests (route handlers against local Supabase) | ✅ 176 passed (25 files; 1 opt-in perf test skipped by default) |
+| Unit tests | ✅ 121 passed (shared 12 · matching 17 · web 67 · mobile 25) |
+| API integration tests (route handlers against local Supabase) | ✅ 179 passed (26 files; 1 opt-in perf test skipped by default) |
 | E2E in Chrome against a production build (Playwright) | ✅ 10 passed: full journey + every member/admin page renders without errors |
 | Production build (Next.js 16) | ✅ |
 | Mobile bundles (`expo export` iOS + Android), `expo-doctor` | ✅ (last run by the mobile workstream) |
@@ -25,6 +25,14 @@ supplied logo artwork (horizontal, stacked, reverse, rings mark), favicon / appl
 Expo app icon + adaptive icon + splash, Royal Emerald / Heritage Gold / Ivory palette, Newsreader +
 Montserrat typography, branded emails and invoices. Source kit: `2K_Matrimony_Brand_DNA_Emerald/`.
 Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundles.
+
+## Product analytics (PostHog)
+✅ Integrated on web, server and mobile; **consent-gated** (DPDP opt-in `product_analytics`, revocable in Settings).
+- **No SDK traffic before opt-in.** Verified in Chrome: 0 requests before a decision and after "No thanks". After "Allow", `$opt_in` and `$pageview` flow through the first-party `/ingest` proxy, with profile IDs scrubbed from URLs.
+- **What's tracked:** 17 server events (signup, activation, search, interests, connections, messages, insights, checkout, subscription…). They are always written to the first-party `analytics_events` table, and forwarded to PostHog only for members who opted in.
+- **What's never sent:** autocapture, session replay, PII, profile text and message content.
+- **Tests:** `tests/integration/analytics.test.ts` (3) and shared sanitizer tests (3).
+- **Wizard:** the `@posthog/wizard` CLI needs an interactive PostHog login, so this integration was done manually. Add the project key (`phc_…`) to enable it.
 
 ## Milestones
 | # | Milestone | Status | Notes / evidence |
@@ -96,6 +104,7 @@ Integration fixes found by E2E and performance runs: realtime subscribing before
 | WhatsApp (Meta) | `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`, approved templates, flag on | Skipped |
 | Push (Expo) | EAS project id (`eas init`); `EXPO_ACCESS_TOKEN` optional | Mobile skips token registration |
 | Auth providers | Supabase dashboard: SMS provider/hook, Google, Apple; enable email confirmations in production | Only local test phone numbers work |
+| PostHog (product analytics) | Web `NEXT_PUBLIC_POSTHOG_KEY` / `NEXT_PUBLIC_POSTHOG_HOST`; mobile `EXPO_PUBLIC_POSTHOG_KEY` / `EXPO_PUBLIC_POSTHOG_HOST` | No banner, no SDK, zero PostHog traffic; first-party `analytics_events` still recorded |
 | Cron | `CRON_SECRET` | Cron endpoints return 401 |
 
 ## Not done / pending

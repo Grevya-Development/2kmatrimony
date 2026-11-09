@@ -1,3 +1,4 @@
+import { track } from '@/server/analytics/track';
 import { searchWithPreferencesSchema } from '@2k/shared';
 import { ok, parseJson, route } from '@/server/http';
 import { getPlanState } from '@/server/entitlements';
@@ -11,5 +12,6 @@ export const POST = route({ profile: 'active', rateLimit: { name: 'search', limi
   assertFilterEntitlements(body.filters, plan.entitlements);
   const viewer = await viewerBundle(auth.profile!.id);
   const result = await searchProfiles(viewer, body, { softPreferences });
+  void track(auth.userId, 'search_performed', { sort: body.sort, filter_count: Object.values(body.filters).filter((v) => v !== undefined && !(Array.isArray(v) && v.length === 0)).length, results: result.total, paged: !!body.cursor }, auth.platform);
   return ok({ items: result.items, total: result.total }, { nextCursor: result.nextCursor });
 });

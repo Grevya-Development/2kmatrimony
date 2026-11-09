@@ -87,7 +87,8 @@
           "photosPermission": "Choose photos for your profile.",
           "cameraPermission": "Take a photo for your profile or verification."
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true

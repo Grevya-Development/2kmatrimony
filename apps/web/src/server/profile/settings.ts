@@ -1,4 +1,5 @@
 import 'server-only';
+import { forgetAnalyticsConsent } from '@/server/analytics/track';
 import {
   CONSENT_TYPES, NOTIFICATION_CATEGORIES, NOTIFICATION_CHANNELS,
   type ConsentState, type ConsentType, type DeviceItem, type NotificationCategory, type NotificationChannel,
@@ -73,6 +74,7 @@ export async function setConsent(auth: AuthContext, consentType: ConsentType, gr
     user_agent: auth.userAgent,
   });
   if (error) throw error;
+  if (consentType === 'product_analytics') forgetAnalyticsConsent(auth.userId);
   await audit(auth, { action: granted ? 'consent.grant' : 'consent.revoke', entityType: 'consent', entityId: consentType });
   return getConsents(auth);
 }

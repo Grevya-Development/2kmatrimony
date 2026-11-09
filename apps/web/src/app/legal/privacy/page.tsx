@@ -12,7 +12,7 @@ export default function PrivacyPage() {
         <li><strong>Account data:</strong> phone number, email, sign-in identifiers, devices.</li>
         <li><strong>Profile data you provide:</strong> personal details, education, career, family, lifestyle, values, Relationship DNA answers, partner preferences, photos and an optional video. Fields such as religion or community are optional and only ever taken from what you enter — we never infer sensitive characteristics.</li>
         <li><strong>Verification data:</strong> documents you submit for optional identity, photo or employment checks. These are kept in restricted storage, visible only to authorised reviewers, and deleted 90 days after a decision.</li>
-        <li><strong>Activity:</strong> interests, connections, messages, and product analytics needed to run and improve the service.</li>
+        <li><strong>Activity:</strong> interests, connections and messages needed to run the service, and minimal pseudonymous usage events for operating it. Optional product analytics (PostHog) runs only after you allow it, and you can withdraw that in Settings → Consents at any time.</li>
         <li><strong>Payments:</strong> plan, amount and invoice details. Card and UPI details are handled by our payment processor (Razorpay); we do not store them.</li>
       </ul>
       <h2>Why we use it (purposes and consent)</h2>
@@ -27,7 +27,7 @@ export default function PrivacyPage() {
       <ul>
         <li>Profiles are visible only to signed-in members and never published on the open web. You control who sees photos, income and family details.</li>
         <li>Family members you invite see only what your chosen permissions allow.</li>
-        <li>Service providers who process data on our behalf: Supabase (hosting, India region), Anthropic (AI processing of profile text when enabled), Voyage AI (search embeddings when enabled), Razorpay (payments), Resend (email), MSG91 (SMS), Meta (WhatsApp, if you opt in), Expo (push notifications).</li>
+        <li>Service providers who process data on our behalf: Supabase (hosting, India region), Anthropic (AI processing of profile text when enabled), Voyage AI (search embeddings when enabled), Razorpay (payments), Resend (email), MSG91 (SMS), Meta (WhatsApp, if you opt in), Expo (push notifications), PostHog (product analytics, only if you opt in — pseudonymous usage events, never your name, contact details, profile text or messages).</li>
       </ul>
       <h2>Your rights</h2>
       <ul>

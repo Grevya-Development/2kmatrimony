@@ -1,4 +1,5 @@
 import 'server-only';
+import { track } from '@/server/analytics/track';
 import { db } from '@/lib/supabase/admin';
 import { audit } from '@/server/audit';
 import { notify } from '@/server/notify';
@@ -44,6 +45,7 @@ export async function activatePayment(paymentId: string, razorpayPaymentId: stri
         data: { href: '/app/billing', invoiceId: r.invoice_id },
         forceChannels: ['email'],
       });
+      void track(pay.user_id, 'subscription_activated', { plan: r.plan_name ?? null, source, amount_inr: Math.round(pay.amount_paise / 100) });
       await audit(null, { action: 'billing.payment.captured', entityType: 'payment', entityId: paymentId, after: { subscriptionId: r.subscription_id, invoiceId: r.invoice_id, source, amount: pay.amount_paise } }, 'system');
     }
   }

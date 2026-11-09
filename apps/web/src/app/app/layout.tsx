@@ -3,6 +3,7 @@ import { getServerAuth } from '@/server/auth';
 import { buildMe } from '@/server/me';
 import { AppShell } from '@/components/shell/app-shell';
 import { NotificationsSync } from '@/components/notifications/notifications-sync';
+import { AnalyticsIdentity } from '@/components/analytics/analytics-identity';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,6 +15,7 @@ export default async function MemberLayout({ children }: { children: React.React
   return (
     <AppShell me={me}>
       <NotificationsSync />
+      <AnalyticsIdentity />
       {children}
     </AppShell>
   );

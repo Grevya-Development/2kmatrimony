@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { toast } from 'sonner';
 import type { ConsentState, ConsentType, DeviceItem, NotificationCategory, NotificationChannel, OwnProfileResponse } from '@2k/shared';
+import { setAnalyticsConsent } from '@/lib/analytics';
 import { api, ApiClientError } from '@/lib/api';
 import { Badge, Button, Card, CardContent, EmptyState, ErrorState, Notice, Skeleton, Switch } from '@/components/ui';
 import { PrivacyForm } from '@/components/profile-edit/privacy-form';
@@ -75,6 +76,7 @@ const CONSENT_COPY: Record<ConsentType, { title: string; body: string }> = {
   whatsapp: { title: 'WhatsApp updates', body: 'Receive notifications on WhatsApp where available.' },
   identity_verification: { title: 'Identity verification processing', body: 'Allows our team or a compliant provider to process documents you submit for verification.' },
   data_sharing_partner: { title: 'Partner offers', body: 'Share limited data with vetted partners for offers you request.' },
+  product_analytics: { title: 'Product analytics', body: 'Helps us improve 2K Matrimony with anonymous usage data (pages visited, features used). Never your name, contact details, profile text or messages.' },
 };
 
 export function ConsentsTab() {
@@ -84,7 +86,7 @@ export function ConsentsTab() {
   if (!data) return <Skeleton className="h-96" />;
   const set = async (t: ConsentType, granted: boolean) => {
     setBusy(t);
-    try { setData(await api<ConsentState[]>('/settings/consents', { body: { consentType: t, granted } })); toast.success(granted ? 'Consent granted' : 'Consent withdrawn'); }
+    try { setData(await api<ConsentState[]>('/settings/consents', { body: { consentType: t, granted } })); if (t === 'product_analytics') setAnalyticsConsent(granted); toast.success(granted ? 'Consent granted' : 'Consent withdrawn'); }
     catch (e) { toast.error((e as ApiClientError).message); } finally { setBusy(null); }
   };
   return (

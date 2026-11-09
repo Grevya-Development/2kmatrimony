@@ -1,3 +1,4 @@
+import { track } from '@/server/analytics/track';
 import type { RecommendationItem } from '@2k/shared';
 import { db } from '@/lib/supabase/admin';
 import { route } from '@/server/http';
@@ -25,5 +26,6 @@ export const GET = route({ profile: 'active' }, async ({ auth }) => {
     const card = cards.get(r.candidate_profile_id);
     return card ? [{ id: r.id, source: r.source as RecommendationItem['source'], reason: r.reason, status: r.status as RecommendationItem['status'], profile: card }] : [];
   });
+  void track(auth.userId, 'recommendations_viewed', { count: items.length }, auth.platform);
   return items;
 });

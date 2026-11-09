@@ -7,6 +7,10 @@ export const publicEnv = {
   appUrl: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
   supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
+  /** PostHog project API key (phc_…, public by design). Empty = analytics off. */
+  posthogKey: process.env.NEXT_PUBLIC_POSTHOG_KEY ?? '',
+  /** PostHog ingestion host: https://us.i.posthog.com or https://eu.i.posthog.com */
+  posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com',
 };
 
 function required(name: string): string {
@@ -42,6 +46,7 @@ export const integrations = {
   get sms() { return !!(serverEnv.msg91AuthKey && serverEnv.msg91SenderId); },
   get whatsapp() { return !!(serverEnv.whatsappPhoneNumberId && serverEnv.whatsappAccessToken); },
   get push() { return true; }, // Expo push works without a token; token adds security
+  get posthog() { return !!publicEnv.posthogKey; },
 };
 
 export type IntegrationName = keyof typeof integrations;

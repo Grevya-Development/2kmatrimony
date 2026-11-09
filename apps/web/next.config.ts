@@ -39,8 +39,20 @@ const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
 ];
 
+// PostHog first-party proxy: browsers talk to /ingest on our origin (CSP 'self',
+// resilient to tracker blockers); we forward to the configured PostHog region.
+const posthogHost = (process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com').replace(/\/$/, '');
+const posthogAssets = posthogHost.replace('.i.posthog.com', '-assets.i.posthog.com');
+
 const nextConfig: NextConfig = {
   transpilePackages: ['@2k/shared', '@2k/matching'],
+  skipTrailingSlashRedirect: true, // required by the PostHog proxy
+  async rewrites() {
+    return [
+      { source: '/ingest/static/:path*', destination: `${posthogAssets}/static/:path*` },
+      { source: '/ingest/:path*', destination: `${posthogHost}/:path*` },
+    ];
+  },
   poweredByHeader: false,
   images: {
     remotePatterns: [

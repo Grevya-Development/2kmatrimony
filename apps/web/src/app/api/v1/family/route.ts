@@ -1,3 +1,4 @@
+import { track } from '@/server/analytics/track';
 import { familyInviteSchema } from '@2k/shared';
 import { parseJson, route } from '@/server/http';
 import { requireFlag } from '@/server/config';
@@ -12,5 +13,8 @@ export const GET = route({ profile: 'required' }, async ({ auth }) => {
 
 export const POST = route({ profile: 'required', rateLimit: { name: 'family-invite', limit: 20, windowSec: 86400 } }, async ({ req, auth }) => {
   await requireFlag('family_mode');
-  return inviteFamily(auth, await parseJson(req, familyInviteSchema));
+  const input = await parseJson(req, familyInviteSchema);
+  const out = await inviteFamily(auth, input);
+  void track(auth.userId, 'family_invite_sent', { relation: input.relation, permissions: input.permissions.length }, auth.platform);
+  return out;
 });

@@ -77,6 +77,8 @@ export interface MeResponse {
   familyOf: { profileId: string; ownerName: string; permissions: C.FamilyPermission[] }[];
   unreadNotifications: number;
   consentsRequired: C.ConsentType[];
+  /** Product analytics opt-in: true/false once decided, null if never asked. */
+  analyticsConsent: boolean | null;
   featureFlags: Record<string, boolean>;
 }
 

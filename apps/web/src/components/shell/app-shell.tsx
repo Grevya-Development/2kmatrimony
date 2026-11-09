@@ -7,6 +7,7 @@ import { Bell, LogOut, Shield } from 'lucide-react';
 import type { MeResponse } from '@2k/shared';
 import { Avatar } from '@/components/ui';
 import { supabaseBrowser } from '@/lib/supabase/browser';
+import { resetAnalytics } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 import { Brand } from './brand';
 import { NavIcon } from './icon';
@@ -25,6 +26,7 @@ function Shell({ children }: { children: React.ReactNode }) {
   const name = me.profile?.firstName ?? me.user.fullName ?? 'You';
 
   const signOut = async () => {
+    resetAnalytics();
     await supabaseBrowser().auth.signOut();
     router.replace('/login');
     router.refresh();

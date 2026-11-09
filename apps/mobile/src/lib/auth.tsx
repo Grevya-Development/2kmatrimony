@@ -1,3 +1,4 @@
+import { resetAnalytics } from './analytics';
 import * as React from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from './supabase';
@@ -26,6 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOut = React.useCallback(async () => {
+    resetAnalytics();
     await supabase.auth.signOut().catch(() => undefined);
     await clearQueryCache();
     await securePrefs.remove('biometric_enabled').catch(() => undefined);

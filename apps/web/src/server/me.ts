@@ -61,6 +61,10 @@ export async function buildMe(auth: AuthContext): Promise<MeResponse> {
     })),
     unreadNotifications: unread.count ?? 0,
     consentsRequired,
+    analyticsConsent: (() => {
+      const row = consents.data?.find((r) => r.consent_type === 'product_analytics');
+      return row ? row.granted : null;
+    })(),
     featureFlags: flags,
   };
 }

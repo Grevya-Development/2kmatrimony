@@ -18,6 +18,7 @@ import { hrefToRoute } from '@/lib/deeplinks';
 import { registerForPush } from '@/lib/push';
 import { useMe } from '@/hooks/queries';
 import { BiometricGate } from '@/components/app/LockScreen';
+import { AnalyticsSync } from '@/components/app/AnalyticsSync';
 import { colors, fonts } from '@/theme';
 
 void SplashScreen.preventAutoHideAsync().catch(() => undefined);
@@ -85,6 +86,7 @@ export default function RootLayout() {
         <AuthProvider>
           <Gate>
             <StatusBar style="dark" />
+            <AnalyticsSync />
             <Stack
               screenOptions={{
                 headerStyle: { backgroundColor: colors.canvas },

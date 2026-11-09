@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { Toaster } from 'sonner';
+import { AnalyticsProvider } from '@/components/analytics/analytics-provider';
 import './globals.css';
 
 // Brand fonts from the Brand DNA kit (SIL Open Font License): Newsreader for
@@ -31,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${display.variable} ${ui.variable}`}>
       <body className="min-h-dvh bg-canvas text-ink antialiased">
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-canvas">Skip to content</a>
-        {children}
+        <AnalyticsProvider>{children}</AnalyticsProvider>
         <Toaster position="top-center" toastOptions={{ classNames: { toast: 'rounded-2xl border border-line bg-surface text-ink shadow-lift font-sans' } }} />
       </body>
     </html>

@@ -1,3 +1,4 @@
+import { track } from '@/server/analytics/track';
 import { db } from '@/lib/supabase/admin';
 import { errors, route } from '@/server/http';
 import { loadBundle } from '@/server/profiles/load';
@@ -32,5 +33,6 @@ export const GET = route<{ id: string }>({ profile: 'active', rateLimit: { name:
     }
     await db().from('recommendations').update({ status: 'viewed' }).eq('profile_id', me.id).eq('candidate_profile_id', params.id).eq('status', 'new');
   }
+  void track(auth.userId, 'profile_viewed', { connected: !!detail.relationship.connectionId }, auth.platform);
   return detail;
 });

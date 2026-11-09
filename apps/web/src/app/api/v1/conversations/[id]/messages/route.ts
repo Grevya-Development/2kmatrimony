@@ -1,3 +1,4 @@
+import { track } from '@/server/analytics/track';
 import { z } from 'zod';
 import { sendMessageSchema } from '@2k/shared';
 import { ok, parseJson, parseQuery, route } from '@/server/http';
@@ -13,5 +14,7 @@ export const GET = route<{ id: string }>({ profile: 'required' }, async ({ req, 
 
 export const POST = route<{ id: string }>({ profile: 'active' }, async ({ req, params, auth }) => {
   const body = await parseJson(req, sendMessageSchema);
-  return ok(await sendMessage(auth, params.id, body), { status: 201 });
+  const message = await sendMessage(auth, params.id, body);
+  void track(auth.userId, 'message_sent', { kind: body.kind }, auth.platform);
+  return ok(message, { status: 201 });
 });

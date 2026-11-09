@@ -1,3 +1,4 @@
+import { track } from '@/server/analytics/track';
 import { matchmakerMessageSchema } from '@2k/shared';
 import { parseJson, route } from '@/server/http';
 import { requireFlag } from '@/server/config';
@@ -15,6 +16,7 @@ export const POST = route({ profile: 'active', rateLimit: { name: 'matchmaker', 
   await requireFlag('ai_matchmaker');
   const body = await parseJson(req, matchmakerMessageSchema);
   const turn = await prepareTurn(auth, body);
+  void track(auth.userId, 'matchmaker_message_sent', { locale: body.locale ?? 'en', new_thread: !body.threadId }, auth.platform);
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {

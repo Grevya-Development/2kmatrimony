@@ -1,3 +1,4 @@
+import { setAnalyticsConsent } from '@/lib/analytics';
 import * as React from 'react';
 import { Alert, Pressable, View } from 'react-native';
 import { router, type Href } from 'expo-router';
@@ -30,10 +31,10 @@ export default function Settings() {
     if (ok) setBio(on); else Alert.alert('Biometric unlock unavailable', 'Set up Face ID, Touch ID or a fingerprint on this device first.');
   };
   const toggleConsent = async (c: ConsentState, granted: boolean) => {
-    try { await api.post('/settings/consents', { consentType: c.consentType, granted }); void consents.refetch(); } catch (e) { Alert.alert('Error', errorMessage(e)); }
+    try { await api.post('/settings/consents', { consentType: c.consentType, granted }); if (c.consentType === 'product_analytics') void setAnalyticsConsent(granted); void consents.refetch(); } catch (e) { Alert.alert('Error', errorMessage(e)); }
   };
   const optional = (consents.data ?? []).filter((c) => !c.required);
-  const label = (t: string) => ({ ai_processing: 'AI matchmaking features', ai_message_analysis: 'AI analysis of messages (off by default)', family_access: 'Family collaboration', marketing_email: 'Marketing emails', marketing_sms: 'Marketing SMS', whatsapp: 'WhatsApp updates', identity_verification: 'Identity verification processing', data_sharing_partner: 'Sharing with partners' } as Record<string, string>)[t] ?? t;
+  const label = (t: string) => ({ ai_processing: 'AI matchmaking features', ai_message_analysis: 'AI analysis of messages (off by default)', family_access: 'Family collaboration', marketing_email: 'Marketing emails', marketing_sms: 'Marketing SMS', whatsapp: 'WhatsApp updates', identity_verification: 'Identity verification processing', data_sharing_partner: 'Sharing with partners', product_analytics: 'Anonymous product analytics' } as Record<string, string>)[t] ?? t;
 
   return (
     <Screen edges={[]}>

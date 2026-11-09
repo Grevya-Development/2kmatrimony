@@ -10,6 +10,9 @@ export const config = {
   supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || extra.supabaseAnonKey || '',
   easProjectId: extra.eas?.projectId ?? (Constants.easConfig as { projectId?: string } | undefined)?.projectId ?? null,
   appVersion: Constants.expoConfig?.version ?? '0.0.0',
+  /** PostHog project key (phc_…). Empty = product analytics off. */
+  posthogKey: process.env.EXPO_PUBLIC_POSTHOG_KEY || '',
+  posthogHost: process.env.EXPO_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
 };
 
 export const isConfigured = () => !!(config.supabaseUrl && config.supabaseAnonKey);

@@ -1,4 +1,5 @@
 import 'server-only';
+import { track } from '@/server/analytics/track';
 import { DNA_DIMENSIONS, type Database } from '@2k/shared';
 import { db } from '@/lib/supabase/admin';
 import { highestEducation, loadBundle, type ProfileBundle } from './load';
@@ -67,6 +68,7 @@ export async function refreshProfileDerived(profileId: string): Promise<Completi
   }
   await db().from('profiles').update(patch).eq('id', profileId);
   if (patch.status === 'active') {
+    void track(b.profile.owner_user_id, 'profile_activated', { completion: report.pct, created_for: b.profile.created_for });
     await db().from('app_users').update({ onboarding_completed_at: new Date().toISOString() }).eq('id', b.profile.owner_user_id).is('onboarding_completed_at', null);
   }
   return report;
