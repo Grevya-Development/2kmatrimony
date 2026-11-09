@@ -1,4 +1,13 @@
-# Deployment guide
+# Deployment
+
+> **Current hosted project:** Supabase `ohhxeljnssgfkugbeixx` (region **ap-northeast-2, Seoul**), linked with
+> `npx supabase link --project-ref ohhxeljnssgfkugbeixx`; all migrations pushed with `npx supabase db push --remote`.
+> Credentials live only in `apps/web/.env.hosted.local` (gitignored). Build/run/test against it locally with
+> `npm run build:hosted`, `npm run start:hosted` (port 3300) and `npm run test:e2e:hosted` (creates and deletes its own users).
+> Deploy the web app **in the same region as the database** (e.g. Vercel `icn1` for Seoul) — every API request makes
+> several database round-trips. For lowest latency to Indian members, consider a Mumbai (`ap-south-1`) project instead.
+
+ guide
 
 Production topology: **Supabase** (Postgres + Auth + Storage + Realtime, India region) · **Next.js web/API** on Vercel (or any Node 22+ host) · **Expo/EAS** for iOS and Android.
 

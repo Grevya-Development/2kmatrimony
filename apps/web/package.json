@@ -10,7 +10,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "build:hosted": "sh -c 'set -a; . ./.env.hosted.local; set +a; next build'",
+    "start:hosted": "sh -c 'set -a; . ./.env.hosted.local; set +a; next start -p ${PORT:-3300}'",
+    "test:e2e:hosted": "E2E_TARGET=hosted playwright test"
   },
   "dependencies": {
     "@2k/matching": "0.1.0",

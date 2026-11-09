@@ -26,6 +26,23 @@ Expo app icon + adaptive icon + splash, Royal Emerald / Heritage Gold / Ivory pa
 Montserrat typography, branded emails and invoices. Source kit: `2K_Matrimony_Brand_DNA_Emerald/`.
 Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundles.
 
+## Hosted Supabase (production project)
+✅ **Project `ohhxeljnssgfkugbeixx` (Seoul) linked; all 20 migrations pushed.**
+- **Verified on hosted:** 79 tables, all with row-level security; no client write grants; 5 private buckets; realtime publication; full default configuration; signup trigger; pgvector 0.8.2.
+- **Hosted E2E** (`npm run test:e2e:hosted`): **8/8 passed**.
+  - Health and config; public pages.
+  - Two members signing up and onboarding through the real UI.
+  - Storage upload and signed read.
+  - Recommendations, search, explanation, interest → accept.
+  - Messages over hosted Realtime with RLS checks (outsider gets nothing; private channel authorised).
+  - Admin API and panel.
+  - The test deletes its users; the hosted project was left with 0 users.
+- **Network note:** from the development Mac, new TLS connections to Supabase took 1–10 s (packet loss or throttling on that network), so hosted UI runs are slow from there. Deploy the web tier in the database's region.
+- **Before production:**
+  - In Auth settings: Site URL and redirect URLs (including `twokmatrimony://auth/callback`), SMS provider, Google/Apple, email templates and SMTP.
+  - Regenerate the service-role key, since it was shared in chat, and update the env var.
+  - Run the `create-super-admin` script once.
+
 ## Product analytics (PostHog)
 ✅ Integrated on web, server and mobile; **consent-gated** (DPDP opt-in `product_analytics`, revocable in Settings).
 - **No SDK traffic before opt-in.** Verified in Chrome: 0 requests before a decision and after "No thanks". After "Allow", `$opt_in` and `$pageview` flow through the first-party `/ingest` proxy, with profile IDs scrubbed from URLs.

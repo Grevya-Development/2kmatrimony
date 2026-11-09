@@ -1,6 +1,32 @@
 {
   "cookies": [],
   "origins": [
-    { "origin": "http://localhost:3100", "localStorage": [{ "name": "tk_analytics_consent", "value": "denied" }] }
+    {
+      "origin": "http://localhost:3100",
+      "localStorage": [
+        {
+          "name": "tk_analytics_consent",
+          "value": "denied"
+        }
+      ]
+    },
+    {
+      "origin": "http://localhost:3200",
+      "localStorage": [
+        {
+          "name": "tk_analytics_consent",
+          "value": "denied"
+        }
+      ]
+    },
+    {
+      "origin": "http://localhost:3300",
+      "localStorage": [
+        {
+          "name": "tk_analytics_consent",
+          "value": "denied"
+        }
+      ]
+    }
   ]
 }

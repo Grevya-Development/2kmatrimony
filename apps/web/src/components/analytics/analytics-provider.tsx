@@ -43,9 +43,21 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
 }
 
 function ConsentBanner({ onDecide }: { onDecide: (granted: boolean) => void }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  // Reserve space at the bottom of the page while the banner is shown so it
+  // never hides content or primary actions (e.g. onboarding "Continue").
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const apply = () => { document.body.style.paddingBottom = `${el.offsetHeight + 32}px`; };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => { ro.disconnect(); document.body.style.paddingBottom = ''; };
+  }, []);
   return (
-    <div role="dialog" aria-modal="false" aria-labelledby="analytics-consent-title"
-      className="fixed inset-x-3 bottom-20 z-50 mx-auto max-w-md rounded-2xl border border-line bg-surface p-5 shadow-lift sm:bottom-6 sm:left-6 sm:right-auto md:bottom-6">
+    <div ref={ref} role="dialog" aria-modal="false" aria-labelledby="analytics-consent-title"
+      className="fixed inset-x-3 bottom-20 z-50 mx-auto max-w-md rounded-2xl border border-line bg-surface p-5 shadow-lift sm:inset-x-auto sm:bottom-6 sm:right-6 sm:mx-0">
       <div className="flex gap-3">
         <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600"><BarChart3 className="h-4 w-4" aria-hidden /></span>
         <div className="space-y-3">

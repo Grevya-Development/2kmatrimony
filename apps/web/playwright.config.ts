@@ -1,11 +1,16 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const PORT = Number(process.env.E2E_PORT ?? 3100);
+const HOSTED = process.env.E2E_TARGET === 'hosted';
+const PORT = Number(process.env.E2E_PORT ?? (HOSTED ? 3300 : 3100));
 
 /**
  * E2E against a production build (`npm run build` first) and the LOCAL Supabase
  * stack. Uses the locally installed Google Chrome (channel: 'chrome').
  * Phone sign-in uses the fixed local test OTP numbers from supabase/config.toml.
+ *
+ * HOSTED mode (`E2E_TARGET=hosted`, after `npm run build:hosted`): runs only
+ * hosted.spec.ts against the hosted Supabase project with email users that are
+ * created and deleted by the test itself.
  */
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -15,7 +20,8 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   reporter: [['list']],
-  globalSetup: './tests/e2e/global-setup.ts',
+  globalSetup: HOSTED ? undefined : './tests/e2e/global-setup.ts',
+  ...(HOSTED ? { testMatch: /hosted\.spec\.ts$/ } : { testIgnore: /hosted\.spec\.ts$/ }),
   use: {
     baseURL: `http://localhost:${PORT}`,
     channel: 'chrome',
@@ -28,7 +34,8 @@ export default defineConfig({
     { name: 'desktop', use: { ...devices['Desktop Chrome'], channel: 'chrome' } },
   ],
   webServer: {
-    command: `npx next start -p ${PORT}`,
+    command: HOSTED ? `npm run start:hosted` : `npx next start -p ${PORT}`,
+    env: { PORT: String(PORT) },
     url: `http://localhost:${PORT}/api/v1/health`,
     reuseExistingServer: true,
     timeout: 120_000,
