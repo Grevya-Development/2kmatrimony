@@ -37,11 +37,12 @@ Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundl
   - Pages and APIs return 200; health reports the database OK.
   - Sign in → onboarding → profile created, through the real UI on the live URL (temporary user deleted).
   - `/me` works with the session cookie; 0 page errors; 0 runtime errors or 5xx in logs.
+- ✅ **Supabase Auth URLs set** (2026-11-10, applied as a minimal `supabase config push` from a pulled copy of the hosted config; re-diff shows 0 differences).
+  - Site URL: `https://2k-matrimony.vercel.app`.
+  - Redirect allow-list: the live URL, `2kmatrimony.com`, `www.2kmatrimony.com`, and `twokmatrimony://auth/callback`.
+  - Minimum password length raised to 8, matching the app.
 - **Pending (owner actions):**
   - **Custom domain:** `2kmatrimony.com` is attached but DNS still points to Hostinger parking. Add A `@` → `216.198.79.1` and CNAME `www` → `05cd87ae7713455c.vercel-dns-017.com`, then set `NEXT_PUBLIC_APP_URL=https://2kmatrimony.com` and redeploy.
-  - **Supabase Auth URL configuration:**
-    - Site URL: the live URL.
-    - Redirect URLs: `https://2k-matrimony.vercel.app/auth/callback`, `https://2kmatrimony.com/auth/callback`, `https://www.2kmatrimony.com/auth/callback`, `twokmatrimony://auth/callback`.
   - **Email:** custom SMTP (Resend); the built-in sender is heavily rate-limited.
   - **Phone login:** an SMS provider.
   - **Plan:** upgrade to Vercel Pro before commercial launch (Hobby is non-commercial; Pro also restores the hourly cron and longer log retention).
