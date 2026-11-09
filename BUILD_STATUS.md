@@ -62,7 +62,15 @@ Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundl
   - Site URL: `https://2kmarriage.com`.
   - Redirect allow-list: `2kmarriage.com`, `www.2kmarriage.com`, `2k-matrimony.vercel.app`, and `twokmatrimony://auth/callback`.
   - Minimum password length raised to 8, matching the app.
+- ✅ **Login fixed (2026-11-10).** Sign-in was failing because the page offered methods the project hasn't set up.
+  - **Root causes:** Mobile showed but there is no SMS provider ("Unsupported phone provider"). Google and Apple buttons showed but those providers are off ("provider is not enabled"). Emails had no code and the code length was 8.
+  - **Fix:** web and mobile now read the project's enabled methods from Supabase and show only those. Today that is email, either a 6-digit code or a password. Google, Apple or Mobile appear automatically once they are switched on.
+  - **New members:** `POST /api/v1/auth/email-start` creates the account first, so everyone gets the same sign-in email with a code.
+  - **Branded auth emails:** all six Supabase templates (`supabase/templates/`) use the logo, the code and the support address. They send as `2K Marriage <hello@updates.2kmarriage.com>` with "2K Marriage" subjects and a 6-digit code.
+  - **Verified live:** a new member on 2kmarriage.com received the branded code email, entered it and landed in onboarding. The sign-up confirmation and sign-in emails were also checked through Resend. Test users were deleted.
 - **Pending (owner actions):**
+  - **Google sign-in:** create a Web OAuth client in Google Cloud Console. Set the authorised redirect URI to `https://ohhxeljnssgfkugbeixx.supabase.co/auth/v1/callback` and provide the Client ID and Secret.
+  - **Apple sign-in:** Apple Developer Services ID, Key ID, Team ID and the .p8 key.
   - **www:** add CNAME `www` → `cname.vercel-dns.com` at GoDaddy (the apex `2kmarriage.com` is already live on Vercel).
   - **Phone login:** an SMS provider.
   - **Plan:** upgrade to Vercel Pro before commercial launch (Hobby is non-commercial; Pro also restores the hourly cron and longer log retention).
@@ -80,7 +88,7 @@ Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundl
   - The test deletes its users; the hosted project was left with 0 users.
 - **Network note:** from the development Mac, new TLS connections to Supabase took 1–10 s (packet loss or throttling on that network), so hosted UI runs are slow from there. Deploy the web tier in the database's region.
 - **Before production:**
-  - In Auth settings: Site URL and redirect URLs (including `twokmatrimony://auth/callback`), SMS provider, Google/Apple, email templates and SMTP.
+  - In Auth settings: SMS provider and Google/Apple credentials. Site URL, redirects, SMTP and email templates are done.
   - Regenerate the service-role key, since it was shared in chat, and update the env var.
   - Run the `create-super-admin` script once.
 
