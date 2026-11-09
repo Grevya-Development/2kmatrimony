@@ -1049,14 +1049,14 @@ isOneToOne: false
                   ]
                 },"payments": {
                   Row: {
-                    "amount_paise": number,"coupon_id": string | null,"created_at": string,"currency": string,"discount_paise": number,"failure_reason": string | null,"gst_paise": number,"id": string,"list_amount_paise": number,"method": string | null,"paid_at": string | null,"plan_id": string | null,"price_id": string | null,"razorpay_order_id": string | null,"razorpay_payment_id": string | null,"status": string,"subscription_id": string | null,"taxable_paise": number,"updated_at": string,"user_id": string
+                    "amount_paise": number,"billing_email": string | null,"billing_name": string | null,"billing_phone": string | null,"billing_state": string | null,"cgst_paise": number,"coupon_id": string | null,"created_at": string,"currency": string,"customer_gstin": string | null,"discount_paise": number,"failure_reason": string | null,"gst_paise": number,"id": string,"igst_paise": number,"interval": string | null,"list_amount_paise": number,"method": string | null,"paid_at": string | null,"plan_id": string | null,"price_id": string | null,"razorpay_order_id": string | null,"razorpay_payment_id": string | null,"refunded_paise": number,"sgst_paise": number,"status": string,"subscription_id": string | null,"taxable_paise": number,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount_paise": number,"coupon_id"?: string | null,"created_at"?: string,"currency"?: string,"discount_paise"?: number,"failure_reason"?: string | null,"gst_paise": number,"id"?: string,"list_amount_paise": number,"method"?: string | null,"paid_at"?: string | null,"plan_id"?: string | null,"price_id"?: string | null,"razorpay_order_id"?: string | null,"razorpay_payment_id"?: string | null,"status"?: string,"subscription_id"?: string | null,"taxable_paise": number,"updated_at"?: string,"user_id": string
+                    "amount_paise": number,"billing_email"?: string | null,"billing_name"?: string | null,"billing_phone"?: string | null,"billing_state"?: string | null,"cgst_paise"?: number,"coupon_id"?: string | null,"created_at"?: string,"currency"?: string,"customer_gstin"?: string | null,"discount_paise"?: number,"failure_reason"?: string | null,"gst_paise": number,"id"?: string,"igst_paise"?: number,"interval"?: string | null,"list_amount_paise": number,"method"?: string | null,"paid_at"?: string | null,"plan_id"?: string | null,"price_id"?: string | null,"razorpay_order_id"?: string | null,"razorpay_payment_id"?: string | null,"refunded_paise"?: number,"sgst_paise"?: number,"status"?: string,"subscription_id"?: string | null,"taxable_paise": number,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "amount_paise"?: number,"coupon_id"?: string | null,"created_at"?: string,"currency"?: string,"discount_paise"?: number,"failure_reason"?: string | null,"gst_paise"?: number,"id"?: string,"list_amount_paise"?: number,"method"?: string | null,"paid_at"?: string | null,"plan_id"?: string | null,"price_id"?: string | null,"razorpay_order_id"?: string | null,"razorpay_payment_id"?: string | null,"status"?: string,"subscription_id"?: string | null,"taxable_paise"?: number,"updated_at"?: string,"user_id"?: string
+                    "amount_paise"?: number,"billing_email"?: string | null,"billing_name"?: string | null,"billing_phone"?: string | null,"billing_state"?: string | null,"cgst_paise"?: number,"coupon_id"?: string | null,"created_at"?: string,"currency"?: string,"customer_gstin"?: string | null,"discount_paise"?: number,"failure_reason"?: string | null,"gst_paise"?: number,"id"?: string,"igst_paise"?: number,"interval"?: string | null,"list_amount_paise"?: number,"method"?: string | null,"paid_at"?: string | null,"plan_id"?: string | null,"price_id"?: string | null,"razorpay_order_id"?: string | null,"razorpay_payment_id"?: string | null,"refunded_paise"?: number,"sgst_paise"?: number,"status"?: string,"subscription_id"?: string | null,"taxable_paise"?: number,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -1577,14 +1577,14 @@ isOneToOne: false
                   ]
                 },"subscriptions": {
                   Row: {
-                    "auto_renew": boolean,"cancel_at_period_end": boolean,"cancelled_at": string | null,"created_at": string,"current_period_end": string | null,"current_period_start": string | null,"granted_by_admin": string | null,"id": string,"plan_id": string,"price_id": string | null,"razorpay_order_id": string | null,"razorpay_subscription_id": string | null,"status": string,"updated_at": string,"user_id": string
+                    "auto_renew": boolean,"cancel_at_period_end": boolean,"cancelled_at": string | null,"created_at": string,"current_period_end": string | null,"current_period_start": string | null,"granted_by_admin": string | null,"id": string,"plan_id": string,"price_id": string | null,"razorpay_order_id": string | null,"razorpay_subscription_id": string | null,"reminder_1d_sent_at": string | null,"reminder_7d_sent_at": string | null,"status": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "auto_renew"?: boolean,"cancel_at_period_end"?: boolean,"cancelled_at"?: string | null,"created_at"?: string,"current_period_end"?: string | null,"current_period_start"?: string | null,"granted_by_admin"?: string | null,"id"?: string,"plan_id": string,"price_id"?: string | null,"razorpay_order_id"?: string | null,"razorpay_subscription_id"?: string | null,"status"?: string,"updated_at"?: string,"user_id": string
+                    "auto_renew"?: boolean,"cancel_at_period_end"?: boolean,"cancelled_at"?: string | null,"created_at"?: string,"current_period_end"?: string | null,"current_period_start"?: string | null,"granted_by_admin"?: string | null,"id"?: string,"plan_id": string,"price_id"?: string | null,"razorpay_order_id"?: string | null,"razorpay_subscription_id"?: string | null,"reminder_1d_sent_at"?: string | null,"reminder_7d_sent_at"?: string | null,"status"?: string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "auto_renew"?: boolean,"cancel_at_period_end"?: boolean,"cancelled_at"?: string | null,"created_at"?: string,"current_period_end"?: string | null,"current_period_start"?: string | null,"granted_by_admin"?: string | null,"id"?: string,"plan_id"?: string,"price_id"?: string | null,"razorpay_order_id"?: string | null,"razorpay_subscription_id"?: string | null,"status"?: string,"updated_at"?: string,"user_id"?: string
+                    "auto_renew"?: boolean,"cancel_at_period_end"?: boolean,"cancelled_at"?: string | null,"created_at"?: string,"current_period_end"?: string | null,"current_period_start"?: string | null,"granted_by_admin"?: string | null,"id"?: string,"plan_id"?: string,"price_id"?: string | null,"razorpay_order_id"?: string | null,"razorpay_subscription_id"?: string | null,"reminder_1d_sent_at"?: string | null,"reminder_7d_sent_at"?: string | null,"status"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -1773,7 +1773,39 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "family_can":
+            "admin_ai_usage":
+{ Args: { "p_from": string,"p_to": string }; Returns: {
+              "cache_read_tokens": number,"cache_write_tokens": number,"cost_usd_micros": number,"errors": number,"feature": string,"input_tokens": number,"model": string,"output_tokens": number,"p50_latency_ms": number,"p95_latency_ms": number,"provider": string,"refusals": number,"requests": number
+            }[]
+                           },
+"admin_completion_distribution":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "bucket": number,"profiles": number
+            }[]
+                           },
+"admin_engagement":
+{ Args: { "p_from": string,"p_to": string }; Returns: Json
+                           },
+"admin_matching_stats":
+{ Args: { "p_from": string,"p_to": string }; Returns: Json
+                           },
+"admin_onboarding_funnel":
+{ Args: { "p_from": string,"p_to": string }; Returns: {
+              "step": string,"step_order": number,"users": number
+            }[]
+                           },
+"admin_overview_metrics":
+{ Args: { "p_from": string,"p_to": string }; Returns: Json
+                           },
+"admin_timeseries":
+{ Args: { "p_from": string,"p_metric": string,"p_to": string }; Returns: {
+              "day": string,"value": number
+            }[]
+                           },
+"billing_activate_payment":
+{ Args: { "p_method": string,"p_paid_at"?: string,"p_payment_id": string,"p_razorpay_payment_id": string }; Returns: Json
+                           },
+"family_can":
 { Args: { "p_permission": string,"p_profile_id": string }; Returns: boolean
                            },
 "has_permission":

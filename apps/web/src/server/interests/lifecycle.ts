@@ -1,5 +1,14 @@
 import 'server-only';
-// CONTRACT STUB — owned by workstream B, which replaces this with the real implementation.
+import { db } from '@/lib/supabase/admin';
+
+/** Mark pending interests past their expiry as expired. Returns the number expired. */
 export async function expireInterests(): Promise<number> {
-  return 0;
+  const { data, error } = await db()
+    .from('interests')
+    .update({ status: 'expired' })
+    .eq('status', 'pending')
+    .lt('expires_at', new Date().toISOString())
+    .select('id');
+  if (error) throw error;
+  return data?.length ?? 0;
 }

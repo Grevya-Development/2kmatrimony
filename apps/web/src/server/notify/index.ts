@@ -5,7 +5,7 @@ import { providers } from './providers';
 import type { DeliveryChannel, DeliveryTarget, RenderedMessage } from './types';
 
 /** Default channel opt-ins when a member has not set preferences. */
-const DEFAULTS: Record<NotificationCategory, DeliveryChannel[]> = {
+export const DEFAULTS: Record<NotificationCategory, DeliveryChannel[]> = {
   interests: ['push', 'email'],
   connections: ['push', 'email'],
   messages: ['push'],

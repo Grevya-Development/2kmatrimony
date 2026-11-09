@@ -341,3 +341,279 @@ export interface CheckoutOrder {
   planName: string;
   prefill: { name: string | null; email: string | null; contact: string | null };
 }
+
+// ---- Workstream B additions ----
+export interface ShortlistItem {
+  note: string | null;
+  createdAt: string;
+  addedByFamily: boolean;
+  profile: ProfileCard;
+}
+export interface BlockedItem {
+  profileId: string;
+  displayName: string;
+  blockedAt: string;
+}
+export interface ProfileViewersResponse {
+  count: number;
+  locked: boolean;
+  items: { viewedAt: string; profile: ProfileCard }[];
+}
+export interface SendInterestResult {
+  interestId: string;
+  status: C.InterestStatus;
+  connectionId: string | null;
+  conversationId: string | null;
+  autoAccepted: boolean;
+}
+export interface ChatUploadTicket {
+  bucket: string;
+  path: string;
+  signedUrl: string;
+  token: string;
+}
+
+// ---- Workstream A additions ----
+export interface CompletionReport {
+  pct: number;
+  canActivate: boolean;
+  missing: { section: string; label: string; required: boolean }[];
+}
+
+export interface OwnPhoto {
+  id: string;
+  url: string | null;
+  isPrimary: boolean;
+  sortOrder: number;
+  visibility: 'inherit' | 'connections' | 'hidden';
+  moderationStatus: 'pending' | 'approved' | 'rejected';
+  moderationReason: string | null;
+}
+
+/** GET /profile — the owner's editable profile. Form values use the request-schema shapes. */
+export interface OwnProfileResponse {
+  profileId: string;
+  profileCode: string;
+  status: C.ProfileStatus;
+  createdFor: C.CreatedFor;
+  onboardingStep: string | null;
+  completion: CompletionReport;
+  detail: ProfileDetail | null;
+  form: {
+    basics: Partial<import('./schemas').BasicsInput>;
+    education: import('./schemas').EducationInput['items'];
+    career: Partial<import('./schemas').CareerInput>;
+    family: Partial<import('./schemas').FamilyInput>;
+    lifestyle: Partial<import('./schemas').LifestyleInput>;
+    values: Partial<import('./schemas').ValuesInput>;
+    dna: (import('./schemas').DnaInput['entries'][number] & { source: 'explicit' | 'ai_suggested' | 'user_corrected' })[];
+    preferences: Partial<import('./schemas').PartnerPreferencesInput> | null;
+    privacy: import('./schemas').PrivacyInput;
+  };
+  photos: OwnPhoto[];
+  video: { url: string | null; durationSeconds: number; visibility: C.Audience; moderationStatus: 'pending' | 'approved' | 'rejected' } | null;
+  limits: { maxPhotos: number; videoMinSeconds: number; videoMaxSeconds: number };
+}
+
+export interface OnboardingQuestion {
+  key: string;
+  section: string;
+  prompt: string;
+  helpText: string | null;
+  inputType: 'single_select' | 'multi_select' | 'text' | 'long_text' | 'number' | 'scale' | 'date' | 'tags';
+  options: { value: string; label: string }[] | { left: string; right: string };
+  mapsTo: string | null;
+  isRequired: boolean;
+  answer: unknown;
+}
+
+export interface DnaSuggestion {
+  dimension: C.DnaDimension;
+  selfScore: number;
+  importance: number;
+  rationale: string;
+}
+
+export interface VerificationItem {
+  kind: C.VerificationKind;
+  status: C.VerificationStatus | 'not_started';
+  id: string | null;
+  documentType: string | null;
+  rejectionReason: string | null;
+  attempt: number;
+  submittedAt: string | null;
+  reviewedAt: string | null;
+}
+
+export interface DeviceItem {
+  id: string;
+  platform: 'web' | 'ios' | 'android';
+  deviceName: string | null;
+  hasPush: boolean;
+  appVersion: string | null;
+  lastSeenAt: string;
+  createdAt: string;
+}
+
+export interface ConsentState {
+  consentType: C.ConsentType;
+  granted: boolean;
+  policyVersion: string | null;
+  updatedAt: string | null;
+  required: boolean;
+}
+
+export interface DataRequestItem {
+  id: string;
+  kind: 'export' | 'deletion' | 'correction';
+  status: 'pending' | 'processing' | 'completed' | 'cancelled' | 'failed';
+  scheduledFor: string | null;
+  completedAt: string | null;
+  createdAt: string;
+}
+
+// ---- Workstream C additions ----
+export interface MatchmakerStatus {
+  aiAvailable: boolean;
+  consentGranted: boolean;
+  remainingToday: number;
+  dailyLimit: number;
+  voiceInput: boolean;
+}
+
+export interface MatchmakerStructured {
+  intent: 'clarify' | 'search' | 'refine' | 'chat';
+  filters: SearchFilters;
+  softPreferences: string[];
+  clarifyingQuestions: string[];
+  resultIds: string[];
+  generator: 'ai' | 'rules';
+  notice?: string | null;
+}
+
+export interface MatchmakerMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  createdAt: string;
+  structured: MatchmakerStructured | null;
+  results: ProfileCard[];
+}
+
+export interface MatchmakerThreadSummary {
+  id: string;
+  title: string | null;
+  updatedAt: string;
+}
+
+export interface ConnectionOverview {
+  id: string;
+  status: 'active' | 'closed';
+  createdAt: string;
+  conversationId: string | null;
+  other: ProfileCard;
+  explanation: MatchExplanation | null;
+  features: { gapAnalysis: boolean; beforeYouMeet: boolean; visionBoard: boolean; journal: boolean; aiAvailable: boolean };
+}
+
+export interface VisionItem {
+  id: string;
+  category: C.VisionCategory;
+  content: string;
+  isShared: boolean;
+  isMine: boolean;
+  createdAt: string;
+}
+
+export interface JournalEntry {
+  id: string;
+  kind: C.JournalKind;
+  content: string;
+  resolved: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MeetingPlan {
+  id: string;
+  title: string;
+  proposedAt: string;
+  locationText: string | null;
+  notes: string | null;
+  status: 'proposed' | 'accepted' | 'declined' | 'cancelled' | 'completed';
+  proposedByMe: boolean;
+  proposedByFamily: boolean;
+  createdAt: string;
+}
+
+export interface ReadinessNote {
+  topic: C.ReadinessTopic;
+  myView: string | null;
+  questionsToAsk: string[];
+  exploredAt: string | null;
+  updatedAt: string | null;
+}
+
+export interface FamilyMemberItem {
+  id: string;
+  relation: C.FamilyRelation;
+  displayName: string | null;
+  invitedContact: string;
+  permissions: C.FamilyPermission[];
+  status: 'invited' | 'active' | 'revoked' | 'declined';
+  acceptedAt: string | null;
+  inviteExpiresAt: string | null;
+  createdAt: string;
+}
+
+export interface FamilySuggestionItem {
+  id: string;
+  note: string | null;
+  status: 'pending' | 'considering' | 'dismissed' | 'acted';
+  createdAt: string;
+  suggestedBy: { memberId: string; name: string | null; relation: string };
+  profile: ProfileCard | null;
+}
+
+export interface FamilyDiscussionItem {
+  id: string;
+  body: string;
+  createdAt: string;
+  authorName: string;
+  isMine: boolean;
+  isOwner: boolean;
+}
+
+// ---- Workstream E additions ----
+export interface BillingHistoryResponse {
+  plan: { code: C.PlanCode; name: string; currentPeriodEnd: string | null; subscriptionId: string | null; entitlements: Entitlements };
+  payments: {
+    id: string;
+    status: 'created' | 'authorized' | 'captured' | 'failed' | 'refunded' | 'partially_refunded';
+    amountPaise: number;
+    listAmountPaise: number;
+    discountPaise: number;
+    gstPaise: number;
+    refundedPaise: number;
+    currency: string;
+    method: string | null;
+    interval: C.BillingInterval | null;
+    planCode: C.PlanCode | null;
+    planName: string | null;
+    paidAt: string | null;
+    createdAt: string;
+    failureReason: string | null;
+    invoiceId: string | null;
+  }[];
+  invoices: { id: string; invoiceNumber: string; paymentId: string; totalPaise: number; issuedAt: string }[];
+  refunds: { id: string; paymentId: string; amountPaise: number; status: string; createdAt: string }[];
+}
+
+export interface CouponPreview {
+  code: string;
+  description: string | null;
+  listAmountPaise: number;
+  discountPaise: number;
+  amountPaise: number;
+  gstPaise: number;
+}

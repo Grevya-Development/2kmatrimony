@@ -31,8 +31,10 @@ export interface SearchResult {
  */
 export async function searchProfiles(viewer: ProfileBundle, req: SearchRequest, opts: { softPreferences?: string[] } = {}): Promise<SearchResult> {
   const offset = cursor.decode<{ o: number }>(req.cursor)?.o ?? 0;
-  const text = [req.filters.text, ...(opts.softPreferences ?? [])].filter(Boolean).join(' ').trim() || null;
-  const embedding = text ? await embedQuery(text) : null;
+  // Only explicit free text is a hard filter; soft preferences rank (via embeddings) but never exclude.
+  const text = req.filters.text?.trim() || null;
+  const rankText = [text, ...(opts.softPreferences ?? [])].filter(Boolean).join(' ').trim() || null;
+  const embedding = rankText ? await embedQuery(rankText) : null;
 
   const { data, error } = await db().rpc('search_profile_ids', {
     p_viewer: viewer.profile.id,

@@ -41,7 +41,8 @@ export function request(pathname: string, opts: { method?: string; body?: unknow
   });
 }
 
-type Handler = (req: NextRequest, ctx: { params: Promise<Record<string, string>> }) => Promise<Response>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- route handlers declare their own param shapes
+type Handler = (req: NextRequest, ctx: { params: Promise<any> }) => Promise<Response>;
 
 export async function call<T = unknown>(handler: Handler, req: NextRequest, params: Record<string, string> = {}): Promise<{ status: number; body: { data?: T; error?: { code: string; message: string }; nextCursor?: string | null } }> {
   const res = await handler(req, { params: Promise.resolve(params) });

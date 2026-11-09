@@ -17,14 +17,39 @@
         "NSPhotoLibraryUsageDescription": "Choose photos for your profile.",
         "NSFaceIDUsageDescription": "Unlock 2K Matrimony with Face ID.",
         "NSMicrophoneUsageDescription": "Record your introduction video or speak to the matchmaker."
-      }
+      },
+      "associatedDomains": [
+        "applinks:app.example.com"
+      ]
     },
     "android": {
       "package": "com.twokmatrimony.app",
-      "adaptiveIcon": { "foregroundImage": "./assets/android-icon-foreground.png", "backgroundColor": "#faf7f2" },
-      "permissions": ["CAMERA", "USE_BIOMETRIC", "RECORD_AUDIO", "POST_NOTIFICATIONS"],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundColor": "#faf7f2"
+      },
+      "permissions": [
+        "CAMERA",
+        "USE_BIOMETRIC",
+        "RECORD_AUDIO",
+        "POST_NOTIFICATIONS"
+      ],
       "intentFilters": [
-        { "action": "VIEW", "autoVerify": true, "data": [{ "scheme": "https", "host": "app.example.com", "pathPrefix": "/app" }], "category": ["BROWSABLE", "DEFAULT"] }
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "app.example.com",
+              "pathPrefix": "/app"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
       ]
     },
     "plugins": [
@@ -34,12 +59,37 @@
       "expo-image",
       "expo-web-browser",
       "expo-video",
-      ["expo-splash-screen", { "backgroundColor": "#faf7f2", "image": "./assets/splash-icon.png", "imageWidth": 160 }],
-      ["expo-notifications", { "color": "#7a2e3c" }],
-      ["expo-local-authentication", { "faceIDPermission": "Unlock 2K Matrimony with Face ID." }],
-      ["expo-image-picker", { "photosPermission": "Choose photos for your profile.", "cameraPermission": "Take a photo for your profile or verification." }]
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#faf7f2",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#7a2e3c"
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Unlock 2K Matrimony with Face ID."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Choose photos for your profile.",
+          "cameraPermission": "Take a photo for your profile or verification."
+        }
+      ]
     ],
-    "experiments": { "typedRoutes": true },
+    "experiments": {
+      "typedRoutes": true
+    },
     "extra": {
       "apiUrl": "http://localhost:3000",
       "supabaseUrl": "http://127.0.0.1:56321",

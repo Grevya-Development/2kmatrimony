@@ -425,3 +425,67 @@ export const pageQuerySchema = z.object({
   cursor: z.string().max(200).optional(),
   limit: z.coerce.number().int().min(1).max(100).default(20),
 });
+
+// ---- Workstream B additions ----
+export const passSchema = z.object({ targetProfileId: uuid });
+export const conversationUpdateSchema = z
+  .object({ muted: z.boolean().optional(), archived: z.boolean().optional() })
+  .refine((v) => v.muted !== undefined || v.archived !== undefined, 'Nothing to update');
+export const notificationsReadSchema = z.object({ ids: z.array(uuid).max(200).optional() });
+export const interestListQuerySchema = z.object({
+  direction: z.enum(['received', 'sent', 'all']).default('received'),
+  status: z.enum(C.INTEREST_STATUSES).optional(),
+  cursor: z.string().max(200).optional(),
+  limit: z.coerce.number().int().min(1).max(50).default(30),
+});
+export const chatUploadSchema = z.object({
+  conversationId: uuid,
+  contentType: z.string().min(3).max(100),
+  sizeBytes: z.number().int().positive().max(10 * 1024 * 1024),
+});
+
+// ---- Workstream A additions ----
+export const ONBOARDING_STEPS = ['start', 'basics', 'education', 'career', 'family', 'lifestyle', 'values', 'dna', 'preferences', 'photos', 'done'] as const;
+export type OnboardingStep = (typeof ONBOARDING_STEPS)[number];
+export const profilePatchSchema = z.object({ onboardingStep: z.enum(ONBOARDING_STEPS) });
+
+/** DNA save with provenance: 'ai_accepted' = suggestion accepted unchanged, 'ai_corrected' = suggestion edited. */
+export const dnaSaveSchema = z.object({
+  entries: z
+    .array(dnaEntrySchema.extend({ origin: z.enum(['explicit', 'ai_accepted', 'ai_corrected']).default('explicit') }))
+    .min(1)
+    .max(C.DNA_DIMENSIONS.length),
+});
+export type DnaSaveInput = z.infer<typeof dnaSaveSchema>;
+export const dnaInterpretSchema = z.object({
+  text: z.string().trim().min(20, 'Write a few sentences so we can understand you.').max(2000),
+  dimension: z.enum(C.DNA_DIMENSIONS).optional(),
+});
+export const dnaAnswerSchema = z.object({
+  selfScore: z.number().int().min(0).max(100),
+  partnerTarget: z.number().int().min(0).max(100).nullable().default(null),
+  importance: z.number().int().min(1).max(5).default(3),
+  flexible: z.boolean().default(true),
+  statement: z.string().trim().max(500).nullish(),
+});
+export const profileUploadSchema = uploadRequestSchema.extend({ kind: z.enum(['photo', 'video', 'verification']) });
+
+// ---- Workstream C additions ----
+export const familySuggestionCreateSchema = familySuggestionSchema.extend({ profileId: uuid });
+export const familyDiscussionCreateSchema = familyDiscussionSchema.extend({ profileId: uuid.optional() });
+export const familyAcceptWithConsentSchema = familyAcceptSchema.extend({ acceptTerms: z.boolean().optional() });
+export const familyMemberUpdateSchema = z.object({
+  permissions: z.array(z.enum(C.FAMILY_PERMISSIONS)).min(1).optional(),
+  regenerateInvite: z.boolean().optional(),
+});
+export const familyShortlistSchema = z.object({ targetProfileId: uuid, note: optText(500) });
+export const matchmakerApplySchema = z.object({
+  filters: searchFiltersSchema,
+  softPreferences: z.array(z.string().trim().min(1).max(80)).max(10).default([]),
+});
+export const insightKindSchema = z.object({ kind: z.enum(['gap_analysis', 'before_you_meet']) });
+export const readinessChatQuerySchema = z.object({ topic: z.enum(C.READINESS_TOPICS) });
+/** /search body: soft preferences (from smart search) only influence ranking, never filtering. */
+export const searchWithPreferencesSchema = searchRequestSchema.extend({
+  softPreferences: z.array(z.string().trim().min(1).max(120)).max(10).default([]),
+});
