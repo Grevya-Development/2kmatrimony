@@ -19,8 +19,12 @@ export async function createEmailUser(label: string): Promise<E2EUser> {
 
 export async function signInWithEmail(page: Page, u: E2EUser, next = '/app'): Promise<void> {
   await page.goto(`/login?next=${encodeURIComponent(next)}`);
-  await page.getByRole('tab', { name: /email/i }).click();
-  await page.getByRole('button', { name: /use a password instead/i }).click();
+  // The Mobile/Email tabs only appear when SMS sign-in is enabled for the project.
+  const emailTab = page.getByRole('tab', { name: /email/i });
+  const passwordToggle = page.getByRole('button', { name: /use a password instead/i });
+  await emailTab.or(passwordToggle).first().waitFor();
+  if (await emailTab.isVisible()) await emailTab.click();
+  await passwordToggle.click();
   await page.getByLabel('Email').fill(u.email);
   await page.getByLabel('Password').fill(u.password);
   await page.getByRole('button', { name: 'Continue', exact: true }).click();

@@ -4,7 +4,7 @@ import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
 import { supabase } from '@/lib/supabase';
-import { isConfigured } from '@/lib/config';
+import { config, isConfigured } from '@/lib/config';
 import { haptic } from '@/lib/haptics';
 import { colors, space } from '@/theme';
 import { Button, ErrorState, Notice, Screen, SegmentedControl, Text, TextField } from '@/components/ui';
@@ -13,8 +13,32 @@ WebBrowser.maybeCompleteAuthSession();
 
 type Method = 'phone' | 'email';
 
+async function emailCode(email: string) {
+  await fetch(`${config.apiUrl}/api/v1/auth/email-start`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email }) }).catch(() => undefined);
+  const first = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: Linking.createURL('auth/callback'), shouldCreateUser: false } });
+  if (first.error && /signups? not allowed|not found/i.test(first.error.message)) {
+    return supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: Linking.createURL('auth/callback') } });
+  }
+  return first;
+}
+
 export default function SignIn() {
-  const [method, setMethod] = React.useState<Method>('phone');
+  const [method, setMethod] = React.useState<Method>('email');
+  const [methods, setMethods] = React.useState({ phone: false, google: false, apple: false });
+  // Only offer sign-in methods the Supabase project has enabled.
+  React.useEffect(() => {
+    let cancelled = false;
+    fetch(`${config.supabaseUrl}/auth/v1/settings`, { headers: { apikey: config.supabaseAnonKey } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { external?: Record<string, boolean> } | null) => {
+        if (cancelled || !d?.external) return;
+        const e = d.external;
+        setMethods({ phone: !!e.phone, google: !!e.google, apple: !!e.apple });
+        if (e.phone) setMethod('phone');
+      })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, []);
   const [step, setStep] = React.useState<'enter' | 'code'>('enter');
   const [phone, setPhone] = React.useState('');
   const [email, setEmail] = React.useState('');
@@ -31,7 +55,7 @@ export default function SignIn() {
     setBusy(true); setError(null);
     const { error: err } = method === 'phone'
       ? await supabase.auth.signInWithOtp({ phone: e164() })
-      : await supabase.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: Linking.createURL('auth/callback') } });
+      : await emailCode(email.trim());
     setBusy(false);
     if (err) setError(err.message); else { setStep('code'); haptic.success(); }
   };
@@ -69,24 +93,26 @@ export default function SignIn() {
         {!isConfigured() && <Notice tone="warning">This build has no Supabase configuration. Set EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY.</Notice>}
         {step === 'enter' ? (
           <View style={{ gap: space.lg }}>
-            <SegmentedControl label="Sign-in method" value={method} onChange={(m) => { setMethod(m); setError(null); }} options={[{ value: 'phone', label: 'Mobile' }, { value: 'email', label: 'Email' }]} />
+            {methods.phone && <SegmentedControl label="Sign-in method" value={method} onChange={(m) => { setMethod(m); setError(null); }} options={[{ value: 'phone', label: 'Mobile' }, { value: 'email', label: 'Email' }]} />}
             {method === 'phone'
               ? <TextField label="Mobile number" prefix="+91" keyboardType="phone-pad" autoComplete="tel" textContentType="telephoneNumber" value={phone} onChangeText={setPhone} placeholder="98765 43210" hint="We’ll text you a one-time code." />
               : <TextField label="Email" keyboardType="email-address" autoCapitalize="none" autoComplete="email" textContentType="emailAddress" value={email} onChangeText={setEmail} placeholder="you@example.com" />}
             {error && <ErrorState message={error} />}
             <Button title="Send code" size="lg" onPress={send} loading={busy} disabled={method === 'phone' ? phone.replace(/\D/g, '').length < 10 : !email.includes('@')} full />
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
-              <View style={{ flex: 1, height: 1, backgroundColor: colors.line }} /><Text variant="small">OR</Text><View style={{ flex: 1, height: 1, backgroundColor: colors.line }} />
-            </View>
-            <Button title="Continue with Google" variant="secondary" size="lg" onPress={() => oauth('google')} full />
-            {Platform.OS === 'ios' && <Button title="Continue with Apple" variant="secondary" size="lg" onPress={() => oauth('apple')} full />}
+            {(methods.google || (methods.apple && Platform.OS === 'ios')) && (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
+                <View style={{ flex: 1, height: 1, backgroundColor: colors.line }} /><Text variant="small">OR</Text><View style={{ flex: 1, height: 1, backgroundColor: colors.line }} />
+              </View>
+            )}
+            {methods.google && <Button title="Continue with Google" variant="secondary" size="lg" onPress={() => oauth('google')} full />}
+            {methods.apple && Platform.OS === 'ios' && <Button title="Continue with Apple" variant="secondary" size="lg" onPress={() => oauth('apple')} full />}
             <Text variant="small" style={{ textAlign: 'center' }}>By continuing you agree to our Terms and Privacy Policy. You must be 18 or older.</Text>
           </View>
         ) : (
           <View style={{ gap: space.lg }}>
-            <TextField label="6-digit code" keyboardType="number-pad" textContentType="oneTimeCode" autoComplete="sms-otp" maxLength={6} value={code} onChangeText={(t) => setCode(t.replace(/\D/g, ''))} autoFocus style={{ fontSize: 22, letterSpacing: 8, textAlign: 'center' }} />
+            <TextField label="6-digit code" keyboardType="number-pad" textContentType="oneTimeCode" autoComplete="sms-otp" maxLength={8} value={code} onChangeText={(t) => setCode(t.replace(/\D/g, ''))} autoFocus style={{ fontSize: 22, letterSpacing: 8, textAlign: 'center' }} />
             {error && <ErrorState message={error} />}
-            <Button title="Verify & continue" size="lg" onPress={verify} loading={busy} disabled={code.length !== 6} full />
+            <Button title="Verify & continue" size="lg" onPress={verify} loading={busy} disabled={code.length < 6} full />
             <Button title={`Use a different ${method === 'phone' ? 'number' : 'email'}`} variant="ghost" onPress={() => { setStep('enter'); setCode(''); }} />
           </View>
         )}

@@ -249,6 +249,32 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
+
+# Branded auth emails (same templates are pushed to the hosted project).
+[auth.email.template.confirmation]
+subject = "Your 2K Matrimony code: {{ .Token }}"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.magic_link]
+subject = "Your 2K Matrimony sign-in code: {{ .Token }}"
+content_path = "./supabase/templates/magic_link.html"
+
+[auth.email.template.recovery]
+subject = "Reset your 2K Matrimony password"
+content_path = "./supabase/templates/recovery.html"
+
+[auth.email.template.email_change]
+subject = "Confirm your new email address"
+content_path = "./supabase/templates/email_change.html"
+
+[auth.email.template.invite]
+subject = "You have been invited to 2K Matrimony"
+content_path = "./supabase/templates/invite.html"
+
+[auth.email.template.reauthentication]
+subject = "Your 2K Matrimony verification code"
+content_path = "./supabase/templates/reauthentication.html"
+
 # Uncomment to customize email template
 # [auth.email.template.invite]
 # subject = "You have been invited"

@@ -7,6 +7,27 @@ import { Button, ErrorState, Field, Input, Notice } from '@/components/ui';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import { cn } from '@/lib/utils';
 import { safeNextPath } from '@/lib/safe-redirect';
+import { publicEnv } from '@/lib/env';
+
+type AuthMethods = { loaded: boolean; phone: boolean; google: boolean; apple: boolean };
+
+/** Which sign-in methods the Supabase project has enabled (public settings endpoint). */
+function useAuthMethods(): AuthMethods {
+  const [m, setM] = React.useState<AuthMethods>({ loaded: false, phone: false, google: false, apple: false });
+  React.useEffect(() => {
+    let cancelled = false;
+    fetch(`${publicEnv.supabaseUrl}/auth/v1/settings`, { headers: { apikey: publicEnv.supabaseAnonKey } })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { external?: Record<string, boolean> } | null) => {
+        if (cancelled) return;
+        const e = d?.external ?? {};
+        setM({ loaded: true, phone: !!e.phone, google: !!e.google, apple: !!e.apple });
+      })
+      .catch(() => { if (!cancelled) setM({ loaded: true, phone: false, google: false, apple: false }); });
+    return () => { cancelled = true; };
+  }, []);
+  return m;
+}
 
 type Method = 'phone' | 'email';
 type Step = 'enter' | 'code';
@@ -17,7 +38,12 @@ export function SignIn() {
   const params = useSearchParams();
   const next = safeNextPath(params.get('next'), typeof window === 'undefined' ? 'http://localhost' : window.location.origin);
   const supabase = supabaseBrowser();
-  const [method, setMethod] = React.useState<Method>('phone');
+  const methods = useAuthMethods();
+  const [method, setMethod] = React.useState<Method>('email');
+  const [methodTouched, setMethodTouched] = React.useState(false);
+  // Default to mobile when the project supports SMS sign-in, otherwise email.
+  React.useEffect(() => { if (methods.loaded && !methodTouched) setMethod(methods.phone ? 'phone' : 'email'); }, [methods.loaded, methods.phone, methodTouched]);
+  const hasOAuth = methods.google || methods.apple;
   const [step, setStep] = React.useState<Step>('enter');
   const [usePassword, setUsePassword] = React.useState(false);
   const [phone, setPhone] = React.useState('');
@@ -53,7 +79,12 @@ export function SignIn() {
         } else setError(err.message);
       } else done();
     } else {
-      const { error: err } = await supabase.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: redirectTo() } });
+      // Ensure the account exists so everyone receives the sign-in email with a 6-digit code.
+      await fetch('/api/v1/auth/email-start', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: email.trim() }) }).catch(() => undefined);
+      let { error: err } = await supabase.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: redirectTo(), shouldCreateUser: false } });
+      if (err && /signups? not allowed|not found/i.test(err.message)) {
+        ({ error: err } = await supabase.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: redirectTo() } }));
+      }
       if (err) setError(err.message); else { setStep('code'); setInfo('We sent a sign-in link and a 6-digit code to your email.'); }
     }
     setBusy(false);
@@ -87,13 +118,13 @@ export function SignIn() {
     <div className="space-y-8">
       <div>
         <h1 className="font-serif text-4xl leading-tight">{step === 'code' ? 'Enter your code' : 'Sign in or register'}</h1>
-        <p className="mt-2 text-muted">{step === 'code' ? `Sent to ${method === 'phone' ? e164() : email}.` : 'New here? Use your mobile number and we will create your free account.'}</p>
+        <p className="mt-2 text-muted">{step === 'code' ? `Sent to ${method === 'phone' ? e164() : email}.` : `New here? Use your ${methods.phone ? 'mobile number or email' : 'email'} and we will create your free account.`}</p>
       </div>
 
-      {step === 'enter' && (
+      {step === 'enter' && methods.phone && (
         <div role="tablist" aria-label="Sign-in method" className="grid grid-cols-2 gap-1 rounded-full border border-line bg-surface p-1">
           {(['phone', 'email'] as Method[]).map((m) => (
-            <button key={m} role="tab" aria-selected={method === m} type="button" onClick={() => { setMethod(m); setError(null); }}
+            <button key={m} role="tab" aria-selected={method === m} type="button" onClick={() => { setMethod(m); setMethodTouched(true); setError(null); }}
               className={cn('flex items-center justify-center gap-2 rounded-full py-2 text-sm font-medium transition-colors', method === m ? 'bg-ink text-canvas' : 'text-muted hover:text-ink')}>
               {m === 'phone' ? <Smartphone className="h-4 w-4" /> : <Mail className="h-4 w-4" />}{m === 'phone' ? 'Mobile' : 'Email'}
             </button>
@@ -135,22 +166,26 @@ export function SignIn() {
       ) : (
         <form onSubmit={verify} className="space-y-5">
           <Field label="6-digit code" htmlFor="otp">
-            <Input inputMode="numeric" autoComplete="one-time-code" maxLength={6} className="text-center font-mono text-xl tracking-[0.5em]" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} autoFocus />
+            <Input inputMode="numeric" autoComplete="one-time-code" maxLength={8} className="text-center font-mono text-xl tracking-[0.5em]" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} autoFocus />
           </Field>
           {error && <ErrorState message={error} />}
           {info && <Notice>{info}</Notice>}
-          <Button type="submit" size="lg" className="w-full" loading={busy} disabled={code.length !== 6}>Verify & continue</Button>
+          <Button type="submit" size="lg" className="w-full" loading={busy} disabled={code.length < 6}>Verify & continue</Button>
           <button type="button" className="w-full text-sm text-muted hover:text-ink" onClick={() => { setStep('enter'); setCode(''); setInfo(null); }}>Use a different {method === 'phone' ? 'number' : 'email'}</button>
         </form>
       )}
 
       {step === 'enter' && (
         <>
-          <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-muted"><span className="h-px flex-1 bg-line" />or<span className="h-px flex-1 bg-line" /></div>
-          <div className="grid gap-3">
-            <Button variant="secondary" size="lg" onClick={() => oauth('google')}>Continue with Google</Button>
-            <Button variant="secondary" size="lg" onClick={() => oauth('apple')}>Continue with Apple</Button>
-          </div>
+          {hasOAuth && (
+            <>
+              <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-muted"><span className="h-px flex-1 bg-line" />or<span className="h-px flex-1 bg-line" /></div>
+              <div className="grid gap-3">
+                {methods.google && <Button variant="secondary" size="lg" onClick={() => oauth('google')}>Continue with Google</Button>}
+                {methods.apple && <Button variant="secondary" size="lg" onClick={() => oauth('apple')}>Continue with Apple</Button>}
+              </div>
+            </>
+          )}
           <p className="text-center text-xs leading-relaxed text-muted">
             By continuing you agree to our <Link href="/legal/terms" className="underline underline-offset-2">Terms</Link> and <Link href="/legal/privacy" className="underline underline-offset-2">Privacy Policy</Link>. You must be 18 or older.
           </p>
