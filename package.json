@@ -1,0 +1,24 @@
+{
+  "name": "2k-matrimony",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "npm run dev -w @2k/web",
+    "build": "npm run build -w @2k/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts",
+    "db:lint": "supabase db lint"
+  },
+  "devDependencies": {
+    "supabase": "3.1.0",
+    "typescript": "5.9.3",
+    "vitest": "5.1.0",
+    "prettier": "^3.6.0"
+  },
+  "engines": { "node": ">=22" }
+}

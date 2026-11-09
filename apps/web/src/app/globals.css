@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   2K Matrimony design tokens
+   Warm ivory canvas, off-white surfaces, charcoal type, muted burgundy accent,
+   champagne highlights. Serif display + humanist sans UI.
+   --------------------------------------------------------------------------- */
+@theme {
+  --font-serif: var(--font-display), 'Cormorant Garamond', Georgia, serif;
+  --font-sans: var(--font-ui), 'Inter', system-ui, sans-serif;
+
+  --color-canvas: #faf7f2;
+  --color-surface: #fffdf9;
+  --color-surface-2: #f4efe7;
+  --color-ink: #1f1d1b;
+  --color-ink-2: #4a4540;
+  --color-muted: #77706a;
+  --color-line: #e8e1d6;
+  --color-line-strong: #d8cfc1;
+
+  --color-burgundy-50: #f8eef0;
+  --color-burgundy-100: #f0dbe0;
+  --color-burgundy-200: #dfb3bd;
+  --color-burgundy-500: #8e3a4a;
+  --color-burgundy-600: #7a2e3c;
+  --color-burgundy-700: #652532;
+  --color-burgundy-800: #4f1d27;
+
+  --color-champagne-50: #fbf6ec;
+  --color-champagne-100: #f4ead6;
+  --color-champagne-200: #e9d8b6;
+  --color-champagne-400: #d2b583;
+  --color-champagne-600: #a8875a;
+
+  --color-success: #3f6b4f;
+  --color-success-bg: #eaf2ec;
+  --color-warning: #8a6420;
+  --color-warning-bg: #f8efdc;
+  --color-danger: #9b2c2c;
+  --color-danger-bg: #f8e7e5;
+  --color-info: #3b5a7a;
+  --color-info-bg: #e8eef5;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --shadow-soft: 0 1px 2px rgb(31 29 27 / 0.04), 0 4px 16px rgb(31 29 27 / 0.04);
+  --shadow-lift: 0 2px 6px rgb(31 29 27 / 0.06), 0 12px 32px rgb(31 29 27 / 0.08);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  h1, h2, h3, .font-display {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+    font-weight: 500;
+  }
+  ::selection {
+    background: var(--color-champagne-200);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-burgundy-500);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+  .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-champagne-600);
+    font-weight: 600;
+  }
+  .scrollbar-none { scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+}
