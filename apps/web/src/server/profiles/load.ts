@@ -27,10 +27,25 @@ const PROFILE_COLUMNS =
  * Batch-load complete profile bundles. `includeUnapprovedMedia` is for the
  * owner's own view (shows pending photos); other viewers only see approved media.
  */
+// PostgREST filters travel in the URL: keep `in.(…)` lists well under URL limits.
+const CHUNK = 60;
+
 export async function loadBundles(ids: string[], opts: { includeUnapprovedMedia?: boolean } = {}): Promise<Map<string, ProfileBundle>> {
   const out = new Map<string, ProfileBundle>();
   const unique = [...new Set(ids)].filter(Boolean);
   if (unique.length === 0) return out;
+  if (unique.length > CHUNK) {
+    for (let i = 0; i < unique.length; i += CHUNK) {
+      for (const [k, v] of await loadChunk(unique.slice(i, i + CHUNK), opts)) out.set(k, v);
+    }
+    // preserve caller's order semantics: Map iteration follows insertion (chunk) order
+    return out;
+  }
+  return loadChunk(unique, opts);
+}
+
+async function loadChunk(unique: string[], opts: { includeUnapprovedMedia?: boolean }): Promise<Map<string, ProfileBundle>> {
+  const out = new Map<string, ProfileBundle>();
   const c = db();
 
   const photosQ = c.from('profile_photos').select('*').in('profile_id', unique).order('is_primary', { ascending: false }).order('sort_order');

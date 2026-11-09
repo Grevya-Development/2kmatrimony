@@ -5,7 +5,7 @@ import path from 'node:path';
 export default defineConfig({
   resolve: { alias: { '@': path.resolve(import.meta.dirname, 'src'), 'server-only': path.resolve(import.meta.dirname, 'tests/stubs/server-only.ts') } },
   test: {
-    include: ['tests/integration/**/*.test.ts'],
+    include: ['tests/integration/**/*.test.ts', 'tests/perf/**/*.test.ts'],
     environment: 'node',
     setupFiles: ['tests/integration/setup.ts'],
     testTimeout: 60_000,

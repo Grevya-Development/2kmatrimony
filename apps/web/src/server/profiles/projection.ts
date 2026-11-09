@@ -28,8 +28,19 @@ export interface ViewerContext {
 }
 
 /** Batch-load the viewer's relationship to each candidate. */
+const CONTEXT_CHUNK = 50; // keeps PostgREST filter URLs short
+
 export async function buildViewerContext(viewerProfileId: string, candidateIds: string[]): Promise<ViewerContext> {
-  const ids = [...new Set(candidateIds)].filter((id) => id !== viewerProfileId);
+  const all = [...new Set(candidateIds)].filter((id) => id !== viewerProfileId);
+  if (all.length > CONTEXT_CHUNK) {
+    const merged: ViewerContext = { viewerProfileId, relationships: new Map() };
+    for (let i = 0; i < all.length; i += CONTEXT_CHUNK) {
+      const part = await buildViewerContext(viewerProfileId, all.slice(i, i + CONTEXT_CHUNK));
+      for (const [k, v] of part.relationships) merged.relationships.set(k, v);
+    }
+    return merged;
+  }
+  const ids = all;
   const relationships: ViewerContext['relationships'] = new Map();
   for (const id of ids) {
     relationships.set(id, {
