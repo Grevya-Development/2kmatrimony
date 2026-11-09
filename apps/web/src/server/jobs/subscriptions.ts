@@ -47,3 +47,12 @@ export async function sendRenewalReminders(now = new Date()): Promise<{ sent7d: 
   }
   return { sent7d, sent1d };
 }
+
+/** Mark checkout orders that were never paid within 24h as abandoned. */
+export async function abandonStaleCheckouts(): Promise<{ abandoned: number }> {
+  const { db } = await import('@/lib/supabase/admin');
+  const cutoff = new Date(Date.now() - 24 * 3600_000).toISOString();
+  const { count, error } = await db().from('payments').update({ status: 'failed', failure_reason: 'abandoned_checkout' }, { count: 'exact' }).eq('status', 'created').lt('created_at', cutoff);
+  if (error) throw error;
+  return { abandoned: count ?? 0 };
+}

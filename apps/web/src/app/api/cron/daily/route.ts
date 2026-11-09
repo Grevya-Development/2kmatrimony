@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { rejectUnlessCron } from '@/server/jobs/cron-auth';
 import { runJobs } from '@/server/jobs/runner';
 import { dailyRecommendations } from '@/server/jobs/recommendations';
-import { expireSubscriptions, sendRenewalReminders } from '@/server/jobs/subscriptions';
+import { abandonStaleCheckouts, expireSubscriptions, sendRenewalReminders } from '@/server/jobs/subscriptions';
 import { cleanupCounters, expireDataExports, purgeOldLogs, purgeVerificationDocuments, refreshMissingEmbeddings } from '@/server/jobs/maintenance';
 import { expireInterests } from '@/server/interests/lifecycle';
 import { executeDueDeletions } from '@/server/privacy/deletion';
@@ -16,6 +16,7 @@ async function run(req: NextRequest) {
   const summary = await runJobs([
     ['subscriptions.expire', () => expireSubscriptions()],
     ['subscriptions.reminders', () => sendRenewalReminders()],
+    ['payments.abandon', () => abandonStaleCheckouts()],
     ['interests.expire', async () => ({ expired: await expireInterests() })],
     ['privacy.deletions', () => executeDueDeletions()],
     ['recommendations.daily', () => dailyRecommendations()],
