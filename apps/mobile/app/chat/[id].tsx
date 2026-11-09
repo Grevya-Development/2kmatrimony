@@ -184,7 +184,7 @@ export default function ChatThread() {
                 accessibilityLabel={`${mine ? 'You' : other?.displayName ?? 'Them'}: ${item.kind === 'image' ? 'photo' : item.body}${item.status === 'failed' ? '. Failed to send, tap to retry' : ''}`}
                 style={{ alignSelf: mine ? 'flex-end' : 'flex-start', maxWidth: '80%' }}
               >
-                <View style={{ backgroundColor: mine ? colors.burgundy600 : colors.surface, borderWidth: mine ? 0 : 1, borderColor: colors.line, borderRadius: radius.lg, padding: item.kind === 'image' ? 4 : space.md, opacity: item.status === 'sending' ? 0.6 : 1 }}>
+                <View style={{ backgroundColor: mine ? colors.emerald600 : colors.surface, borderWidth: mine ? 0 : 1, borderColor: colors.line, borderRadius: radius.lg, padding: item.kind === 'image' ? 4 : space.md, opacity: item.status === 'sending' ? 0.6 : 1 }}>
                   {item.kind === 'image'
                     ? <Image source={{ uri: item.mediaUrl ?? item.localUri }} style={{ width: 220, height: 220, borderRadius: radius.md, backgroundColor: colors.surface2 }} accessibilityIgnoresInvertColors />
                     : <Text style={{ color: mine ? colors.white : colors.ink }}>{item.body}</Text>}
@@ -214,7 +214,7 @@ export default function ChatThread() {
             maxLength={4000}
             style={{ flex: 1, maxHeight: 120, minHeight: 44, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.line, paddingHorizontal: 14, paddingVertical: 10, fontFamily: fonts.body, fontSize: 15, color: colors.ink, backgroundColor: colors.canvas }}
           />
-          <Pressable onPress={() => { const b = text.trim(); if (b) { setText(''); void sendText(b); } }} disabled={!text.trim()} accessibilityRole="button" accessibilityLabel="Send message" style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: colors.burgundy600, alignItems: 'center', justifyContent: 'center', opacity: text.trim() ? 1 : 0.5 }}>
+          <Pressable onPress={() => { const b = text.trim(); if (b) { setText(''); void sendText(b); } }} disabled={!text.trim()} accessibilityRole="button" accessibilityLabel="Send message" style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: colors.emerald600, alignItems: 'center', justifyContent: 'center', opacity: text.trim() ? 1 : 0.5 }}>
             <Icon name="send" color={colors.white} size={18} />
           </Pressable>
         </View>

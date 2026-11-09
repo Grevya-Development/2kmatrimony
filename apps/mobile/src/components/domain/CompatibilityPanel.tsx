@@ -7,7 +7,7 @@ import { Badge, Card, Text } from '@/components/ui';
 function Bar({ value }: { value: number | null }) {
   return (
     <View style={{ height: 6, borderRadius: 3, backgroundColor: colors.line, overflow: 'hidden', flex: 1 }}>
-      {value !== null && <View style={{ height: 6, width: `${value}%`, backgroundColor: colors.burgundy500 }} />}
+      {value !== null && <View style={{ height: 6, width: `${value}%`, backgroundColor: colors.emerald500 }} />}
     </View>
   );
 }
@@ -36,7 +36,7 @@ export function CompatibilityPanel({ explanation }: { explanation: MatchExplanat
       <View style={{ gap: 4 }}>
         <Text variant="eyebrow">Why you might align</Text>
         <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 10 }}>
-          <Text style={{ fontFamily: fonts.display, fontSize: 44, color: colors.burgundy700 }} accessibilityLabel={`Mutual compatibility ${c.mutual} percent`}>{c.mutual}%</Text>
+          <Text style={{ fontFamily: fonts.display, fontSize: 44, color: colors.emerald700 }} accessibilityLabel={`Mutual compatibility ${c.mutual} percent`}>{c.mutual}%</Text>
           <Text variant="label">{c.label}</Text>
         </View>
         <Text variant="bodyMuted">{explanation.headline}</Text>

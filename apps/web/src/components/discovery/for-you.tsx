@@ -24,7 +24,7 @@ function ViewersButton({ data }: { data: ProfileViewersResponse }) {
         <ul className="divide-y divide-line">
           {data.items.map((v) => (
             <li key={v.profile.id}>
-              <Link href={`/app/profile/${v.profile.id}`} className="flex items-center gap-3 py-3 hover:text-burgundy-700">
+              <Link href={`/app/profile/${v.profile.id}`} className="flex items-center gap-3 py-3 hover:text-emerald-700">
                 <Avatar src={v.profile.photoUrl} name={v.profile.displayName} blurred={v.profile.photoBlurred} className="h-11 w-11" />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-medium">{v.profile.displayName}{v.profile.age !== null ? `, ${v.profile.age}` : ''}</span>

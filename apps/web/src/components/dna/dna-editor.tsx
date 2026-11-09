@@ -78,7 +78,7 @@ export function DnaEditor({ initial, aiConsent }: { initial: DnaPoint[]; aiConse
 
       <Card className="h-fit">
         <CardContent className="space-y-4">
-          <div className="flex items-center gap-2"><Sparkles className="h-5 w-5 text-champagne-600" /><h2 className="font-serif text-2xl">Describe it in your words</h2></div>
+          <div className="flex items-center gap-2"><Sparkles className="h-5 w-5 text-gold-600" /><h2 className="font-serif text-2xl">Describe it in your words</h2></div>
           <p className="text-sm text-muted">Write a few sentences about how you like to connect, live and plan. We’ll suggest positions — you review and confirm each one.</p>
           {!aiConsent ? (
             <Notice>AI assistance is off. Turn it on in <a href="/app/settings?tab=consents" className="underline">Settings → Consents</a> to use suggestions.</Notice>

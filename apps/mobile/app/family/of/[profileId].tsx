@@ -72,7 +72,7 @@ export default function FamilyMemberView() {
       <Stack.Screen options={{ title: `Helping ${name}` }} />
       <Notice>{name} stays in control of interests, connections and conversations. Profiles here are shown as {name} sees them.</Notice>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
-        {d.permissions.map((p) => <Badge key={p} label={p.replace(/_/g, ' ')} tone="champagne" />)}
+        {d.permissions.map((p) => <Badge key={p} label={p.replace(/_/g, ' ')} tone="gold" />)}
       </View>
 
       {can('view_profiles') && (

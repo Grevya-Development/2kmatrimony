@@ -39,7 +39,7 @@ export function PhotoManager({ photos, max, onChanged }: { photos: OwnPhoto[]; m
           <Pressable key={p.id} onPress={() => manage(p)} accessibilityRole="button" accessibilityLabel={`Photo${p.isPrimary ? ', primary' : ''}, ${p.moderationStatus}. Manage`} style={{ width: '31%', aspectRatio: 0.8 }}>
             {p.url ? <Image source={{ uri: p.url }} style={{ width: '100%', height: '100%', borderRadius: radius.md }} /> : <View style={{ flex: 1, borderRadius: radius.md, backgroundColor: colors.surface2 }} />}
             <View style={{ position: 'absolute', left: 4, top: 4, gap: 2 }}>
-              {p.isPrimary && <Badge label="Primary" tone="burgundy" />}
+              {p.isPrimary && <Badge label="Primary" tone="emerald" />}
               {p.moderationStatus !== 'approved' && <Badge label={p.moderationStatus === 'pending' ? 'In review' : 'Rejected'} tone={p.moderationStatus === 'pending' ? 'warning' : 'danger'} />}
             </View>
           </Pressable>

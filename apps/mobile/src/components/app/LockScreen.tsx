@@ -1,8 +1,9 @@
+import { BrandLogo } from '@/components/ui/BrandLogo';
 import * as React from 'react';
 import { AppState, StyleSheet, View } from 'react-native';
 import { authenticate, isBiometricEnabled, LOCK_AFTER_MS } from '@/lib/biometric';
 import { colors, space } from '@/theme';
-import { Button, Icon, Text } from '@/components/ui';
+import { Button, Text } from '@/components/ui';
 
 /** Biometric lock overlay: cold start, and on resume after 5+ minutes in background. */
 export function BiometricGate({ children, active }: { children: React.ReactNode; active: boolean }) {
@@ -33,7 +34,7 @@ export function BiometricGate({ children, active }: { children: React.ReactNode;
       {children}
       {locked && (
         <View style={[StyleSheet.absoluteFill, styles.lock]} accessibilityViewIsModal>
-          <Icon name="lock" size={36} color={colors.burgundy600} />
+          <BrandLogo variant="mark" height={56} />
           <Text variant="title">2K Matrimony is locked</Text>
           <Text variant="bodyMuted" style={{ textAlign: 'center' }}>Use Face ID, Touch ID or your fingerprint to continue.</Text>
           <Button title="Unlock" onPress={unlock} />

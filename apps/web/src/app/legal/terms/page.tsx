@@ -32,7 +32,7 @@ export default function TermsPage() {
         <li>Refunds are handled under our refund policy and applicable consumer protection law. Contact support to request one.</li>
       </ul>
       <h2>5. Privacy</h2>
-      <p>Our <a className="text-burgundy-600 underline" href="/legal/privacy">Privacy Policy</a> explains how we process personal data in line with India’s Digital Personal Data Protection Act, 2023.</p>
+      <p>Our <a className="text-emerald-600 underline" href="/legal/privacy">Privacy Policy</a> explains how we process personal data in line with India’s Digital Personal Data Protection Act, 2023.</p>
       <h2>6. Termination</h2>
       <p>You may delete your account at any time from Settings. Deletion completes after a short grace period, except where we must retain limited records by law (for example, tax invoices).</p>
       <h2>7. Liability</h2>

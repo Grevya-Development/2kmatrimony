@@ -51,10 +51,10 @@ export default function MemberProfile() {
       <ScrollView contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 120 }}>
         <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} style={{ borderRadius: 24 }} accessibilityLabel="Photos">
           {d.photos.length && !d.photos[0]?.blurred ? d.photos.map((p) => (
-            <Image key={p.id} source={{ uri: p.url }} style={{ width: 340, height: 420, borderRadius: 24, marginRight: 8, backgroundColor: colors.champagne50 }} accessibilityIgnoresInvertColors />
+            <Image key={p.id} source={{ uri: p.url }} style={{ width: 340, height: 420, borderRadius: 24, marginRight: 8, backgroundColor: colors.gold50 }} accessibilityIgnoresInvertColors />
           )) : (
-            <View style={{ width: 340, height: 300, borderRadius: 24, backgroundColor: colors.champagne50, alignItems: 'center', justifyContent: 'center', padding: space.xl }}>
-              <Text variant="hero" style={{ color: colors.champagne600 }}>{d.displayName.slice(0, 1)}</Text>
+            <View style={{ width: 340, height: 300, borderRadius: 24, backgroundColor: colors.gold50, alignItems: 'center', justifyContent: 'center', padding: space.xl }}>
+              <Text variant="hero" style={{ color: colors.gold600 }}>{d.displayName.slice(0, 1)}</Text>
               <Text variant="small" style={{ textAlign: 'center' }}>{d.photoBlurred ? 'Photos are shared once they accept your interest.' : 'No photos shared.'}</Text>
             </View>
           )}
@@ -66,7 +66,7 @@ export default function MemberProfile() {
             {d.verified.identity && <Badge label="ID verified" tone="success" />}
             {d.verified.photo && <Badge label="Photo verified" tone="info" />}
             {d.verified.phone && <Badge label="Phone verified" tone="neutral" />}
-            {d.recentlyActive && <Badge label="Active this week" tone="champagne" />}
+            {d.recentlyActive && <Badge label="Active this week" tone="gold" />}
           </View>
         </View>
         {d.video && <VideoIntro url={d.video.url} />}

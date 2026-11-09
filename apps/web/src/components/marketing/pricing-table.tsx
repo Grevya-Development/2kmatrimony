@@ -46,10 +46,10 @@ export function PricingTable({ plans, ctaHref = '/login', onChoose, currentCode,
           const featured = plan.code === 'premium';
           const isCurrent = currentCode === plan.code;
           return (
-            <div key={plan.id} className={cn('flex flex-col rounded-3xl border bg-surface p-6 shadow-soft', featured ? 'border-burgundy-500 ring-4 ring-burgundy-50' : 'border-line')}>
+            <div key={plan.id} className={cn('flex flex-col rounded-3xl border bg-surface p-6 shadow-soft', featured ? 'border-emerald-500 ring-4 ring-emerald-50' : 'border-line')}>
               <div className="flex items-center justify-between">
                 <h3 className="font-serif text-3xl">{plan.name}</h3>
-                {featured && <Badge tone="burgundy">Most chosen</Badge>}
+                {featured && <Badge tone="emerald">Most chosen</Badge>}
                 {isCurrent && <Badge tone="success">Current</Badge>}
               </div>
               {plan.tagline && <p className="mt-1 text-sm text-muted">{plan.tagline}</p>}

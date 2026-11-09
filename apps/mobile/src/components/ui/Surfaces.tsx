@@ -10,9 +10,9 @@ export function Card({ children, style, padded = true }: { children: React.React
   return <View style={[styles.card, padded && { padding: space.lg }, style]}>{children}</View>;
 }
 
-type Tone = 'neutral' | 'burgundy' | 'champagne' | 'success' | 'warning' | 'danger' | 'info';
+type Tone = 'neutral' | 'emerald' | 'gold' | 'success' | 'warning' | 'danger' | 'info';
 const TONES: Record<Tone, [string, string]> = {
-  neutral: [colors.surface2, colors.ink2], burgundy: [colors.burgundy50, colors.burgundy700], champagne: [colors.champagne100, colors.champagne600],
+  neutral: [colors.surface2, colors.ink2], emerald: [colors.emerald50, colors.emerald700], gold: [colors.gold100, colors.gold600],
   success: [colors.successBg, colors.success], warning: [colors.warningBg, colors.warning], danger: [colors.dangerBg, colors.danger], info: [colors.infoBg, colors.info],
 };
 export function Badge({ label, tone = 'neutral' }: { label: string; tone?: Tone }) {
@@ -23,10 +23,10 @@ export function Badge({ label, tone = 'neutral' }: { label: string; tone?: Tone 
 export function Avatar({ uri, name, size = 44, blurred }: { uri?: string | null; name: string; size?: number; blurred?: boolean }) {
   const initials = name.split(/\s+/).map((s) => s[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '·';
   const s = { width: size, height: size, borderRadius: size / 2 };
-  if (uri && !blurred) return <Image source={{ uri }} style={[s, { backgroundColor: colors.champagne100 }]} accessibilityIgnoresInvertColors accessibilityLabel={`Photo of ${name}`} />;
+  if (uri && !blurred) return <Image source={{ uri }} style={[s, { backgroundColor: colors.gold100 }]} accessibilityIgnoresInvertColors accessibilityLabel={`Photo of ${name}`} />;
   return (
     <View style={[s, styles.avatarFallback]} accessibilityLabel={blurred ? `${name}, photo shown after you connect` : name}>
-      <Text style={{ fontFamily: fonts.display, fontSize: size * 0.4, color: colors.champagne600 }}>{initials}</Text>
+      <Text style={{ fontFamily: fonts.display, fontSize: size * 0.4, color: colors.gold600 }}>{initials}</Text>
     </View>
   );
 }
@@ -40,7 +40,7 @@ export function Screen({ children, scroll = true, refreshing, onRefresh, edges =
       <OfflineBanner />
       {scroll ? (
         <ScrollView contentContainerStyle={[styles.content, contentStyle]} keyboardShouldPersistTaps={rest.keyboardShouldPersistTaps ?? 'handled'}
-          refreshControl={onRefresh ? <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} tintColor={colors.burgundy600} /> : undefined}>
+          refreshControl={onRefresh ? <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} tintColor={colors.emerald600} /> : undefined}>
           {children}
         </ScrollView>
       ) : <View style={[{ flex: 1 }, contentStyle]}>{children}</View>}
@@ -94,7 +94,7 @@ export function Skeleton({ height = 16, width = '100%', style }: { height?: numb
 }
 
 export function Loading({ label = 'Loading' }: { label?: string }) {
-  return <View style={styles.loading}><ActivityIndicator color={colors.burgundy600} accessibilityLabel={label} /></View>;
+  return <View style={styles.loading}><ActivityIndicator color={colors.emerald600} accessibilityLabel={label} /></View>;
 }
 
 export function Section({ title, children, action }: { title: string; children: React.ReactNode; action?: React.ReactNode }) {
@@ -118,10 +118,10 @@ const styles = StyleSheet.create({
   content: { padding: space.lg, gap: space.lg, paddingBottom: 48 },
   card: { backgroundColor: colors.surface, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.line, ...shadow.soft },
   badge: { alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 3, borderRadius: radius.pill },
-  avatarFallback: { backgroundColor: colors.champagne100, alignItems: 'center', justifyContent: 'center' },
+  avatarFallback: { backgroundColor: colors.gold100, alignItems: 'center', justifyContent: 'center' },
   offline: { backgroundColor: colors.warningBg, paddingVertical: 6, paddingHorizontal: space.lg, alignItems: 'center' },
   empty: { alignItems: 'center', gap: space.sm, paddingVertical: 48, paddingHorizontal: space.xl, borderRadius: radius.lg, borderWidth: 1, borderStyle: 'dashed', borderColor: colors.lineStrong, backgroundColor: colors.surface },
-  emptyIcon: { width: 48, height: 48, borderRadius: 24, backgroundColor: colors.champagne100, alignItems: 'center', justifyContent: 'center', marginBottom: space.sm },
+  emptyIcon: { width: 48, height: 48, borderRadius: 24, backgroundColor: colors.gold100, alignItems: 'center', justifyContent: 'center', marginBottom: space.sm },
   error: { backgroundColor: colors.dangerBg, borderRadius: radius.md, padding: space.md, gap: 4 },
   notice: { borderRadius: radius.md, padding: space.md },
   loading: { padding: space.xxl, alignItems: 'center' },

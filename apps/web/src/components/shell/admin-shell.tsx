@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import type { MeResponse } from '@2k/shared';
 import { cn } from '@/lib/utils';
+import { BrandLogo } from './brand';
 import { NavIcon } from './icon';
 import { MeProvider } from './me-context';
 import { ADMIN_NAV } from './nav-config';
@@ -20,8 +21,9 @@ export function AdminShell({ me, children }: { me: MeResponse; children: React.R
       <div className="flex min-h-dvh bg-canvas">
         <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col border-r border-line bg-surface lg:flex">
           <div className="px-6 py-5">
-            <p className="font-serif text-2xl">2K <span className="text-ink-2">Admin</span></p>
-            <p className="mt-0.5 text-xs text-muted">{me.admin?.role.replace(/_/g, ' ')}</p>
+            <BrandLogo className="h-8" />
+            <p className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-gold-600">Admin console</p>
+            <p className="mt-0.5 text-xs capitalize text-muted">{me.admin?.role.replace(/_/g, ' ')}</p>
           </div>
           <nav aria-label="Admin" className="flex-1 space-y-6 overflow-y-auto px-3 pb-6">
             {ADMIN_NAV.map((group) => {

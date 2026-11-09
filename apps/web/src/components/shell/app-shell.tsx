@@ -34,7 +34,7 @@ function Shell({ children }: { children: React.ReactNode }) {
     <div className="min-h-dvh pb-20 md:pb-0">
       <header className="sticky top-0 z-40 border-b border-line/70 bg-canvas/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-6 px-4 sm:px-6">
-          <Brand href="/app" />
+          <Brand href="/app" logoClassName="h-10 sm:h-11" />
           <nav aria-label="Primary" className="hidden flex-1 items-center justify-center gap-1 md:flex">
             {primary.map((item) => (
               <Link key={item.href} href={item.href} aria-current={isActive(path, item.href) ? 'page' : undefined}
@@ -46,7 +46,7 @@ function Shell({ children }: { children: React.ReactNode }) {
           <div className="ml-auto flex items-center gap-1 md:ml-0">
             <Link href="/app/notifications" className="relative rounded-full p-2.5 text-ink-2 hover:bg-surface-2 hover:text-ink" aria-label={`Notifications${me.unreadNotifications ? `, ${me.unreadNotifications} unread` : ''}`}>
               <Bell className="h-5 w-5" />
-              {me.unreadNotifications > 0 && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-burgundy-600" />}
+              {me.unreadNotifications > 0 && <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-emerald-600" />}
             </Link>
             <DropdownMenu.Root>
               <DropdownMenu.Trigger className="rounded-full p-1 hover:bg-surface-2" aria-label="Account menu">
@@ -68,7 +68,7 @@ function Shell({ children }: { children: React.ReactNode }) {
                   ))}
                   {me.admin && (
                     <DropdownMenu.Item asChild>
-                      <Link href="/admin" className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-burgundy-700 outline-none data-[highlighted]:bg-burgundy-50"><Shield className="h-4 w-4" />Admin panel</Link>
+                      <Link href="/admin" className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-emerald-700 outline-none data-[highlighted]:bg-emerald-50"><Shield className="h-4 w-4" />Admin panel</Link>
                     </DropdownMenu.Item>
                   )}
                   <DropdownMenu.Separator className="my-1 h-px bg-line" />
@@ -88,7 +88,7 @@ function Shell({ children }: { children: React.ReactNode }) {
         <div className="mx-auto grid max-w-md grid-cols-5">
           {primary.slice(0, 5).map((item) => (
             <Link key={item.href} href={item.href} aria-current={isActive(path, item.href) ? 'page' : undefined}
-              className={cn('flex flex-col items-center gap-1 py-2.5 text-[0.68rem]', isActive(path, item.href) ? 'text-burgundy-600' : 'text-muted')}>
+              className={cn('flex flex-col items-center gap-1 py-2.5 text-[0.68rem]', isActive(path, item.href) ? 'text-emerald-600' : 'text-muted')}>
               <NavIcon name={item.icon} className="h-5 w-5" />{item.label}
             </Link>
           ))}

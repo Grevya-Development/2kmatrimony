@@ -1,0 +1,14 @@
+:root {
+  --2km-royal-emerald: #033B39;
+  --2km-emerald-ink: #062F2E;
+  --2km-emerald-glow: #205B5B;
+  --2km-emerald-depth: #012929;
+  --2km-heritage-gold: #CC9C44;
+  --2km-gold-rule: #C99839;
+  --2km-ivory: #FEFAF4;
+  --2km-pure-white: #FFFFFF;
+  --2km-gold-gradient: linear-gradient(135deg, #F3D184 0%, #D6A750 42%, #C18F38 78%, #A16E23 100%);
+  --2km-icon-gradient: linear-gradient(135deg, #205B5B 0%, #012929 100%);
+  --2km-font-display: 'Newsreader', Georgia, serif;
+  --2km-font-sans: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+}

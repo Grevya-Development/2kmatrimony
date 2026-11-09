@@ -18,7 +18,7 @@ export function ProfileCardView({ card, href, actions, className, reason }: { ca
       </Link>
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div>
-          <Link href={link} className="font-serif text-2xl leading-tight text-ink hover:text-burgundy-700">
+          <Link href={link} className="font-serif text-2xl leading-tight text-ink hover:text-emerald-700">
             {card.displayName}{card.age !== null && <span className="text-ink-2">, {card.age}</span>}
           </Link>
           <ul className="mt-2 space-y-1 text-sm text-ink-2">

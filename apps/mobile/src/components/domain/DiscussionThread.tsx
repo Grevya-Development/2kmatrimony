@@ -36,7 +36,7 @@ export function DiscussionThread({ ownerProfileId, targetProfileId }: { ownerPro
         ? <Text variant="small">No messages yet. Share your thoughts about this introduction.</Text>
         : (q.data ?? []).map((m) => (
           <View key={m.id} style={{ alignSelf: m.isMine ? 'flex-end' : 'flex-start', maxWidth: '88%', gap: 2 }}>
-            <View style={{ backgroundColor: m.isMine ? colors.burgundy600 : colors.surface2, borderRadius: radius.lg, padding: space.md }}>
+            <View style={{ backgroundColor: m.isMine ? colors.emerald600 : colors.surface2, borderRadius: radius.lg, padding: space.md }}>
               <Text style={{ color: m.isMine ? colors.white : colors.ink }}>{m.body}</Text>
             </View>
             <Text variant="small" style={{ textAlign: m.isMine ? 'right' : 'left' }}>{m.isMine ? 'You' : m.authorName}{m.isOwner && !m.isMine ? ' (profile owner)' : ''} · {relativeTime(m.createdAt)}</Text>

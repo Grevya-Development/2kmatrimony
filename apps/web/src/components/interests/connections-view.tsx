@@ -51,7 +51,7 @@ function ConnectionRow({ conn, onClosed }: { conn: ConnectionItem; onClosed: () 
           <p className="truncate text-sm text-muted">{conn.lastMessagePreview ?? 'Say hello when you’re ready.'}</p>
         </div>
       </Link>
-      {conn.unreadCount > 0 && <span className="rounded-full bg-burgundy-600 px-2 py-0.5 text-xs font-medium text-white" aria-label={`${conn.unreadCount} unread`}>{conn.unreadCount}</span>}
+      {conn.unreadCount > 0 && <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-xs font-medium text-white" aria-label={`${conn.unreadCount} unread`}>{conn.unreadCount}</span>}
       <div className="flex items-center gap-1">
         {conn.conversationId && <Button size="icon" variant="secondary" asChild className="h-9 w-9" aria-label={`Message ${p.displayName}`}><Link href={`/app/messages/${conn.conversationId}`}><MessageCircle /></Link></Button>}
         <DropdownMenu.Root>

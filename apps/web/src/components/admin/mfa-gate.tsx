@@ -45,7 +45,7 @@ export function AdminMfaGate() {
     <main id="main" className="flex min-h-dvh items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardContent className="space-y-6 p-8">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-burgundy-50 text-burgundy-600"><ShieldCheck className="h-6 w-6" /></div>
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600"><ShieldCheck className="h-6 w-6" /></div>
           <div>
             <h1 className="font-serif text-3xl">Verify it’s you</h1>
             <p className="mt-2 text-sm text-muted">The admin panel requires multi-factor authentication. {qr ? 'Scan this code with an authenticator app, then enter the 6-digit code.' : 'Enter the 6-digit code from your authenticator app.'}</p>

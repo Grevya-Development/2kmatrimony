@@ -10,7 +10,7 @@ import { ProfileCardView } from '@/components/domain/ProfileCardView';
 import { PrimaryAction } from '@/components/domain/ProfileActions';
 
 type Dir = 'received' | 'sent';
-const TONE = { pending: 'champagne', accepted: 'success', declined: 'neutral', withdrawn: 'neutral', expired: 'neutral' } as const;
+const TONE = { pending: 'gold', accepted: 'success', declined: 'neutral', withdrawn: 'neutral', expired: 'neutral' } as const;
 
 export default function Interests() {
   const [dir, setDir] = React.useState<Dir>('received');

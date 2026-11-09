@@ -49,7 +49,7 @@ export function UsersPage() {
                       <span className="text-muted">{u.profile.completion}%</span>
                     </span>
                   ) : <span className="text-xs text-muted">No profile</span> },
-                  { key: 'plan', label: 'Plan', render: (u) => <Badge tone={u.plan === 'free' ? 'outline' : 'champagne'} className="capitalize">{u.plan}</Badge> },
+                  { key: 'plan', label: 'Plan', render: (u) => <Badge tone={u.plan === 'free' ? 'outline' : 'gold'} className="capitalize">{u.plan}</Badge> },
                   { key: 'status', label: 'Status', render: (u) => <StatusBadge status={u.status} /> },
                   { key: 'createdAt', label: 'Joined', render: (u) => fmtDate(u.createdAt), hideOnMobile: true },
                   { key: 'lastActiveAt', label: 'Last active', render: (u) => fmtDateTime(u.lastActiveAt), hideOnMobile: true },
@@ -130,7 +130,7 @@ export function UserDetailPage({ id }: { id: string }) {
                     ...(d.user.deletion_requested_at ? [['Deletion requested', fmtDateTime(d.user.deletion_requested_at)] as [string, React.ReactNode]] : []),
                   ]} />
                 </Panel>
-                <Panel title="Profile" actions={d.profile && can('profiles.read') ? <Link className="text-sm text-burgundy-600 hover:underline" href={`/admin/profiles/${d.profile.id}`}>Open profile</Link> : undefined}>
+                <Panel title="Profile" actions={d.profile && can('profiles.read') ? <Link className="text-sm text-emerald-600 hover:underline" href={`/admin/profiles/${d.profile.id}`}>Open profile</Link> : undefined}>
                   {d.profile ? (
                     <KeyValues items={[
                       ['Code', <span key="c" className="font-mono">{d.profile.profile_code}</span>], ['Created for', human(d.profile.created_for)], ['City', d.profile.current_city],

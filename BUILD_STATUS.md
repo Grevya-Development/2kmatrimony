@@ -19,6 +19,13 @@ Legend: ✅ done & tested · ⚙️ built, needs credentials or provider setup �
 
 Commands: `npm test` · `npm run test:integration -w @2k/web` · `npm run build && npm run test:e2e -w @2k/web` · `PERF=1 npx vitest run --config vitest.integration.config.ts tests/perf` (after seeding `tests/perf/seed.sql`).
 
+## Brand
+✅ **2K Matrimony — "Tradition Meets AI"** (Brand DNA, Emerald Edition) applied across web and mobile:
+supplied logo artwork (horizontal, stacked, reverse, rings mark), favicon / apple icon / PWA manifest,
+Expo app icon + adaptive icon + splash, Royal Emerald / Heritage Gold / Ivory palette, Newsreader +
+Montserrat typography, branded emails and invoices. Source kit: `2K_Matrimony_Brand_DNA_Emerald/`.
+Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundles.
+
 ## Milestones
 | # | Milestone | Status | Notes / evidence |
 |---|---|---|---|

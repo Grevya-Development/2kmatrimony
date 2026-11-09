@@ -250,7 +250,7 @@ export function Thread({ conversationId }: { conversationId: string }) {
                   {!m.isMine && (
                     <button type="button" onClick={() => setReportMsg(m.id)} className="order-2 rounded-full p-1 text-xs text-muted opacity-0 hover:text-danger focus:opacity-100 group-hover:opacity-100" aria-label="Report this message"><AlertCircle className="h-3.5 w-3.5" /></button>
                   )}
-                  <div className={cn('max-w-[78%] rounded-2xl px-4 py-2.5 text-[0.95rem] leading-relaxed shadow-soft', m.isMine ? 'rounded-br-md bg-burgundy-600 text-white' : 'rounded-bl-md bg-surface text-ink', m.failed && 'opacity-60')}>
+                  <div className={cn('max-w-[78%] rounded-2xl px-4 py-2.5 text-[0.95rem] leading-relaxed shadow-soft', m.isMine ? 'rounded-br-md bg-emerald-600 text-white' : 'rounded-bl-md bg-surface text-ink', m.failed && 'opacity-60')}>
                     {m.kind === 'image' && (m.mediaUrl
                       // eslint-disable-next-line @next/next/no-img-element
                       ? <a href={m.mediaUrl} target="_blank" rel="noreferrer"><img src={m.mediaUrl} alt="Shared photo" className="mb-1 max-h-72 rounded-xl object-cover" /></a>
@@ -290,7 +290,7 @@ export function Thread({ conversationId }: { conversationId: string }) {
             onChange={(e) => { setDraft(e.target.value); sendTyping(); }}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
             placeholder={`Message ${other.displayName}`}
-            className="max-h-36 min-h-11 flex-1 resize-none rounded-2xl border border-line bg-canvas px-4 py-2.5 text-[0.95rem] focus:border-burgundy-500 focus:outline-none focus:ring-4 focus:ring-burgundy-100"
+            className="max-h-36 min-h-11 flex-1 resize-none rounded-2xl border border-line bg-canvas px-4 py-2.5 text-[0.95rem] focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-100"
           />
           <Button type="submit" size="icon" className="h-11 w-11 shrink-0" disabled={!draft.trim()} aria-label="Send message"><SendHorizontal /></Button>
         </form>

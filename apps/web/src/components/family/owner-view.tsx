@@ -117,7 +117,7 @@ export function FamilyOwnerView() {
           </Dialog>
         </div>
         {newLink && (
-          <div className="space-y-2 rounded-2xl border border-champagne-200 bg-champagne-50 p-4">
+          <div className="space-y-2 rounded-2xl border border-gold-200 bg-gold-50 p-4">
             <p className="flex items-center gap-2 text-sm font-medium"><Link2 className="h-4 w-4" />{newLink.delivered ? 'Invitation sent. You can also share this link directly:' : 'Share this private link with them (valid for 7 days):'}</p>
             <CopyLink link={newLink.link} />
           </div>
@@ -154,7 +154,7 @@ export function FamilyOwnerView() {
             {data.suggestions.map((s) => (
               <div key={s.id} className="space-y-3">
                 <p className="text-sm text-ink-2"><span className="font-medium text-ink">{s.suggestedBy.name ?? relLabel(s.suggestedBy.relation)}</span> suggested · {relativeTime(s.createdAt)}</p>
-                {s.note && <p className="rounded-xl bg-champagne-50 px-3 py-2 text-sm italic text-ink-2">“{s.note}”</p>}
+                {s.note && <p className="rounded-xl bg-gold-50 px-3 py-2 text-sm italic text-ink-2">“{s.note}”</p>}
                 {s.profile ? <ProfileCardView card={s.profile} href={`/app/profile/${s.profile.id}`} /> : <p className="text-sm text-muted">This profile is no longer available.</p>}
                 <div className="flex flex-wrap gap-2">
                   {s.status === 'pending' && <Button size="sm" onClick={() => decide(s, 'considering')}>I’ll consider</Button>}

@@ -101,7 +101,7 @@ function Roles() {
                           <th scope="row" className="sticky left-0 bg-surface px-5 py-2 text-left font-normal"><span className="font-mono text-xs text-ink">{p.key}</span><p className="text-xs text-muted">{p.description}</p></th>
                           {editable.map((r) => (
                             <td key={r.id} className="px-2 py-2 text-center">
-                              <input type="checkbox" className="h-4 w-4 accent-burgundy-600" aria-label={`${r.name}: ${p.key}`} checked={perms(r).includes(p.key)}
+                              <input type="checkbox" className="h-4 w-4 accent-emerald-600" aria-label={`${r.name}: ${p.key}`} checked={perms(r).includes(p.key)}
                                 onChange={(e) => setDraft({ ...draft, [r.id]: e.target.checked ? [...perms(r), p.key] : perms(r).filter((x) => x !== p.key) })} />
                             </td>
                           ))}

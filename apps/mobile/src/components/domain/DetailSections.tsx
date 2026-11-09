@@ -41,7 +41,7 @@ export function DetailSections({ d }: { d: ProfileDetail }) {
       {(d.basics.coreValues.length > 0 || d.basics.personalityTraits.length > 0) && (
         <Block title="Values & personality">
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
-            {d.basics.coreValues.map((v) => <Badge key={v} label={v} tone="burgundy" />)}
+            {d.basics.coreValues.map((v) => <Badge key={v} label={v} tone="emerald" />)}
             {d.basics.personalityTraits.map((v) => <Badge key={v} label={v} tone="neutral" />)}
           </View>
         </Block>
@@ -81,7 +81,7 @@ export function DetailSections({ d }: { d: ProfileDetail }) {
           <Row label="Travel" value={labelOf(TRAVEL_OPTIONS, d.lifestyle.travel)} />
           {[...d.lifestyle.interests, ...d.lifestyle.hobbies].length > 0 && (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
-              {[...new Set([...d.lifestyle.interests, ...d.lifestyle.hobbies])].map((i) => <Badge key={i} label={i} tone={d.sharedInterests.includes(i) ? 'champagne' : 'neutral'} />)}
+              {[...new Set([...d.lifestyle.interests, ...d.lifestyle.hobbies])].map((i) => <Badge key={i} label={i} tone={d.sharedInterests.includes(i) ? 'gold' : 'neutral'} />)}
             </View>
           )}
         </Block>

@@ -54,7 +54,7 @@ export default function ForYou() {
         keyExtractor={(r) => r.id}
         contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 100 }}
         ListHeaderComponent={header}
-        refreshControl={<RefreshControl refreshing={recs.isRefetching} onRefresh={() => void recs.refetch()} tintColor={colors.burgundy600} />}
+        refreshControl={<RefreshControl refreshing={recs.isRefetching} onRefresh={() => void recs.refetch()} tintColor={colors.emerald600} />}
         ListEmptyComponent={
           recs.isLoading ? <View style={{ gap: space.md }}><Skeleton height={360} /><Skeleton height={20} width="60%" /></View>
           : recs.error ? <ErrorState message={errorMessage(recs.error)} onRetry={() => recs.refetch()} />
@@ -78,7 +78,7 @@ export default function ForYou() {
       {undo && (
         <View style={{ position: 'absolute', left: space.lg, right: space.lg, bottom: space.lg, backgroundColor: colors.ink, borderRadius: 16, padding: space.md, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }} accessibilityLiveRegion="polite">
           <Text style={{ color: colors.canvas }}>Passed on {undo.profile.displayName}</Text>
-          <Button title="Undo" size="sm" variant="champagne" onPress={undoPass} />
+          <Button title="Undo" size="sm" variant="gold" onPress={undoPass} />
         </View>
       )}
       {safety && <SafetySheet visible onClose={() => setSafety(null)} profileId={safety.profile.id} name={safety.profile.displayName} onBlocked={() => recs.refetch()} />}

@@ -7,7 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "backgroundColor": "#faf7f2",
+    "backgroundColor": "#fefaf4",
     "ios": {
       "bundleIdentifier": "com.twokmatrimony.app",
       "supportsTablet": false,
@@ -26,7 +26,8 @@
       "package": "com.twokmatrimony.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundColor": "#faf7f2"
+        "monochromeImage": "./assets/android-icon-monochrome.png",
+        "backgroundColor": "#033b39"
       },
       "permissions": [
         "CAMERA",
@@ -62,15 +63,16 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#faf7f2",
+          "backgroundColor": "#033b39",
           "image": "./assets/splash-icon.png",
-          "imageWidth": 160
+          "imageWidth": 180
         }
       ],
       [
         "expo-notifications",
         {
-          "color": "#7a2e3c"
+          "color": "#033b39",
+          "icon": "./assets/android-icon-monochrome.png"
         }
       ],
       [
@@ -94,6 +96,9 @@
       "apiUrl": "http://localhost:3000",
       "supabaseUrl": "http://127.0.0.1:56321",
       "supabaseAnonKey": ""
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     }
   }
 }

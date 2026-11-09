@@ -61,7 +61,7 @@ export function Journal({ connectionId }: { connectionId: string }) {
       <ol className="relative space-y-4 border-l border-line pl-6">
         {shown.map((en) => (
           <li key={en.id} className="relative">
-            <span className={cn('absolute -left-[1.85rem] top-1.5 h-3 w-3 rounded-full border-2 border-surface', en.resolved ? 'bg-success' : 'bg-champagne-400')} aria-hidden />
+            <span className={cn('absolute -left-[1.85rem] top-1.5 h-3 w-3 rounded-full border-2 border-surface', en.resolved ? 'bg-success' : 'bg-gold-400')} aria-hidden />
             <div className="flex items-start justify-between gap-3 rounded-xl bg-surface p-4 shadow-soft">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted">{JOURNAL_KIND_LABELS[en.kind]} · {relativeTime(en.createdAt)}</p>

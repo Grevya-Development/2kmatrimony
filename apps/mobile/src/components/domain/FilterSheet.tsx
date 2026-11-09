@@ -45,7 +45,7 @@ export function FilterSheet({ visible, onClose, initial, onApply, advancedAllowe
       <Divider />
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
         <Text variant="heading">Advanced</Text>
-        {!advancedAllowed && <Badge label="Plus & above" tone="champagne" />}
+        {!advancedAllowed && <Badge label="Plus & above" tone="gold" />}
       </View>
       <View pointerEvents={advancedAllowed ? 'auto' : 'none'} style={{ gap: space.md, opacity: advancedAllowed ? 1 : 0.45 }} accessibilityState={{ disabled: !advancedAllowed }}>
         <Chip label="Verified profiles only" selected={!!f.verifiedOnly} onPress={() => set('verifiedOnly', !f.verifiedOnly)} />

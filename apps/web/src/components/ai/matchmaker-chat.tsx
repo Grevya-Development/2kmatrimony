@@ -211,7 +211,7 @@ export function MatchmakerChat() {
               <div className={cn('max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-[0.95rem] leading-relaxed', m.role === 'user' ? 'bg-ink text-canvas' : 'bg-surface-2 text-ink')}>{m.content}</div>
               {m.structured?.notice && <Notice className="max-w-[85%]">{m.structured.notice}</Notice>}
               {m.structured?.clarifyingQuestions.length ? (
-                <div className="flex max-w-[85%] flex-wrap gap-2">{m.structured.clarifyingQuestions.map((q) => <span key={q} className="rounded-full bg-champagne-50 px-3 py-1 text-xs text-champagne-600">{q}</span>)}</div>
+                <div className="flex max-w-[85%] flex-wrap gap-2">{m.structured.clarifyingQuestions.map((q) => <span key={q} className="rounded-full bg-gold-50 px-3 py-1 text-xs text-gold-600">{q}</span>)}</div>
               ) : null}
               {m.results.length > 0 && (
                 <div className="grid w-full gap-4 sm:grid-cols-2 xl:grid-cols-3">{m.results.map((c) => <ProfileCardView key={c.id} card={c} href={`/app/profile/${c.id}`} />)}</div>
@@ -247,7 +247,7 @@ export function MatchmakerChat() {
             <textarea id="mm-input" value={input} onChange={(e) => setInput(e.target.value)} rows={1} maxLength={2000}
               onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send(input); } }}
               placeholder="Describe who you’d like to meet…" disabled={needsConsent}
-              className="max-h-40 min-h-12 flex-1 resize-none rounded-xl border border-line bg-canvas px-4 py-3 text-[0.95rem] placeholder:text-muted/70 focus:border-burgundy-500 focus:outline-none focus:ring-4 focus:ring-burgundy-100" />
+              className="max-h-40 min-h-12 flex-1 resize-none rounded-xl border border-line bg-canvas px-4 py-3 text-[0.95rem] placeholder:text-muted/70 focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-100" />
             {status?.voiceInput && speech.supported && (
               <Button type="button" variant="secondary" size="icon" onClick={speech.toggle} aria-pressed={speech.listening} aria-label={speech.listening ? 'Stop voice input' : 'Speak your message'}>
                 {speech.listening ? <MicOff /> : <Mic />}

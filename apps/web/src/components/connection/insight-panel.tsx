@@ -13,7 +13,7 @@ type Kind = 'gap_analysis' | 'before_you_meet';
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return <div className="space-y-2"><h3 className="text-sm font-semibold uppercase tracking-wider text-muted">{title}</h3>{children}</div>;
 }
-const List = ({ items }: { items: string[] }) => <ul className="space-y-1.5 text-[0.95rem] text-ink-2">{items.map((i) => <li key={i} className="flex gap-2"><span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-champagne-400" aria-hidden />{i}</li>)}</ul>;
+const List = ({ items }: { items: string[] }) => <ul className="space-y-1.5 text-[0.95rem] text-ink-2">{items.map((i) => <li key={i} className="flex gap-2"><span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-400" aria-hidden />{i}</li>)}</ul>;
 
 function GapView({ c }: { c: GapAnalysis }) {
   return (
@@ -46,11 +46,11 @@ function BymView({ c }: { c: BeforeYouMeetBriefing }) {
     <div className="space-y-8">
       <div className="grid gap-6 sm:grid-cols-2">
         <Section title="Shared interests">{c.sharedInterests.length ? <div className="flex flex-wrap gap-2">{c.sharedInterests.map((i) => <Badge key={i} tone="outline">{i}</Badge>)}</div> : <p className="text-sm text-muted">Discover these together — it’s a great first topic.</p>}</Section>
-        <Section title="Shared values">{c.sharedValues.length ? <div className="flex flex-wrap gap-2">{c.sharedValues.map((i) => <Badge key={i} tone="champagne">{i}</Badge>)}</div> : <p className="text-sm text-muted">Nothing overlapping yet in what you’ve shared.</p>}</Section>
+        <Section title="Shared values">{c.sharedValues.length ? <div className="flex flex-wrap gap-2">{c.sharedValues.map((i) => <Badge key={i} tone="gold">{i}</Badge>)}</div> : <p className="text-sm text-muted">Nothing overlapping yet in what you’ve shared.</p>}</Section>
       </div>
       {c.compatibilityAreas.length > 0 && <Section title="Where you align"><div className="grid gap-3 sm:grid-cols-2">{c.compatibilityAreas.map((a) => <div key={a.area} className="rounded-xl bg-success-bg/60 p-4"><p className="font-medium">{a.area}</p><p className="text-sm text-ink-2">{a.detail}</p></div>)}</div></Section>}
       {c.potentialDifferences.length > 0 && <Section title="Gently worth exploring"><div className="space-y-2">{c.potentialDifferences.map((a) => <div key={a.area} className="rounded-xl border border-line p-4"><p className="font-medium">{a.area}</p><p className="text-sm text-ink-2">{a.detail}</p></div>)}</div></Section>}
-      <Section title="Conversation starters"><ol className="space-y-2">{c.conversationStarters.map((s, i) => <li key={s} className="flex gap-3 rounded-xl border border-line px-4 py-2.5 text-[0.95rem]"><span className="font-serif text-lg text-champagne-600">{i + 1}</span>{s}</li>)}</ol></Section>
+      <Section title="Conversation starters"><ol className="space-y-2">{c.conversationStarters.map((s, i) => <li key={s} className="flex gap-3 rounded-xl border border-line px-4 py-2.5 text-[0.95rem]"><span className="font-serif text-lg text-gold-600">{i + 1}</span>{s}</li>)}</ol></Section>
       <Section title="Before progressing, discuss"><List items={c.questionsToDiscuss} /></Section>
       <Section title="First-meeting ideas"><div className="grid gap-3 sm:grid-cols-3">{c.firstMeetingIdeas.map((m) => <div key={m.idea} className="rounded-xl bg-surface-2 p-4"><p className="font-medium">{m.idea}</p><p className="mt-1 text-sm text-ink-2">{m.why}</p></div>)}</div></Section>
       <p className="rounded-xl bg-info-bg px-4 py-3 text-sm text-info">{c.note}</p>
@@ -86,7 +86,7 @@ export function InsightPanel({ connectionId, kind, entitled, active }: { connect
   if (env === undefined) return <div className="space-y-3"><Skeleton className="h-6 w-48" /><Skeleton className="h-32 w-full" /></div>;
   const action = entitled
     ? active ? <Button onClick={generate} loading={busy}>{env ? 'Refresh' : `Prepare ${label}`}</Button> : null
-    : <Button asChild variant="champagne"><Link href="/app/billing">See plans that include this</Link></Button>;
+    : <Button asChild variant="gold"><Link href="/app/billing">See plans that include this</Link></Button>;
 
   return (
     <div className="space-y-6">
@@ -102,7 +102,7 @@ export function InsightPanel({ connectionId, kind, entitled, active }: { connect
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-sm text-muted">
               <span>Prepared {relativeTime(env.createdAt)}</span>
-              {env.generator === 'ai' ? <Badge tone="champagne"><Sparkles aria-hidden />AI-written</Badge> : <Badge>From your shared answers</Badge>}
+              {env.generator === 'ai' ? <Badge tone="gold"><Sparkles aria-hidden />AI-written</Badge> : <Badge>From your shared answers</Badge>}
             </div>
             {action}
           </div>

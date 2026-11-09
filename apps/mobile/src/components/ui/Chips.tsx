@@ -48,6 +48,6 @@ export function ChipGroup<T extends string>({ options, value, onChange, multiple
 const styles = StyleSheet.create({
   group: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   chip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: radius.pill, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, overflow: 'hidden' },
-  selected: { backgroundColor: colors.burgundy600, borderColor: colors.burgundy600 },
+  selected: { backgroundColor: colors.emerald600, borderColor: colors.emerald600 },
   text: { fontFamily: fonts.body, fontSize: 14, color: colors.ink2 },
 });

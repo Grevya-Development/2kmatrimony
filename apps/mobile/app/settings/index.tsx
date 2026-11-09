@@ -49,7 +49,7 @@ export default function Settings() {
             <Text variant="label" style={{ color: colors.ink }}>Biometric unlock</Text>
             <Text variant="small">{bioAvailable ? 'Require Face ID / fingerprint when opening the app.' : 'Not available on this device.'}</Text>
           </View>
-          <Switch accessibilityLabel="Biometric unlock" value={bio} disabled={!bioAvailable} onValueChange={toggleBio} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+          <Switch accessibilityLabel="Biometric unlock" value={bio} disabled={!bioAvailable} onValueChange={toggleBio} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
         </Card>
       </Section>
       {optional.length > 0 && (
@@ -58,13 +58,13 @@ export default function Settings() {
             {optional.map((c) => (
               <View key={c.consentType} style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
                 <Text style={{ flex: 1 }}>{label(c.consentType)}</Text>
-                <Switch accessibilityLabel={label(c.consentType)} value={c.granted} onValueChange={(v) => toggleConsent(c, v)} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+                <Switch accessibilityLabel={label(c.consentType)} value={c.granted} onValueChange={(v) => toggleConsent(c, v)} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
               </View>
             ))}
           </Card>
         </Section>
       )}
-      <Pressable onPress={() => void signOut()} accessibilityRole="button" style={{ paddingVertical: space.md }}><Text style={{ color: colors.burgundy600 }}>Sign out</Text></Pressable>
+      <Pressable onPress={() => void signOut()} accessibilityRole="button" style={{ paddingVertical: space.md }}><Text style={{ color: colors.emerald600 }}>Sign out</Text></Pressable>
     </Screen>
   );
 }

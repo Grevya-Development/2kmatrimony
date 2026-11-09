@@ -109,7 +109,7 @@ export default function Onboarding() {
           </View>
         </View>
         <View style={{ height: 4, borderRadius: 2, backgroundColor: colors.line }} accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: ORDER.length, now: idx + 1 }}>
-          <View style={{ height: 4, borderRadius: 2, width: `${((idx + 1) / ORDER.length) * 100}%`, backgroundColor: colors.burgundy500 }} />
+          <View style={{ height: 4, borderRadius: 2, width: `${((idx + 1) / ORDER.length) * 100}%`, backgroundColor: colors.emerald500 }} />
         </View>
         <Text variant="hero" accessibilityRole="header">{title}</Text>
         <Text variant="bodyMuted">{copy(subtitle)}</Text>
@@ -169,12 +169,12 @@ function StartStep({ existing, onDone }: { existing: boolean; onDone: () => Prom
         </>
       )}
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
-        <Switch accessibilityLabel="Accept terms and privacy policy" value={terms} onValueChange={setTerms} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+        <Switch accessibilityLabel="Accept terms and privacy policy" value={terms} onValueChange={setTerms} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
         <Text variant="body" style={{ flex: 1 }}>I agree to the Terms of Service and Privacy Policy, and confirm I am 18 or older.</Text>
       </View>
       {!existing && (
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
-          <Switch accessibilityLabel="Allow AI matchmaking features" value={ai} onValueChange={setAi} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+          <Switch accessibilityLabel="Allow AI matchmaking features" value={ai} onValueChange={setAi} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
           <Text variant="body" style={{ flex: 1 }}>Use AI to explain matches and help me search. AI never reads my private messages. (Optional)</Text>
         </View>
       )}

@@ -155,7 +155,7 @@ function DoneStep({ completion, onJump, onFinish }: { completion: CompletionRepo
           <p className="flex items-center gap-2 font-serif text-2xl text-warning"><CircleAlert className="h-6 w-6" />Almost there</p>
           <p className="mt-2 text-sm text-ink-2">Complete these to become visible to members:</p>
           <ul className="mt-3 space-y-2">{required.map((m) => (
-            <li key={m.section}><button className="text-sm font-medium text-burgundy-700 underline underline-offset-4" onClick={() => onJump(STEP_FOR_SECTION[m.section] ?? 'basics')}>{m.label}</button></li>
+            <li key={m.section}><button className="text-sm font-medium text-emerald-700 underline underline-offset-4" onClick={() => onJump(STEP_FOR_SECTION[m.section] ?? 'basics')}>{m.label}</button></li>
           ))}</ul>
         </div>
       )}

@@ -33,7 +33,7 @@ export default function NotificationPrefs() {
             return (
               <View key={ch} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Text>{ch === 'sms' ? 'SMS' : ch === 'whatsapp' ? 'WhatsApp' : ch.charAt(0).toUpperCase() + ch.slice(1)}</Text>
-                <Switch accessibilityLabel={`${CAT_LABEL[cat]} via ${ch}`} value={p.enabled} disabled={p.locked} onValueChange={(v) => toggle(p, v)} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+                <Switch accessibilityLabel={`${CAT_LABEL[cat]} via ${ch}`} value={p.enabled} disabled={p.locked} onValueChange={(v) => toggle(p, v)} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
               </View>
             );
           })}

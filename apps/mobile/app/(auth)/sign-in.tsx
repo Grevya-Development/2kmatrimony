@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import * as Linking from 'expo-linking';
 import * as WebBrowser from 'expo-web-browser';
@@ -61,7 +62,7 @@ export default function SignIn() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <Screen edges={['top', 'bottom']} contentStyle={{ paddingTop: space.xxl }}>
         <View style={{ gap: 6 }}>
-          <Text variant="eyebrow">2K Matrimony</Text>
+          <BrandLogo variant="stacked" height={96} style={{ alignSelf: 'flex-start', marginBottom: 12 }} />
           <Text variant="hero" accessibilityRole="header">{step === 'code' ? 'Enter your code' : 'More than a match.'}</Text>
           <Text variant="bodyMuted">{step === 'code' ? `Sent to ${method === 'phone' ? e164() : email}.` : 'A meaningful beginning. Sign in or create your account.'}</Text>
         </View>

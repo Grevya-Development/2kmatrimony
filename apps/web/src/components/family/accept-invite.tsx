@@ -27,7 +27,7 @@ export function AcceptInvite({ token, signedIn }: { token: string; signedIn: boo
   return (
     <Card className="mx-auto w-full max-w-md">
       <CardContent className="space-y-6 p-8">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-champagne-100 text-champagne-600"><HeartHandshake className="h-6 w-6" /></div>
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-100 text-gold-600"><HeartHandshake className="h-6 w-6" /></div>
         <div>
           <h1 className="font-serif text-3xl">You’ve been invited to help</h1>
           <p className="mt-2 text-sm text-muted">A family member would like your help with their matrimony search. You’ll only be able to do what they allow, and they stay in control of every decision.</p>

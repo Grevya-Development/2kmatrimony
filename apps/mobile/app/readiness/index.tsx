@@ -28,7 +28,7 @@ export default function Readiness() {
                 <Pressable key={t} onPress={() => router.push(`/readiness/${t}` as Href)} accessibilityRole="link" android_ripple={{ color: colors.line }}
                   style={{ flexDirection: 'row', alignItems: 'center', gap: space.md, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: colors.line }}>
                   <Text style={{ flex: 1 }}>{READINESS_TOPIC_LABELS[t]}</Text>
-                  {has && <Badge label="Notes" tone="champagne" />}
+                  {has && <Badge label="Notes" tone="gold" />}
                   {note?.exploredAt && <Badge label="Explored" tone="success" />}
                   <Icon name="chevron-right" size={18} color={colors.muted} />
                 </Pressable>

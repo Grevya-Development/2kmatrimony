@@ -117,7 +117,7 @@ export default function Matchmaker() {
         }
         renderItem={({ item }) => (
           <View style={{ alignSelf: item.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '88%', gap: 6 }}>
-            <View style={{ backgroundColor: item.role === 'user' ? colors.burgundy600 : colors.surface, borderRadius: radius.lg, padding: space.md, borderWidth: item.role === 'user' ? 0 : 1, borderColor: colors.line }}>
+            <View style={{ backgroundColor: item.role === 'user' ? colors.emerald600 : colors.surface, borderRadius: radius.lg, padding: space.md, borderWidth: item.role === 'user' ? 0 : 1, borderColor: colors.line }}>
               <Text style={{ color: item.role === 'user' ? colors.white : colors.ink }}>{item.pending ? 'Thinking…' : item.content}</Text>
             </View>
             {item.structured?.clarifyingQuestions?.map((q) => <Chip key={q} label={q} accessibilityRole="button" onPress={() => setInput(q.endsWith('?') ? '' : q)} />)}
@@ -153,7 +153,7 @@ export default function Matchmaker() {
           maxLength={2000}
           style={{ flex: 1, maxHeight: 120, minHeight: 44, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.line, paddingHorizontal: 14, paddingVertical: 10, fontFamily: fonts.body, fontSize: 15, color: colors.ink, backgroundColor: colors.canvas }}
         />
-        <Pressable onPress={() => send(input)} disabled={!input.trim() || busy} accessibilityRole="button" accessibilityLabel="Send" style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: colors.burgundy600, alignItems: 'center', justifyContent: 'center', opacity: !input.trim() || busy ? 0.5 : 1 }}>
+        <Pressable onPress={() => send(input)} disabled={!input.trim() || busy} accessibilityRole="button" accessibilityLabel="Send" style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: colors.emerald600, alignItems: 'center', justifyContent: 'center', opacity: !input.trim() || busy ? 0.5 : 1 }}>
           <Icon name="send" color={colors.white} size={18} />
         </Pressable>
       </View>

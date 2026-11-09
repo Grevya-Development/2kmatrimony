@@ -24,7 +24,7 @@ export function EducationForm({ initial, onSubmit, submitLabel, onSkip }: FormPr
           <TextField label="Institution" optional value={e.institution ?? ''} onChangeText={(t) => upd(i, { institution: t || null })} />
           <TextField label="Graduation year" optional keyboardType="number-pad" maxLength={4} value={e.graduationYear?.toString() ?? ''} onChangeText={(t) => upd(i, { graduationYear: toNum(t) })} />
           <View style={{ flexDirection: 'row', gap: 8 }}>
-            <Button title={e.isHighest ? 'Highest qualification' : 'Mark as highest'} size="sm" variant={e.isHighest ? 'champagne' : 'secondary'} onPress={() => setItems((p) => p.map((x, j) => ({ ...x, isHighest: j === i })))} />
+            <Button title={e.isHighest ? 'Highest qualification' : 'Mark as highest'} size="sm" variant={e.isHighest ? 'gold' : 'secondary'} onPress={() => setItems((p) => p.map((x, j) => ({ ...x, isHighest: j === i })))} />
             {items.length > 1 && <Button title="Remove" size="sm" variant="ghost" onPress={() => setItems((p) => p.filter((_, j) => j !== i))} />}
           </View>
         </Card>

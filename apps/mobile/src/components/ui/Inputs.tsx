@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   labelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
   box: { flexDirection: 'row', alignItems: 'center', minHeight: 50, borderRadius: radius.md, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surface, paddingHorizontal: 14 },
   multi: { minHeight: 110, alignItems: 'flex-start' },
-  focused: { borderColor: colors.burgundy500 },
+  focused: { borderColor: colors.emerald500 },
   errorBox: { borderColor: colors.danger },
   prefix: { color: colors.ink2, marginRight: 8, fontFamily: fonts.medium },
   input: { flex: 1, fontFamily: fonts.body, fontSize: 15, color: colors.ink, paddingVertical: 10 },

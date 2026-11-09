@@ -30,7 +30,7 @@ export function DnaScaleInput({ id, left, right, value, onChange, selfLabel = 'W
         <ChipGroup label={partnerLabel} options={[{ value: 'similar', label: 'Similar to me' }, { value: 'specific', label: 'Somewhere specific' }]}
           value={[specific ? 'specific' : 'similar']} onChange={([x]) => onChange({ ...value, partnerTarget: x === 'specific' ? value.partnerTarget ?? value.selfScore : null })} />
         {specific && (
-          <div className="space-y-2 rounded-xl bg-champagne-50 p-4">
+          <div className="space-y-2 rounded-xl bg-gold-50 p-4">
             <Slider min={0} max={100} step={1} value={[value.partnerTarget ?? 50]} onValueChange={([s]) => onChange({ ...value, partnerTarget: s ?? 50 })} thumbLabels={['Partner position']} />
             <div className="flex justify-between gap-6 text-xs text-muted"><span>{left}</span><span className="text-right">{right}</span></div>
           </div>

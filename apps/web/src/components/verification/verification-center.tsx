@@ -61,7 +61,7 @@ export function VerificationCenter() {
             <li key={it.kind}>
               <Card className="h-full"><CardContent className="flex h-full flex-col gap-3">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-full bg-champagne-100 text-champagne-600 [&_svg]:size-5">{ICONS[it.kind]}</span>
+                  <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-full bg-gold-100 text-gold-600 [&_svg]:size-5">{ICONS[it.kind]}</span>
                     <h2 className="font-serif text-xl">{VERIFICATION_KIND_LABELS[it.kind]}</h2></div>
                   <StatusBadge item={it} />
                 </div>

@@ -74,7 +74,7 @@ export function VisionBoard({ connectionId, otherName, active }: { connectionId:
             <div key={cat} className="rounded-2xl border border-line bg-surface p-4">
               <h3 className="mb-3 font-serif text-xl">{VISION_CATEGORY_LABELS[cat]}</h3>
               <ul className="space-y-2">{list.map((it) => (
-                <li key={it.id} className={cn('flex items-start gap-3 rounded-xl p-3 text-sm', it.isMine ? 'bg-surface-2' : 'bg-champagne-50')}>
+                <li key={it.id} className={cn('flex items-start gap-3 rounded-xl p-3 text-sm', it.isMine ? 'bg-surface-2' : 'bg-gold-50')}>
                   <p className="flex-1 text-ink">{it.content}<span className="mt-1 block text-xs text-muted">{it.isMine ? (it.isShared ? 'You · shared' : 'You · private') : otherName}</span></p>
                   {it.isMine && (
                     <div className="flex shrink-0 gap-1">
@@ -91,14 +91,14 @@ export function VisionBoard({ connectionId, otherName, active }: { connectionId:
       {items.length === 0 && <p className="text-center text-sm text-muted">Nothing here yet. Start with one hope for the next few years.</p>}
       <div className="rounded-2xl border border-line p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h3 className="flex items-center gap-2 font-serif text-xl"><Sparkles className="h-4 w-4 text-champagne-600" aria-hidden />Common themes</h3>
+          <h3 className="flex items-center gap-2 font-serif text-xl"><Sparkles className="h-4 w-4 text-gold-600" aria-hidden />Common themes</h3>
           {active && <Button size="sm" variant="secondary" onClick={findThemes} loading={busy}>{themes ? 'Refresh themes' : 'Find common themes'}</Button>}
         </div>
         {themes ? (
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div><p className="mb-2 text-sm font-semibold">Shared hopes</p>{themes.content.commonThemes.length ? <ul className="space-y-1 text-sm text-ink-2">{themes.content.commonThemes.map((t) => <li key={t}>{t}</li>)}</ul> : <p className="text-sm text-muted">None yet.</p>}</div>
             <div><p className="mb-2 text-sm font-semibold">Still to explore</p><ul className="space-y-1 text-sm text-ink-2">{themes.content.unansweredQuestions.map((t) => <li key={t}>{t}</li>)}</ul></div>
-            <p className="text-xs text-muted sm:col-span-2">{themes.content.note} {themes.generator === 'ai' && <Badge tone="champagne">AI</Badge>}</p>
+            <p className="text-xs text-muted sm:col-span-2">{themes.content.note} {themes.generator === 'ai' && <Badge tone="gold">AI</Badge>}</p>
           </div>
         ) : <p className="mt-2 text-sm text-muted">Uses only items you’ve both shared.</p>}
       </div>

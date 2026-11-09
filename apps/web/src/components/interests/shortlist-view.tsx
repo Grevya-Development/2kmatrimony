@@ -21,7 +21,7 @@ export function ShortlistView() {
               <div key={item.profile.id} className="space-y-2">
                 {(item.note || item.addedByFamily) && (
                   <div className="flex items-start gap-2 text-sm text-ink-2">
-                    {item.addedByFamily && <Badge tone="champagne">Added by family</Badge>}
+                    {item.addedByFamily && <Badge tone="gold">Added by family</Badge>}
                     {item.note && <p className="italic">“{item.note}”</p>}
                   </div>
                 )}

@@ -58,7 +58,7 @@ export function ConversationList({ className }: { className?: string }) {
                       <span className="flex items-center gap-2">
                         <span className={cn('truncate text-sm', c.unreadCount ? 'text-ink' : 'text-muted')}>{c.isLocked ? 'Conversation closed' : c.lastMessagePreview ?? 'Say hello'}</span>
                         {c.muted && <BellOff className="h-3.5 w-3.5 shrink-0 text-muted" aria-label="Muted" />}
-                        {c.unreadCount > 0 && <span className="ml-auto rounded-full bg-burgundy-600 px-1.5 text-[0.7rem] font-medium text-white" aria-label={`${c.unreadCount} unread`}>{c.unreadCount}</span>}
+                        {c.unreadCount > 0 && <span className="ml-auto rounded-full bg-emerald-600 px-1.5 text-[0.7rem] font-medium text-white" aria-label={`${c.unreadCount} unread`}>{c.unreadCount}</span>}
                       </span>
                     </span>
                   </Link>

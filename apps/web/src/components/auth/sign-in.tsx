@@ -108,7 +108,7 @@ export function SignIn() {
               <Field label="Mobile number" htmlFor="phone" hint="We’ll text you a one-time code. Indian numbers can omit +91.">
                 <Input type="tel" inputMode="tel" autoComplete="tel-national" placeholder="98765 43210" className="pl-14" value={phone} onChange={(e) => setPhone(e.target.value)} required />
               </Field>
-              <span aria-hidden className="pointer-events-none absolute left-4 top-[2.35rem] text-[0.95rem] text-muted">+91</span>
+              <span aria-hidden className="pointer-events-none absolute left-4 top-[2.55rem] text-[0.95rem] leading-none text-muted">+91</span>
             </div>
           ) : (
             <>
@@ -128,7 +128,7 @@ export function SignIn() {
           {method === 'email' && (
             <div className="flex justify-between text-sm">
               <button type="button" className="text-muted hover:text-ink" onClick={() => setUsePassword((v) => !v)}>{usePassword ? 'Use a one-time code instead' : 'Use a password instead'}</button>
-              {usePassword && <button type="button" className="text-burgundy-600 hover:underline" onClick={forgot}>Forgot password?</button>}
+              {usePassword && <button type="button" className="text-emerald-600 hover:underline" onClick={forgot}>Forgot password?</button>}
             </div>
           )}
         </form>

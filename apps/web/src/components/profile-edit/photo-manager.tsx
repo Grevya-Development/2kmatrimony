@@ -63,12 +63,12 @@ export function PhotoManager({ photos, maxPhotos, onChange }: { photos: OwnPhoto
     <div className="space-y-4">
       <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3" aria-label="Your photos">
         {sorted.map((p, i) => (
-          <li key={p.id} className={cn('group relative overflow-hidden rounded-2xl border bg-surface-2', p.isPrimary ? 'border-burgundy-500' : 'border-line')}>
+          <li key={p.id} className={cn('group relative overflow-hidden rounded-2xl border bg-surface-2', p.isPrimary ? 'border-emerald-500' : 'border-line')}>
             <div className="aspect-[4/5]">
               {p.url ? <img src={p.url} alt={p.isPrimary ? 'Primary photo' : `Photo ${i + 1}`} className={cn('h-full w-full object-cover', p.moderationStatus === 'rejected' && 'opacity-40')} /> : <div className="flex h-full items-center justify-center"><Spinner /></div>}
             </div>
             <div className="absolute left-2 top-2 flex flex-wrap gap-1">
-              {p.isPrimary && <Badge tone="burgundy"><Star />Primary</Badge>}
+              {p.isPrimary && <Badge tone="emerald"><Star />Primary</Badge>}
               {p.moderationStatus === 'pending' && <Badge tone="warning">Under review</Badge>}
               {p.moderationStatus === 'rejected' && <Badge tone="danger" title={p.moderationReason ?? undefined}>Not approved</Badge>}
             </div>

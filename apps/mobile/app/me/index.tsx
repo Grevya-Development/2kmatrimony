@@ -49,7 +49,7 @@ export default function MyProfile() {
               <Text variant="small">{p.profileCode} · {me.data?.plan.name ?? 'Free'} plan</Text>
               <View style={{ flexDirection: 'row', gap: 6 }}>
                 <Badge label={p.status === 'active' ? 'Visible' : p.status} tone={p.status === 'active' ? 'success' : 'warning'} />
-                <Badge label={`${p.completion.pct}% complete`} tone="champagne" />
+                <Badge label={`${p.completion.pct}% complete`} tone="gold" />
               </View>
             </View>
           </Card>

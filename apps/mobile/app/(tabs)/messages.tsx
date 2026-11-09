@@ -19,7 +19,7 @@ export default function Messages() {
         refreshing={q.isRefetching}
         onRefresh={() => q.refetch()}
         contentContainerStyle={{ padding: space.lg, gap: 2, flexGrow: 1 }}
-        ListHeaderComponent={<Pressable onPress={() => router.push('/connections')} accessibilityRole="link" style={{ paddingBottom: space.md }}><Text style={{ color: colors.burgundy600, fontFamily: fonts.medium }}>View all connections</Text></Pressable>}
+        ListHeaderComponent={<Pressable onPress={() => router.push('/connections')} accessibilityRole="link" style={{ paddingBottom: space.md }}><Text style={{ color: colors.emerald600, fontFamily: fonts.medium }}>View all connections</Text></Pressable>}
         renderItem={({ item }) => (
           <Pressable
             onPress={() => router.push(`/chat/${item.id}` as Href)}
@@ -36,7 +36,7 @@ export default function Messages() {
               </View>
               <Text variant="bodyMuted" numberOfLines={1} style={item.unreadCount ? { color: colors.ink } : undefined}>{item.isLocked ? 'Conversation closed' : item.lastMessagePreview ?? 'Say hello 👋'}</Text>
             </View>
-            {item.unreadCount > 0 && <View style={{ minWidth: 22, height: 22, borderRadius: 11, backgroundColor: colors.burgundy600, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 }}><Text style={{ color: colors.white, fontSize: 12, fontFamily: fonts.semibold }}>{item.unreadCount}</Text></View>}
+            {item.unreadCount > 0 && <View style={{ minWidth: 22, height: 22, borderRadius: 11, backgroundColor: colors.emerald600, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 6 }}><Text style={{ color: colors.white, fontSize: 12, fontFamily: fonts.semibold }}>{item.unreadCount}</Text></View>}
           </Pressable>
         )}
         ListEmptyComponent={q.isLoading ? <Loading /> : q.error ? <ErrorState message={errorMessage(q.error)} onRetry={() => q.refetch()} />

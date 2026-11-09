@@ -67,8 +67,8 @@ export function NotificationsView() {
             <ul className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
               {items.map((n) => (
                 <li key={n.id}>
-                  <button type="button" onClick={() => open(n)} className={cn('flex w-full items-start gap-3 px-5 py-4 text-left transition-colors hover:bg-surface-2', !n.readAt && 'bg-burgundy-50/40')}>
-                    <span className={cn('mt-2 h-2 w-2 shrink-0 rounded-full', n.readAt ? 'bg-transparent' : 'bg-burgundy-600')} aria-hidden />
+                  <button type="button" onClick={() => open(n)} className={cn('flex w-full items-start gap-3 px-5 py-4 text-left transition-colors hover:bg-surface-2', !n.readAt && 'bg-emerald-50/40')}>
+                    <span className={cn('mt-2 h-2 w-2 shrink-0 rounded-full', n.readAt ? 'bg-transparent' : 'bg-emerald-600')} aria-hidden />
                     <span className="min-w-0 flex-1">
                       <span className={cn('block text-[0.95rem]', !n.readAt && 'font-medium')}>{n.title}{!n.readAt && <span className="sr-only"> (unread)</span>}</span>
                       {n.body && <span className="mt-0.5 block whitespace-pre-line text-sm text-muted">{n.body}</span>}

@@ -16,7 +16,7 @@ export default async function LegalLayout({ children }: { children: React.ReactN
         <article className="space-y-5 text-[0.98rem] leading-relaxed text-ink-2 [&_h1]:font-serif [&_h1]:text-5xl [&_h1]:text-ink [&_h2]:mt-10 [&_h2]:font-serif [&_h2]:text-2xl [&_h2]:text-ink [&_li]:ml-5 [&_li]:list-disc [&_ul]:space-y-2">
           {children}
         </article>
-        <p className="mt-12 text-sm text-muted">Contact: <a className="text-burgundy-600 underline-offset-4 hover:underline" href={`mailto:${brand.support_email}`}>{brand.support_email}</a></p>
+        <p className="mt-12 text-sm text-muted">Contact: <a className="text-emerald-600 underline-offset-4 hover:underline" href={`mailto:${brand.support_email}`}>{brand.support_email}</a></p>
       </main>
       <SiteFooter brand={brand} />
     </>

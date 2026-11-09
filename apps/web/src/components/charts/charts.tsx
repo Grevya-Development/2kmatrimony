@@ -2,10 +2,10 @@
 import * as React from 'react';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
-/** Chart palette drawn from the design tokens (burgundy, champagne, ink, success, info). */
-export const CHART_COLORS = ['#7a2e3c', '#a8875a', '#4a4540', '#3f6b4f', '#3b5a7a', '#d2b583'];
+/** Chart palette drawn from the design tokens (emerald, gold, emerald glow, success, info). */
+export const CHART_COLORS = ['#033b39', '#9a6b1f', '#205b5b', '#3f6b4f', '#3b5a7a', '#cc9c44'];
 
-const axis = { stroke: '#77706a', fontSize: 11, tickLine: false, axisLine: false } as const;
+const axis = { stroke: '#5f6f6c', fontSize: 11, tickLine: false, axisLine: false } as const;
 const shortDay = (d: string) => new Date(`${d}T00:00:00Z`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 
 interface SeriesDef { key: string; label: string; color?: string }
@@ -13,7 +13,7 @@ interface SeriesDef { key: string; label: string; color?: string }
 function ChartTooltip({ format }: { format?: (n: number) => string }) {
   return (
     <Tooltip
-      contentStyle={{ borderRadius: 12, border: '1px solid #e8e1d6', background: '#fffdf9', fontSize: 12, boxShadow: '0 12px 32px rgb(31 29 27 / 0.08)' }}
+      contentStyle={{ borderRadius: 12, border: '1px solid #e7dfd0', background: '#ffffff', fontSize: 12, boxShadow: '0 12px 32px rgb(6 47 46 / 0.08)' }}
       labelFormatter={(l) => (typeof l === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(l) ? shortDay(l) : String(l))}
       formatter={(v) => (format && typeof v === 'number' ? format(v) : String(v))}
     />
@@ -45,7 +45,7 @@ export function TimeAreaChart({ data, series, label, height = 220, format, xKey 
             </linearGradient>
           ))}
         </defs>
-        <CartesianGrid stroke="#e8e1d6" strokeDasharray="3 3" vertical={false} />
+        <CartesianGrid stroke="#e7dfd0" strokeDasharray="3 3" vertical={false} />
         <XAxis dataKey={xKey} {...axis} tickFormatter={(v: string) => (/^\d{4}-/.test(v) ? shortDay(v) : v)} minTickGap={24} />
         <YAxis {...axis} width={48} tickFormatter={(v: number) => (format ? format(v) : new Intl.NumberFormat('en-IN', { notation: 'compact' }).format(v))} />
         <ChartTooltip format={format} />
@@ -62,7 +62,7 @@ export function SimpleBarChart({ data, xKey, series, label, height = 220, format
   return (
     <Frame label={label} summary={summary} height={height}>
       <BarChart data={data} layout={layout} margin={{ top: 8, right: 8, left: layout === 'vertical' ? 40 : -12, bottom: 0 }}>
-        <CartesianGrid stroke="#e8e1d6" strokeDasharray="3 3" vertical={layout === 'vertical'} horizontal={layout !== 'vertical'} />
+        <CartesianGrid stroke="#e7dfd0" strokeDasharray="3 3" vertical={layout === 'vertical'} horizontal={layout !== 'vertical'} />
         {layout === 'vertical' ? (
           <>
             <XAxis type="number" {...axis} />

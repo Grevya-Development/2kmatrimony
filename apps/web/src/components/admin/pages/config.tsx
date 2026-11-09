@@ -50,7 +50,7 @@ function Flags() {
               return (
               <li key={f.key} className="flex flex-wrap items-center gap-4 py-3">
                 <div className="min-w-0 flex-1">
-                  <p className="flex items-center gap-2 font-mono text-sm text-ink">{f.key}{f.superAdminOnly && <Badge tone="burgundy">Super admin only</Badge>}</p>
+                  <p className="flex items-center gap-2 font-mono text-sm text-ink">{f.key}{f.superAdminOnly && <Badge tone="emerald">Super admin only</Badge>}</p>
                   <p className="text-sm text-muted">{f.description}</p>
                 </div>
                 <label className="flex items-center gap-2 text-xs text-muted">Rollout

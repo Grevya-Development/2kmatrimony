@@ -26,7 +26,7 @@ export function SubscriptionsPage() {
             <>
               <DataTable<Sub> caption="Subscriptions" rows={d.items}
                 columns={[
-                  { key: 'member', label: 'Member', render: (s) => <Link className="text-burgundy-600 hover:underline" href={`/admin/users/${s.user_id}`}>{s.member ?? 'Member'}</Link> },
+                  { key: 'member', label: 'Member', render: (s) => <Link className="text-emerald-600 hover:underline" href={`/admin/users/${s.user_id}`}>{s.member ?? 'Member'}</Link> },
                   { key: 'plan', label: 'Plan', render: (s) => s.plan?.name ?? '—' },
                   { key: 'status', label: 'Status', render: (s) => <span className="inline-flex gap-1"><StatusBadge status={s.status} />{s.granted_by_admin && <Badge tone="info">Granted</Badge>}</span> },
                   { key: 'period', label: 'Period', render: (s) => `${fmtDate(s.current_period_start)} – ${fmtDate(s.current_period_end)}` },
@@ -110,7 +110,7 @@ function PaymentDetail({ id, onChanged }: { id: string; onChanged: () => void })
         return (
           <div className="space-y-5">
             <KeyValues items={[
-              ['Member', d.member ? <Link key="m" className="text-burgundy-600 hover:underline" href={`/admin/users/${d.member.id}`}>{d.member.full_name ?? 'Member'}</Link> : '—'],
+              ['Member', d.member ? <Link key="m" className="text-emerald-600 hover:underline" href={`/admin/users/${d.member.id}`}>{d.member.full_name ?? 'Member'}</Link> : '—'],
               ['Plan', p.plans?.name], ['Status', <StatusBadge key="s" status={p.status} />], ['Paid', fmtDateTime(p.paid_at)],
               ['Amount', fmtInr(p.amount_paise)], ['Discount', fmtInr(p.discount_paise)], ['Taxable value', fmtInr(p.taxable_paise)], ['GST', fmtInr(p.gst_paise)],
               ['Coupon', p.coupons?.code], ['Razorpay order', <span key="o" className="font-mono text-xs">{p.razorpay_order_id ?? '—'}</span>], ['Razorpay payment', <span key="p" className="font-mono text-xs">{p.razorpay_payment_id ?? '—'}</span>],
@@ -119,7 +119,7 @@ function PaymentDetail({ id, onChanged }: { id: string; onChanged: () => void })
               <div className="rounded-xl border border-line p-4">
                 <h3 className="text-sm font-semibold">Invoice {d.invoice.invoice_number}</h3>
                 <KeyValues items={[['Billed to', d.invoice.billing_name], ['Place of supply', d.invoice.billing_state], ['GSTIN', d.invoice.customer_gstin], ['Issued', fmtDate(d.invoice.issued_at)], ['CGST / SGST', `${fmtInr(d.invoice.cgst_paise)} / ${fmtInr(d.invoice.sgst_paise)}`], ['IGST', fmtInr(d.invoice.igst_paise)], ['Total', fmtInr(d.invoice.total_paise)]]} />
-                <a className="mt-3 inline-block text-sm text-burgundy-600 hover:underline" href={`/api/v1/billing/invoices/${d.invoice.id}?format=html`} target="_blank" rel="noreferrer">Open printable invoice</a>
+                <a className="mt-3 inline-block text-sm text-emerald-600 hover:underline" href={`/api/v1/billing/invoices/${d.invoice.id}?format=html`} target="_blank" rel="noreferrer">Open printable invoice</a>
               </div>
             ) : <p className="text-sm text-muted">No invoice issued for this payment.</p>}
             <div>
@@ -225,7 +225,7 @@ function CouponsTab({ canManage }: { canManage: boolean }) {
                 <Field label="Valid until" htmlFor="c-until" optional><Input type="date" value={editing.validUntil} onChange={(e) => setEditing({ ...editing, validUntil: e.target.value })} /></Field>
               </div>
               <fieldset><legend className="mb-2 text-sm font-medium text-ink-2">Plans (none = all)</legend>
-                <div className="flex gap-4">{['plus', 'premium', 'elite'].map((p) => <label key={p} className="flex items-center gap-2 text-sm capitalize"><input type="checkbox" className="h-4 w-4 accent-burgundy-600" checked={editing.planCodes.includes(p)} onChange={(e) => setEditing({ ...editing, planCodes: e.target.checked ? [...editing.planCodes, p] : editing.planCodes.filter((x) => x !== p) })} />{p}</label>)}</div>
+                <div className="flex gap-4">{['plus', 'premium', 'elite'].map((p) => <label key={p} className="flex items-center gap-2 text-sm capitalize"><input type="checkbox" className="h-4 w-4 accent-emerald-600" checked={editing.planCodes.includes(p)} onChange={(e) => setEditing({ ...editing, planCodes: e.target.checked ? [...editing.planCodes, p] : editing.planCodes.filter((x) => x !== p) })} />{p}</label>)}</div>
               </fieldset>
               <div className="flex items-center justify-between"><span className="text-sm text-ink-2">Active</span><Switch checked={editing.isActive} onCheckedChange={(isActive) => setEditing({ ...editing, isActive })} aria-label="Active" /></div>
               <div className="flex justify-between gap-2">

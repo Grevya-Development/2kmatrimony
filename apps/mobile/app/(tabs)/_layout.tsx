@@ -13,7 +13,7 @@ function HeaderRight() {
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginRight: 12 }}>
       <Pressable onPress={() => router.push('/notifications')} accessibilityRole="button" accessibilityLabel={`Notifications${unread ? `, ${unread} unread` : ''}`} hitSlop={8} style={{ padding: 8 }}>
         <Icon name="bell" />
-        {unread > 0 && <View style={{ position: 'absolute', right: 8, top: 8, width: 8, height: 8, borderRadius: 4, backgroundColor: colors.burgundy600 }} />}
+        {unread > 0 && <View style={{ position: 'absolute', right: 8, top: 8, width: 8, height: 8, borderRadius: 4, backgroundColor: colors.emerald600 }} />}
       </Pressable>
       <Pressable onPress={() => router.push('/me')} accessibilityRole="button" accessibilityLabel="My profile and settings" hitSlop={8}>
         <Avatar uri={me.data?.profile?.primaryPhotoUrl} name={name} size={32} />
@@ -35,7 +35,7 @@ export default function TabsLayout() {
         headerTitleStyle: { fontFamily: fonts.display, fontSize: 24, color: colors.ink },
         headerTitleAlign: 'left',
         headerRight: () => <HeaderRight />,
-        tabBarActiveTintColor: colors.burgundy600,
+        tabBarActiveTintColor: colors.emerald600,
         tabBarInactiveTintColor: colors.muted,
         tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.line },
         tabBarLabelStyle: { fontFamily: fonts.medium, fontSize: 11 },

@@ -78,7 +78,7 @@ export function ImportancePicker({ value, onChange, label }: { value: number; on
     <View accessibilityRole="radiogroup" accessibilityLabel={label} style={{ flexDirection: 'row', gap: 6 }}>
       {[1, 2, 3, 4, 5].map((n) => (
         <Pressable key={n} accessibilityRole="radio" accessibilityState={{ checked: n === value }} accessibilityLabel={`Importance ${n} of 5`}
-          onPress={() => { haptic.tap(); onChange(n); }} style={[styles.dot, n <= value && { backgroundColor: colors.burgundy500, borderColor: colors.burgundy500 }]} />
+          onPress={() => { haptic.tap(); onChange(n); }} style={[styles.dot, n <= value && { backgroundColor: colors.emerald500, borderColor: colors.emerald500 }]} />
       ))}
     </View>
   );
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
   segActive: { backgroundColor: colors.ink },
   track: { height: 36, justifyContent: 'center' },
   rail: { height: 6, borderRadius: 3, backgroundColor: colors.line },
-  fill: { position: 'absolute', height: 6, borderRadius: 3, backgroundColor: colors.burgundy500 },
-  thumb: { position: 'absolute', width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: colors.burgundy600, backgroundColor: colors.white },
+  fill: { position: 'absolute', height: 6, borderRadius: 3, backgroundColor: colors.emerald500 },
+  thumb: { position: 'absolute', width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: colors.emerald600, backgroundColor: colors.white },
   dot: { width: 22, height: 22, borderRadius: 11, borderWidth: 1.5, borderColor: colors.lineStrong },
   backdrop: { flex: 1, backgroundColor: 'rgba(31,29,27,0.35)' },
   sheet: { maxHeight: '88%', backgroundColor: colors.canvas, borderTopLeftRadius: radius.xl, borderTopRightRadius: radius.xl, paddingHorizontal: space.lg },

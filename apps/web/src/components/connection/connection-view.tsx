@@ -58,7 +58,7 @@ export function ConnectionView({ connectionId }: { connectionId: string }) {
           {ex ? (
             <div className="grid gap-6 md:grid-cols-[16rem_1fr]">
               <div className="rounded-2xl bg-surface-2 p-6 text-center">
-                <p className="font-serif text-6xl text-burgundy-600">{ex.compatibility.mutual}<span className="text-2xl">%</span></p>
+                <p className="font-serif text-6xl text-emerald-600">{ex.compatibility.mutual}<span className="text-2xl">%</span></p>
                 <p className="mt-1 font-serif text-xl">{ex.compatibility.label}</p>
                 <p className="mt-2 text-xs text-muted">{ex.disclaimer}</p>
               </div>

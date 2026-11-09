@@ -136,7 +136,7 @@ export function OwnProfile() {
         ) : (
           <>
             <Card><CardContent className="flex flex-col gap-6 sm:flex-row sm:items-center">
-              {d.photoUrl ? <img src={d.photoUrl} alt="" className="h-40 w-32 rounded-2xl object-cover" /> : <div className="flex h-40 w-32 items-center justify-center rounded-2xl bg-champagne-100 text-center text-xs text-champagne-600">{d.photoBlurred ? 'Photo shown after you accept interest' : 'No photo visible'}</div>}
+              {d.photoUrl ? <img src={d.photoUrl} alt="" className="h-40 w-32 rounded-2xl object-cover" /> : <div className="flex h-40 w-32 items-center justify-center rounded-2xl bg-gold-100 text-center text-xs text-gold-600">{d.photoBlurred ? 'Photo shown after you accept interest' : 'No photo visible'}</div>}
               <div className="space-y-2">
                 <h2 className="font-serif text-4xl">{d.displayName}{d.age ? `, ${d.age}` : ''}</h2>
                 <p className="flex items-center gap-1 text-muted"><MapPin className="h-4 w-4" />{[d.city, d.country].filter(Boolean).join(', ')}</p>

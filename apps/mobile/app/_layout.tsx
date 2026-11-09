@@ -7,11 +7,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 // Per-weight imports keep unused font files out of the bundle.
-import { CormorantGaramond_500Medium } from '@expo-google-fonts/cormorant-garamond/500Medium';
-import { CormorantGaramond_600SemiBold } from '@expo-google-fonts/cormorant-garamond/600SemiBold';
-import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
-import { Inter_500Medium } from '@expo-google-fonts/inter/500Medium';
-import { Inter_600SemiBold } from '@expo-google-fonts/inter/600SemiBold';
+import { Newsreader_500Medium } from '@expo-google-fonts/newsreader/500Medium';
+import { Newsreader_600SemiBold } from '@expo-google-fonts/newsreader/600SemiBold';
+import { Montserrat_400Regular } from '@expo-google-fonts/montserrat/400Regular';
+import { Montserrat_500Medium } from '@expo-google-fonts/montserrat/500Medium';
+import { Montserrat_600SemiBold } from '@expo-google-fonts/montserrat/600SemiBold';
 import { AuthProvider, useAuth } from '@/lib/auth';
 import { queryClient, restoreQueryCache } from '@/lib/query';
 import { hrefToRoute } from '@/lib/deeplinks';
@@ -72,7 +72,7 @@ function Gate({ children }: { children: React.ReactNode }) {
 }
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({ CormorantGaramond_500Medium, CormorantGaramond_600SemiBold, Inter_400Regular, Inter_500Medium, Inter_600SemiBold });
+  const [fontsLoaded] = useFonts({ Newsreader_500Medium, Newsreader_600SemiBold, Montserrat_400Regular, Montserrat_500Medium, Montserrat_600SemiBold });
   const [cacheReady, setCacheReady] = React.useState(false);
 
   React.useEffect(() => { restoreQueryCache().finally(() => setCacheReady(true)); }, []);

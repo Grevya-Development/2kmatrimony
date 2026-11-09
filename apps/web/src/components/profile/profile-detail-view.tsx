@@ -56,7 +56,7 @@ function Gallery({ p }: { p: ProfileDetail }) {
         <div className="flex gap-2 overflow-x-auto scrollbar-none" role="tablist" aria-label="Photos">
           {photos.map((ph, i) => (
             <button key={ph.id} role="tab" aria-selected={i === active} aria-label={`Photo ${i + 1}`} onClick={() => setActive(i)}
-              className={cn('h-20 w-16 shrink-0 overflow-hidden rounded-xl border-2', i === active ? 'border-burgundy-600' : 'border-transparent opacity-70 hover:opacity-100')}>
+              className={cn('h-20 w-16 shrink-0 overflow-hidden rounded-xl border-2', i === active ? 'border-emerald-600' : 'border-transparent opacity-70 hover:opacity-100')}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={ph.url} alt="" className="h-full w-full object-cover" />
             </button>
@@ -115,7 +115,7 @@ export function ProfileDetailView({ id }: { id: string }) {
           {(b.coreValues.length > 0 || b.personalityTraits.length > 0) && (
             <SectionCard title="Values & personality">
               <div className="flex flex-wrap gap-2">
-                {b.coreValues.map((v) => <span key={v} className="rounded-full bg-burgundy-50 px-3 py-1 text-sm capitalize text-burgundy-700">{v}</span>)}
+                {b.coreValues.map((v) => <span key={v} className="rounded-full bg-emerald-50 px-3 py-1 text-sm capitalize text-emerald-700">{v}</span>)}
                 {b.personalityTraits.map((t) => <span key={t} className="rounded-full border border-line px-3 py-1 text-sm capitalize text-ink-2">{t}</span>)}
               </div>
             </SectionCard>
@@ -165,7 +165,7 @@ export function ProfileDetailView({ id }: { id: string }) {
               {[...p.lifestyle.interests, ...p.lifestyle.hobbies].length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {[...new Set([...p.lifestyle.interests, ...p.lifestyle.hobbies])].map((i) => (
-                    <span key={i} className={cn('rounded-full px-3 py-1 text-sm', p.sharedInterests.includes(i) ? 'bg-champagne-100 text-ink' : 'border border-line text-ink-2')}>{i}</span>
+                    <span key={i} className={cn('rounded-full px-3 py-1 text-sm', p.sharedInterests.includes(i) ? 'bg-gold-100 text-ink' : 'border border-line text-ink-2')}>{i}</span>
                   ))}
                 </div>
               )}

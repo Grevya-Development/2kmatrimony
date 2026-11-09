@@ -86,7 +86,7 @@ function MediaQueue() {
                   </div>
                   <div className="space-y-2 p-3">
                     <div className="flex items-center justify-between text-xs">
-                      <Link href={`/admin/profiles/${m.profileId}`} className="font-mono text-burgundy-600 hover:underline">{m.profileCode}</Link>
+                      <Link href={`/admin/profiles/${m.profileId}`} className="font-mono text-emerald-600 hover:underline">{m.profileCode}</Link>
                       <span className="text-muted">{fmtDateTime(m.createdAt)}</span>
                     </div>
                     {m.status === 'pending' ? (
@@ -178,7 +178,7 @@ export function AdminProfilePage({ id }: { id: string }) {
                         <li key={ph.id} className="relative overflow-hidden rounded-lg border border-line">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           {ph.url ? <img src={ph.url} alt="Member photo" className="aspect-square w-full object-cover" /> : <div className="aspect-square bg-surface-2" />}
-                          <div className="absolute inset-x-1 bottom-1 flex gap-1">{ph.isPrimary && <Badge tone="champagne">Primary</Badge>}<StatusBadge status={ph.moderationStatus} /></div>
+                          <div className="absolute inset-x-1 bottom-1 flex gap-1">{ph.isPrimary && <Badge tone="gold">Primary</Badge>}<StatusBadge status={ph.moderationStatus} /></div>
                         </li>
                       ))}
                     </ul>
@@ -191,7 +191,7 @@ export function AdminProfilePage({ id }: { id: string }) {
                       {d.dna.map((x) => (
                         <li key={x.dimension}>
                           <div className="flex justify-between"><span>{DNA_DIMENSION_META[x.dimension as DnaDimension]?.label ?? x.dimension}</span><span className="text-muted">{x.self_score}{x.partner_target !== null ? ` → ${x.partner_target}` : ''} · imp {x.importance}</span></div>
-                          <div className="mt-1 h-1.5 rounded-full bg-line"><div className="h-full rounded-full bg-burgundy-500" style={{ width: `${x.self_score}%` }} /></div>
+                          <div className="mt-1 h-1.5 rounded-full bg-line"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${x.self_score}%` }} /></div>
                         </li>
                       ))}
                     </ul>

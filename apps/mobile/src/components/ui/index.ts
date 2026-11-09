@@ -6,3 +6,4 @@ export * from './Surfaces';
 export * from './Controls';
 export * from './Icon';
 export { Switch } from 'react-native';
+export * from './BrandLogo';

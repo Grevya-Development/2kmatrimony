@@ -84,7 +84,7 @@ export default async function LandingPage() {
             <ol className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
               {STEPS.map((s, i) => (
                 <Reveal as="li" key={s.title} delay={i * 0.08} className="relative">
-                  <span className="font-serif text-5xl text-champagne-400">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-serif text-5xl text-gold-400">{String(i + 1).padStart(2, '0')}</span>
                   <h3 className="mt-3 font-serif text-2xl">{s.title}</h3>
                   <p className="mt-2 text-[0.97rem] leading-relaxed text-ink-2">{s.body}</p>
                 </Reveal>
@@ -102,10 +102,10 @@ export default async function LandingPage() {
               Most platforms ask whether someone suits you. We also ask whether you suit them. A match is recommended only when the fit is mutual — across values, emotional expectations, communication, family, lifestyle, career, location and future goals.
             </p>
             <ul className="mt-8 space-y-4 text-[0.98rem] text-ink-2">
-              <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-burgundy-500" />Every recommendation explains its reasoning — alignments, differences and what is still unknown.</li>
-              <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-burgundy-500" />Your non-negotiables are respected; everything else stays flexible.</li>
-              <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-burgundy-500" />Describe who you are looking for in your own words — the AI matchmaker turns it into filters you can review.</li>
-              <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-burgundy-500" />Never a promise of outcomes, never a personality diagnosis — just honest alignment.</li>
+              <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />Every recommendation explains its reasoning — alignments, differences and what is still unknown.</li>
+              <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />Your non-negotiables are respected; everything else stays flexible.</li>
+              <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />Describe who you are looking for in your own words — the AI matchmaker turns it into filters you can review.</li>
+              <li className="flex gap-3"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />Never a promise of outcomes, never a personality diagnosis — just honest alignment.</li>
             </ul>
           </Reveal>
           <Reveal delay={0.1} className="rounded-3xl border border-line bg-surface p-8 shadow-soft">
@@ -118,14 +118,14 @@ export default async function LandingPage() {
         <section id="intelligence" className="scroll-mt-20 bg-ink text-canvas">
           <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
             <Reveal className="max-w-2xl">
-              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-champagne-400">Relationship intelligence</p>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-gold-400">Relationship intelligence</p>
               <h2 className="font-serif text-4xl leading-tight sm:text-5xl text-balance">Help for the conversations that matter</h2>
               <p className="mt-5 text-lg text-canvas/75">Optional tools that support — never replace — getting to know each other. Private by default, shared only when you choose.</p>
             </Reveal>
             <div className="mt-14 grid gap-px overflow-hidden rounded-3xl bg-canvas/10 sm:grid-cols-2">
               {INTELLIGENCE.map((f, i) => (
                 <Reveal key={f.title} delay={i * 0.06} className="bg-ink p-8">
-                  <f.icon className="h-6 w-6 text-champagne-400" aria-hidden />
+                  <f.icon className="h-6 w-6 text-gold-400" aria-hidden />
                   <h3 className="mt-5 font-serif text-2xl">{f.title}</h3>
                   <p className="mt-2 leading-relaxed text-canvas/70">{f.body}</p>
                 </Reveal>
@@ -143,7 +143,7 @@ export default async function LandingPage() {
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {TRUST.map((t, i) => (
               <Reveal key={t.title} delay={i * 0.06} className="flex gap-5 rounded-3xl border border-line bg-surface p-7">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-champagne-100 text-champagne-600"><t.icon className="h-5 w-5" aria-hidden /></div>
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600"><t.icon className="h-5 w-5" aria-hidden /></div>
                 <div>
                   <h3 className="font-serif text-2xl">{t.title}</h3>
                   <p className="mt-2 leading-relaxed text-ink-2">{t.body}</p>
@@ -152,7 +152,7 @@ export default async function LandingPage() {
             ))}
           </div>
           <Reveal className="mt-8 flex items-center gap-3 rounded-2xl bg-surface-2 px-6 py-4 text-sm text-ink-2">
-            <Users className="h-5 w-5 shrink-0 text-burgundy-600" aria-hidden />
+            <Users className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
             Parents and family can help — with permissions you set — while you stay in control of interests, connections and conversations.
           </Reveal>
         </section>
@@ -202,11 +202,11 @@ export default async function LandingPage() {
 
         {/* FINAL CTA */}
         <section className="px-4 pb-24 sm:px-6">
-          <Reveal className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-burgundy-700 px-8 py-16 text-center text-white sm:px-16">
+          <Reveal className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-emerald-700 px-8 py-16 text-center text-white sm:px-16">
             <RingsArt className="pointer-events-none absolute -right-24 -top-16 w-[28rem] opacity-25" />
             <h2 className="relative font-serif text-4xl leading-tight sm:text-5xl text-balance">Don’t just find profiles. Discover someone you can build a meaningful life with.</h2>
             <div className="relative mt-9 flex justify-center">
-              <Button asChild size="lg" variant="champagne"><Link href={cta}>Find Your Match <ArrowRight /></Link></Button>
+              <Button asChild size="lg" variant="gold"><Link href={cta}>Find Your Match <ArrowRight /></Link></Button>
             </div>
           </Reveal>
         </section>

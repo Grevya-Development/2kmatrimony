@@ -89,8 +89,18 @@ See `docs/DATABASE.md`. Migrations live in `supabase/migrations`. After adding o
   `makeAdmin`, `request`, `call`, `cleanupTestUsers`.
 - E2E: Playwright (`apps/web/tests/e2e`).
 
-## Design system
-Tokens in `apps/web/src/app/globals.css` (`@theme`): canvas `#faf7f2`, surface, ink
-(charcoal), burgundy accent, champagne highlights, Cormorant Garamond display + Inter UI.
-Components in `apps/web/src/components/ui` (Radix-based, accessible). Mobile mirrors the
-tokens in `apps/mobile/src/theme`.
+## Design system & brand
+Brand: **2K Matrimony — "Tradition Meets AI"** (Brand DNA, Emerald Edition). Source assets live in
+`2K_Matrimony_Brand_DNA_Emerald/` (logos, app icons, favicons, colour tokens, fonts, guidelines PDF).
+- Logos: always the supplied artwork, never retyped — `BrandLogo` / `Brand` in
+  `apps/web/src/components/shell/brand.tsx` (horizontal, reverse, stacked, stacked-reverse, mark) and
+  `apps/mobile/src/components/ui/BrandLogo.tsx`. Web copies in `apps/web/public/brand/`.
+- Colour tokens (`apps/web/src/app/globals.css` `@theme`, mirrored in `apps/mobile/src/theme`):
+  Ivory canvas `#FEFAF4`, Emerald Ink text `#062F2E`, Royal Emerald primary `#033B39` (`emerald-600`),
+  Emerald Glow `#205B5B` (`emerald-500`, hover/focus), Emerald Depth `#012929`, Heritage Gold `#CC9C44`
+  (`gold-400`), Gold Rule `#C99839` (`gold-500`), gold text `#946719` (`gold-600`, AA on ivory).
+- Type: Newsreader (headings, self-hosted WOFF2 subset) + Montserrat (UI/body); mobile uses
+  `@expo-google-fonts/newsreader` + `/montserrat`. `.tagline` utility = Montserrat 500, +0.55em tracking.
+- Icons: favicon/apple icon/PWA manifest (`src/app/{favicon.ico,icon.svg,apple-icon.png,manifest.ts}`),
+  Expo app icon, adaptive icon (Royal Emerald background), splash (gold rings on emerald).
+Components in `apps/web/src/components/ui` (Radix-based, accessible).

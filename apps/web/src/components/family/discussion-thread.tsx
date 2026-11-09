@@ -46,7 +46,7 @@ export function DiscussionThread({ profileId, targetProfileId }: { profileId?: s
       <form onSubmit={post} className="flex gap-2">
         <label htmlFor={`disc-${targetProfileId}`} className="sr-only">Message</label>
         <input id={`disc-${targetProfileId}`} value={body} onChange={(e) => setBody(e.target.value)} maxLength={2000} placeholder="Write a thought…"
-          className="h-11 flex-1 rounded-xl border border-line bg-canvas px-4 text-sm focus:border-burgundy-500 focus:outline-none focus:ring-4 focus:ring-burgundy-100" />
+          className="h-11 flex-1 rounded-xl border border-line bg-canvas px-4 text-sm focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-100" />
         <Button type="submit" size="icon" aria-label="Post" loading={busy} disabled={!body.trim()}><Send /></Button>
       </form>
     </div>

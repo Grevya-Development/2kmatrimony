@@ -179,7 +179,7 @@ function PromptsTab({ canEdit }: { canEdit: boolean }) {
                     }}>
                       <Field label="System prompt (feature instructions)" htmlFor="prompt-text"><Textarea value={draft.text} onChange={(e) => setDraft({ ...draft, text: e.target.value })} className="min-h-56 font-mono text-xs" /></Field>
                       <Field label="Change notes" htmlFor="prompt-notes" optional><Input value={draft.notes} onChange={(e) => setDraft({ ...draft, notes: e.target.value })} /></Field>
-                      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={draft.activate} onChange={(e) => setDraft({ ...draft, activate: e.target.checked })} className="h-4 w-4 accent-burgundy-600" />Activate immediately</label>
+                      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={draft.activate} onChange={(e) => setDraft({ ...draft, activate: e.target.checked })} className="h-4 w-4 accent-emerald-600" />Activate immediately</label>
                       <Button type="submit" disabled={draft.text.trim().length < 20}>Save version</Button>
                     </form>
                   </Panel>

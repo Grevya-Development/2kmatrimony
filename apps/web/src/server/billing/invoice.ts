@@ -29,12 +29,12 @@ export function renderInvoiceHtml({ invoice: inv, seller }: Awaited<ReturnType<t
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tax invoice ${esc(inv.invoice_number)}</title>
 <style>
-  :root{--ink:#1f1d1b;--muted:#77706a;--line:#e8e1d6;--accent:#7a2e3c}
-  *{box-sizing:border-box} body{margin:0;background:#faf7f2;color:var(--ink);font:14px/1.5 Inter,system-ui,sans-serif}
+  :root{--ink:#062f2e;--muted:#5f6f6c;--line:#e7dfd0;--accent:#033b39}
+  *{box-sizing:border-box} body{margin:0;background:#fefaf4;color:var(--ink);font:14px/1.5 Montserrat,system-ui,sans-serif}
   .page{max-width:820px;margin:32px auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:40px}
-  h1{font:500 30px/1.1 'Cormorant Garamond',Georgia,serif;margin:0} .muted{color:var(--muted)} .r{text-align:right}
+  h1{font:500 30px/1.1 Newsreader,Georgia,serif;margin:0} .muted{color:var(--muted)} .r{text-align:right}
   header{display:flex;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:20px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px} .label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#a8875a;font-weight:600;margin-bottom:4px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px} .label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#9a6b1f;font-weight:600;margin-bottom:4px}
   table{width:100%;border-collapse:collapse} th,td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top} th{text-align:left;font-size:12px;color:var(--muted);font-weight:600}
   .totals{width:320px;margin-left:auto;margin-top:12px} .totals td{border:none;padding:6px 8px} .grand td{border-top:2px solid var(--ink);font-weight:600;font-size:16px}
   .words{margin-top:16px;font-style:italic} footer{margin-top:32px;font-size:12px;color:var(--muted)} .print{position:fixed;right:24px;bottom:24px;background:var(--accent);color:#fff;border:0;border-radius:999px;padding:12px 20px;font:inherit;cursor:pointer}

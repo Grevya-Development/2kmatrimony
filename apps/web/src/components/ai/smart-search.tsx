@@ -45,14 +45,14 @@ export function SmartSearch({ onApply }: SmartSearchProps) {
   return (
     <section aria-labelledby="smart-search-title" className="rounded-2xl border border-line bg-surface p-5 shadow-soft">
       <div className="mb-3 flex items-center gap-2">
-        <Sparkles className="h-4 w-4 text-champagne-600" aria-hidden />
+        <Sparkles className="h-4 w-4 text-gold-600" aria-hidden />
         <h2 id="smart-search-title" className="font-serif text-xl">Describe who you’re looking for</h2>
       </div>
       <form onSubmit={(e) => { e.preventDefault(); void interpret(query); }} className="flex flex-col gap-2 sm:flex-row">
         <label htmlFor="smart-query" className="sr-only">Describe who you are looking for</label>
         <input id="smart-query" value={query} onChange={(e) => setQuery(e.target.value)} maxLength={500}
           placeholder="e.g. kind, vegetarian, 28–32, in Chennai, open to relocating"
-          className="h-12 flex-1 rounded-xl border border-line bg-canvas px-4 text-[0.95rem] placeholder:text-muted/70 focus:border-burgundy-500 focus:outline-none focus:ring-4 focus:ring-burgundy-100" />
+          className="h-12 flex-1 rounded-xl border border-line bg-canvas px-4 text-[0.95rem] placeholder:text-muted/70 focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-100" />
         <Button type="submit" loading={busy} disabled={query.trim().length < 3}>Understand</Button>
       </form>
       {!interp && !busy && (

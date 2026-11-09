@@ -96,7 +96,7 @@ export function ProfileActions({ target, recommendationId, onRemoved, onChanged,
         <Button size={btn} loading={busy === 'interest'} onClick={() => setInterestOpen(true)}><Heart />Express interest</Button>
       )}
       <Button size={btn === 'sm' ? 'icon' : btn} variant="secondary" aria-pressed={rel.shortlisted} aria-label={rel.shortlisted ? 'Remove from shortlist' : 'Shortlist'} loading={busy === 'shortlist'} onClick={toggleShortlist} className={btn === 'sm' ? 'h-9 w-9' : undefined}>
-        {rel.shortlisted ? <BookmarkCheck className="text-burgundy-600" /> : <Bookmark />}{btn !== 'sm' && (rel.shortlisted ? 'Shortlisted' : 'Shortlist')}
+        {rel.shortlisted ? <BookmarkCheck className="text-emerald-600" /> : <Bookmark />}{btn !== 'sm' && (rel.shortlisted ? 'Shortlisted' : 'Shortlist')}
       </Button>
       {!connected && !rel.passed && (
         <Button size={btn === 'sm' ? 'icon' : btn} variant="ghost" aria-label="Pass" loading={busy === 'pass'} onClick={pass} className={btn === 'sm' ? 'h-9 w-9' : undefined}>

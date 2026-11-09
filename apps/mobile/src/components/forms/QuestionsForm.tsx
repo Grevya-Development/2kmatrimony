@@ -63,10 +63,10 @@ function ScaleQuestion({ q, value, onChange, left, right }: { q: OnboardingQuest
   return (
     <View style={{ gap: space.md }}>
       <SpectrumSlider label={`${q.prompt} — where you are`} value={v.selfScore} onChange={(n) => update({ selfScore: n })} left={left} right={right} />
-      {!touched && <Text variant="small" style={{ color: colors.champagne600 }}>Move the slider to answer.</Text>}
+      {!touched && <Text variant="small" style={{ color: colors.gold600 }}>Move the slider to answer.</Text>}
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <Text variant="label">Partner similar to me</Text>
-        <Switch accessibilityLabel="Partner similar to me" value={v.partnerTarget === null} onValueChange={(on) => update({ partnerTarget: on ? null : v.selfScore })} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+        <Switch accessibilityLabel="Partner similar to me" value={v.partnerTarget === null} onValueChange={(on) => update({ partnerTarget: on ? null : v.selfScore })} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
       </View>
       {v.partnerTarget !== null && <SpectrumSlider label={`${q.prompt} — where you'd like a partner`} value={v.partnerTarget} onChange={(n) => update({ partnerTarget: n })} left={left} right={right} />}
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -75,7 +75,7 @@ function ScaleQuestion({ q, value, onChange, left, right }: { q: OnboardingQuest
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <Text variant="label">I’m flexible on this</Text>
-        <Switch accessibilityLabel="Flexible" value={v.flexible} onValueChange={(on) => update({ flexible: on })} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+        <Switch accessibilityLabel="Flexible" value={v.flexible} onValueChange={(on) => update({ flexible: on })} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
       </View>
     </View>
   );

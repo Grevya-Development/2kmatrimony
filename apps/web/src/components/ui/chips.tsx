@@ -27,7 +27,7 @@ export function ChipGroup<T extends string>({ options, value, onChange, multiple
             onClick={() => toggle(o.value)}
             className={cn(
               'rounded-full border px-4 py-2 text-sm transition-all duration-200',
-              active ? 'border-burgundy-600 bg-burgundy-600 text-white shadow-soft' : 'border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink',
+              active ? 'border-emerald-600 bg-emerald-600 text-white shadow-soft' : 'border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink',
             )}
           >
             {o.label}
@@ -52,9 +52,9 @@ export function TagInput({ value, onChange, suggestions = [], placeholder, max =
   const remaining = suggestions.filter((s) => !value.some((v) => v.toLowerCase() === s.toLowerCase())).slice(0, 12);
   return (
     <div className="space-y-3">
-      <div className="flex min-h-12 flex-wrap items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 focus-within:border-burgundy-500 focus-within:ring-4 focus-within:ring-burgundy-100">
+      <div className="flex min-h-12 flex-wrap items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-100">
         {value.map((t) => (
-          <span key={t} className="inline-flex items-center gap-1 rounded-full bg-champagne-100 px-3 py-1 text-sm text-ink">
+          <span key={t} className="inline-flex items-center gap-1 rounded-full bg-gold-100 px-3 py-1 text-sm text-ink">
             {t}
             <button type="button" aria-label={`Remove ${t}`} onClick={() => onChange(value.filter((v) => v !== t))} className="text-muted hover:text-ink"><X className="h-3.5 w-3.5" /></button>
           </span>

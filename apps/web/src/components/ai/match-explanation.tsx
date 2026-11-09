@@ -12,7 +12,7 @@ function Bar({ value, label }: { value: number | null; label: string }) {
     <div className="space-y-1">
       <div className="flex justify-between text-xs text-muted"><span>{label}</span><span>{value === null ? '—' : `${value}%`}</span></div>
       <div className="h-1.5 overflow-hidden rounded-full bg-line" role="meter" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={value ?? undefined}>
-        <div className="h-full rounded-full bg-burgundy-500 transition-[width] duration-700" style={{ width: `${value ?? 0}%` }} />
+        <div className="h-full rounded-full bg-emerald-500 transition-[width] duration-700" style={{ width: `${value ?? 0}%` }} />
       </div>
     </div>
   );
@@ -52,12 +52,12 @@ export function MatchExplanationPanel({ profileId }: { profileId: string }) {
             <h2 id="why-title" className="mt-1 font-serif text-3xl leading-tight">{data.compatibility.label}</h2>
           </div>
           <div className="text-right">
-            <p className="font-serif text-4xl text-burgundy-600">{data.compatibility.mutual}<span className="text-xl">%</span></p>
+            <p className="font-serif text-4xl text-emerald-600">{data.compatibility.mutual}<span className="text-xl">%</span></p>
             <p className="text-xs text-muted">mutual · {data.compatibility.confidence}% complete info</p>
           </div>
         </div>
         <p className="text-[0.98rem] text-ink-2 text-pretty">{data.headline}</p>
-        {data.generator === 'ai' && <Badge tone="champagne"><Sparkles aria-hidden />Written with AI from your shared details</Badge>}
+        {data.generator === 'ai' && <Badge tone="gold"><Sparkles aria-hidden />Written with AI from your shared details</Badge>}
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2">
@@ -72,12 +72,12 @@ export function MatchExplanationPanel({ profileId }: { profileId: string }) {
             <li key={d.key} className="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1">
               <span className="text-sm font-medium text-ink">{d.label}</span>
               <span className="text-sm tabular-nums text-ink-2">{d.score}%</span>
-              <div className="col-span-2 h-1 overflow-hidden rounded-full bg-line"><div className="h-full bg-champagne-400" style={{ width: `${d.score}%` }} /></div>
+              <div className="col-span-2 h-1 overflow-hidden rounded-full bg-line"><div className="h-full bg-gold-400" style={{ width: `${d.score}%` }} /></div>
               <span className="col-span-2 text-xs text-muted">{d.note}</span>
             </li>
           ))}
         </ul>
-        {dims.length > 5 && <button type="button" onClick={() => setShowAll((v) => !v)} className="text-sm text-burgundy-600 hover:underline">{showAll ? 'Show fewer areas' : `Show all ${dims.length} areas`}</button>}
+        {dims.length > 5 && <button type="button" onClick={() => setShowAll((v) => !v)} className="text-sm text-emerald-600 hover:underline">{showAll ? 'Show fewer areas' : `Show all ${dims.length} areas`}</button>}
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
@@ -90,7 +90,7 @@ export function MatchExplanationPanel({ profileId }: { profileId: string }) {
         {data.differences.length > 0 && (
           <div>
             <h3 className="mb-2 text-sm font-semibold text-ink">Worth discussing</h3>
-            <ul className="space-y-1.5 text-sm text-ink-2">{data.differences.map((a) => <li key={a} className="flex gap-2"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-champagne-400" aria-hidden />{a}</li>)}</ul>
+            <ul className="space-y-1.5 text-sm text-ink-2">{data.differences.map((a) => <li key={a} className="flex gap-2"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-400" aria-hidden />{a}</li>)}</ul>
           </div>
         )}
       </div>
@@ -111,7 +111,7 @@ export function MatchExplanationPanel({ profileId }: { profileId: string }) {
 
       {data.conversationStarters.length > 0 && (
         <div>
-          <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-ink"><MessageCircleQuestion className="h-4 w-4 text-champagne-600" aria-hidden />Conversation starters</h3>
+          <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-ink"><MessageCircleQuestion className="h-4 w-4 text-gold-600" aria-hidden />Conversation starters</h3>
           <ul className="space-y-2">{data.conversationStarters.map((s) => <li key={s} className={cn('rounded-xl border border-line px-4 py-2.5 text-sm text-ink-2')}>{s}</li>)}</ul>
         </div>
       )}

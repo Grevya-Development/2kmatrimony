@@ -88,7 +88,7 @@ export function BillingClient({ brandName, paymentsEnabled }: { brandName: strin
                     <td className="px-5 py-3.5">{p.planName ?? '—'}{p.interval ? <span className="text-muted"> · {BILLING_INTERVAL_LABELS[p.interval]}</span> : null}</td>
                     <td className="px-5 py-3.5">{formatInr(p.amountPaise)}{p.discountPaise > 0 && <span className="block text-xs text-muted">saved {formatInr(p.discountPaise)}</span>}{p.refundedPaise > 0 && <span className="block text-xs text-warning">refunded {formatInr(p.refundedPaise)}</span>}</td>
                     <td className="px-5 py-3.5"><Badge tone={STATUS_TONE[p.status] ?? 'neutral'}>{STATUS_LABEL[p.status] ?? p.status}</Badge></td>
-                    <td className="px-5 py-3.5 text-right">{p.invoiceId && <a className="inline-flex items-center gap-1.5 text-burgundy-600 hover:underline" href={`/api/v1/billing/invoices/${p.invoiceId}?format=html`} target="_blank" rel="noopener"><FileText className="h-4 w-4" />Invoice</a>}</td>
+                    <td className="px-5 py-3.5 text-right">{p.invoiceId && <a className="inline-flex items-center gap-1.5 text-emerald-600 hover:underline" href={`/api/v1/billing/invoices/${p.invoiceId}?format=html`} target="_blank" rel="noopener"><FileText className="h-4 w-4" />Invoice</a>}</td>
                   </tr>
                 ))}
               </tbody>

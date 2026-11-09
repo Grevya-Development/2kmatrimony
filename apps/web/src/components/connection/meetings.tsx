@@ -56,7 +56,7 @@ export function Meetings({ connectionId, active, canRespond = true }: { connecti
         {list.map((m) => (
           <li key={m.id} className="flex flex-col gap-3 rounded-2xl border border-line bg-surface p-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex gap-3">
-              <CalendarHeart className="mt-1 h-5 w-5 shrink-0 text-champagne-600" aria-hidden />
+              <CalendarHeart className="mt-1 h-5 w-5 shrink-0 text-gold-600" aria-hidden />
               <div>
                 <p className="font-medium text-ink">{m.title} <Badge tone={STATUS_TONE[m.status]} className="ml-1 align-middle">{m.status}</Badge></p>
                 <p className="text-sm text-ink-2">{new Date(m.proposedAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</p>

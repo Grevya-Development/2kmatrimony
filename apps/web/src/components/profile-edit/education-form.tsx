@@ -30,7 +30,7 @@ export function EducationForm({ initial, subject, submitLabel, onSaved, onSkip }
               <Field label="Specialisation" htmlFor={`edu-spec-${i}`} optional><Input value={it.specialization ?? ''} onChange={(e) => update(i, { specialization: e.target.value })} /></Field>
               <Field label="Graduation year" htmlFor={`edu-year-${i}`} optional><Input type="number" inputMode="numeric" min={1950} max={2100} value={it.graduationYear ?? ''} onChange={(e) => update(i, { graduationYear: intOrNull(e.target.value) })} /></Field>
               <label className="flex items-center gap-2 self-end pb-3 text-sm text-ink-2">
-                <input type="radio" name="highest" checked={!!it.isHighest} onChange={() => update(i, { isHighest: true })} className="accent-burgundy-600" /> Highest qualification
+                <input type="radio" name="highest" checked={!!it.isHighest} onChange={() => update(i, { isHighest: true })} className="accent-emerald-600" /> Highest qualification
               </label>
             </div>
           </Card>

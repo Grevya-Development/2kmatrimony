@@ -9,7 +9,7 @@ export function ProfilePhoto({ url, blurred, name, className }: { url: string | 
     return <img src={url} alt={`Photo of ${name}`} loading="lazy" className={cn('h-full w-full object-cover', className)} />;
   }
   return (
-    <div className={cn('flex h-full w-full flex-col items-center justify-center gap-2 bg-champagne-50 text-champagne-600', className)}>
+    <div className={cn('flex h-full w-full flex-col items-center justify-center gap-2 bg-gold-50 text-gold-600', className)}>
       {blurred ? (
         <>
           <Lock className="h-6 w-6" aria-hidden />

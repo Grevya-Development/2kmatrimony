@@ -70,7 +70,7 @@ function VerificationDetail({ id, onDecided }: { id: string; onDecided: () => vo
         return (
           <div className="space-y-5">
             <KeyValues items={[
-              ['Member', <Link key="m" className="text-burgundy-600 hover:underline" href={`/admin/profiles/${p.id}`}>{p.profile_code} · {[p.first_name, p.last_name].filter(Boolean).join(' ')}</Link>],
+              ['Member', <Link key="m" className="text-emerald-600 hover:underline" href={`/admin/profiles/${p.id}`}>{p.profile_code} · {[p.first_name, p.last_name].filter(Boolean).join(' ')}</Link>],
               ['Check', VERIFICATION_KIND_LABELS[v.kind as VerificationKind] ?? v.kind], ['Document type', human(v.document_type)], ['Provider', v.provider],
               ['Declared date of birth', p.date_of_birth], ['City', p.current_city], ['Status', <StatusBadge key="s" status={v.status} />], ['Submitted', fmtDateTime(v.created_at)],
               ...Object.entries(v.submitted_data ?? {}).map(([k, val]) => [human(k), val] as [string, React.ReactNode]),
@@ -81,7 +81,7 @@ function VerificationDetail({ id, onDecided }: { id: string; onDecided: () => vo
                 <div className="grid gap-3 sm:grid-cols-2">
                   {d.documents.map((doc) => doc.url ? (
                     doc.path.endsWith('.pdf')
-                      ? <a key={doc.path} href={doc.url} target="_blank" rel="noreferrer" className="rounded-lg border border-line p-4 text-sm text-burgundy-600 hover:underline">Open PDF document</a>
+                      ? <a key={doc.path} href={doc.url} target="_blank" rel="noreferrer" className="rounded-lg border border-line p-4 text-sm text-emerald-600 hover:underline">Open PDF document</a>
                       // eslint-disable-next-line @next/next/no-img-element
                       : <a key={doc.path} href={doc.url} target="_blank" rel="noreferrer"><img src={doc.url} alt="Submitted verification document" className="w-full rounded-lg border border-line" /></a>
                   ) : <p key={doc.path} className="text-sm text-muted">Document file missing.</p>)}

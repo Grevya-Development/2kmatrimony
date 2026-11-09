@@ -66,8 +66,8 @@ export default function DnaScreen() {
       <Text variant="bodyMuted">Your Relationship DNA is a picture of your own answers — not a personality test or diagnosis. You can change it any time.</Text>
       {chart.length > 0 && <DnaChart entries={chart} />}
       <View style={{ flexDirection: 'row', gap: space.md, justifyContent: 'center' }}>
-        <Badge label="● You" tone="burgundy" />
-        <Badge label="◌ Hoped-for partner" tone="champagne" />
+        <Badge label="● You" tone="emerald" />
+        <Badge label="◌ Hoped-for partner" tone="gold" />
       </View>
       <Card style={{ gap: space.md }}>
         <Text variant="heading">Describe yourself in your words</Text>
@@ -97,7 +97,7 @@ export default function DnaScreen() {
             <SpectrumSlider label={`${meta.label} — you`} value={e?.selfScore ?? 50} onChange={(n) => update(dim, { selfScore: n })} left={meta.left} right={meta.right} />
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
               <Text variant="label">Partner similar to me</Text>
-              <Switch accessibilityLabel={`${meta.label}: partner similar to me`} value={(e?.partnerTarget ?? null) === null} onValueChange={(on) => update(dim, { partnerTarget: on ? null : e?.selfScore ?? 50 })} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+              <Switch accessibilityLabel={`${meta.label}: partner similar to me`} value={(e?.partnerTarget ?? null) === null} onValueChange={(on) => update(dim, { partnerTarget: on ? null : e?.selfScore ?? 50 })} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
             </View>
             {e && e.partnerTarget !== null && <SpectrumSlider label={`${meta.label} — partner`} value={e.partnerTarget} onChange={(n) => update(dim, { partnerTarget: n })} left={meta.left} right={meta.right} />}
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -106,7 +106,7 @@ export default function DnaScreen() {
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
               <Text variant="label">Flexible</Text>
-              <Switch accessibilityLabel={`${meta.label}: flexible`} value={e?.flexible ?? true} onValueChange={(on) => update(dim, { flexible: on })} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+              <Switch accessibilityLabel={`${meta.label}: flexible`} value={e?.flexible ?? true} onValueChange={(on) => update(dim, { flexible: on })} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
             </View>
           </Card>
         );

@@ -35,7 +35,7 @@ export async function openCheckout(order: CheckoutOrder, brandName: string): Pro
       name: brandName,
       description: `${order.planName} plan`,
       prefill: { name: order.prefill.name ?? undefined, email: order.prefill.email ?? undefined, contact: order.prefill.contact ?? undefined },
-      theme: { color: '#7a2e3c' },
+      theme: { color: '#033b39' },
       handler: (resp: RazorpaySuccess) => resolve(resp),
       modal: { ondismiss: () => resolve(null) },
     });

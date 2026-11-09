@@ -77,7 +77,7 @@ export default function ReadinessTopicScreen() {
               <>
                 {history.isLoading ? <Loading /> : (history.data ?? []).map((m) => (
                   <View key={m.id} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '88%' }}>
-                    <Card padded={false} style={{ padding: space.md, backgroundColor: m.role === 'user' ? colors.burgundy600 : colors.surface, borderRadius: radius.lg }}>
+                    <Card padded={false} style={{ padding: space.md, backgroundColor: m.role === 'user' ? colors.emerald600 : colors.surface, borderRadius: radius.lg }}>
                       <Text style={{ color: m.role === 'user' ? colors.white : colors.ink }}>{m.content}</Text>
                     </Card>
                     {m.role === 'assistant' && qs.length < 15 && (
@@ -85,7 +85,7 @@ export default function ReadinessTopicScreen() {
                     )}
                   </View>
                 ))}
-                {pending && <View style={{ alignSelf: 'flex-end', maxWidth: '88%', opacity: 0.6 }}><Card padded={false} style={{ padding: space.md, backgroundColor: colors.burgundy600 }}><Text style={{ color: colors.white }}>{pending}</Text></Card><Text variant="small">Thinking…</Text></View>}
+                {pending && <View style={{ alignSelf: 'flex-end', maxWidth: '88%', opacity: 0.6 }}><Card padded={false} style={{ padding: space.md, backgroundColor: colors.emerald600 }}><Text style={{ color: colors.white }}>{pending}</Text></Card><Text variant="small">Thinking…</Text></View>}
                 <TextField label="Ask or reflect" multiline maxLength={2000} value={msg} onChangeText={setMsg} placeholder="e.g. How do couples usually split finances?" />
                 <Button title="Send" onPress={ask} loading={busy === 'chat'} disabled={!msg.trim()} />
               </>

@@ -5,16 +5,16 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium transition-all duration-200 ease-(--ease-out-soft) disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy-500 active:scale-[0.98] [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium transition-all duration-200 ease-(--ease-out-soft) disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 active:scale-[0.98] [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        primary: 'bg-burgundy-600 text-white shadow-soft hover:bg-burgundy-700',
+        primary: 'bg-emerald-600 text-white shadow-soft hover:bg-emerald-700',
         secondary: 'bg-surface text-ink border border-line-strong hover:border-ink-2 hover:bg-white',
         ghost: 'text-ink-2 hover:bg-surface-2 hover:text-ink',
-        champagne: 'bg-champagne-100 text-ink hover:bg-champagne-200',
+        gold: 'bg-gold-100 text-ink hover:bg-gold-200',
         danger: 'bg-danger text-white hover:opacity-90',
-        link: 'text-burgundy-600 underline-offset-4 hover:underline rounded-none px-0',
+        link: 'text-emerald-600 underline-offset-4 hover:underline rounded-none px-0',
       },
       size: {
         sm: 'h-9 px-4 text-sm',

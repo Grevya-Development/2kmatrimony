@@ -58,7 +58,7 @@ export default function Discover() {
           <ErrorState message={smart.error instanceof ApiClientError && smart.error.code === 'service_unconfigured' ? 'Smart search is unavailable right now — use filters instead.' : errorMessage(smart.error)} />
         )}
         {interpretation && (
-          <View style={{ gap: 8, padding: space.md, borderRadius: 16, backgroundColor: colors.champagne50, borderWidth: 1, borderColor: colors.champagne200 }}>
+          <View style={{ gap: 8, padding: space.md, borderRadius: 16, backgroundColor: colors.gold50, borderWidth: 1, borderColor: colors.gold200 }}>
             <Text variant="label">We understood: {interpretation.summary}</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
               {filterChips(interpretation.filters).map((c) => (

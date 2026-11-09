@@ -61,7 +61,7 @@ export function ShortlistButton({ card }: { card: ProfileCard }) {
   const a = useProfileActions(card);
   return (
     <IconButton label={card.relationship.shortlisted ? 'Remove from shortlist' : 'Add to shortlist'} onPress={a.shortlist}>
-      <Icon name="bookmark" color={card.relationship.shortlisted ? colors.burgundy600 : colors.ink2} />
+      <Icon name="bookmark" color={card.relationship.shortlisted ? colors.emerald600 : colors.ink2} />
     </IconButton>
   );
 }

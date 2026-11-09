@@ -44,7 +44,7 @@ function ReportsQueue() {
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <FilterSelect label="Status" value={f.status} onChange={(status) => setF({ ...f, status, page: 1 })} options={[['open', 'Open'], ['actioned', 'Actioned'], ['dismissed', 'Dismissed'], ['all', 'All']]} />
         <FilterSelect label="Priority" value={f.priority} onChange={(priority) => setF({ ...f, priority, page: 1 })} options={[['', 'Any priority'], ['urgent', 'Urgent'], ['high', 'High'], ['normal', 'Normal'], ['low', 'Low']]} />
-        <label className="flex items-center gap-2 text-sm text-ink-2"><input type="checkbox" checked={f.mine} onChange={(e) => setF({ ...f, mine: e.target.checked, page: 1 })} className="h-4 w-4 accent-burgundy-600" />Assigned to me</label>
+        <label className="flex items-center gap-2 text-sm text-ink-2"><input type="checkbox" checked={f.mine} onChange={(e) => setF({ ...f, mine: e.target.checked, page: 1 })} className="h-4 w-4 accent-emerald-600" />Assigned to me</label>
       </div>
       <ErrorOr state={state}>
         {(d) => (
@@ -103,7 +103,7 @@ function ReportPanel({ id, onChanged, onClose }: { id: string; onChanged: () => 
             {r.details && <blockquote className="rounded-xl bg-surface-2 p-4 text-sm text-ink-2">“{r.details}”</blockquote>}
             {d.target && (
               <div className="rounded-xl border border-line p-4 text-sm">
-                <p className="font-medium"><Link href={`/admin/profiles/${d.target.id}`} className="text-burgundy-600 hover:underline">{d.target.profile_code} · {d.target.first_name}</Link> <StatusBadge status={d.target.status} /></p>
+                <p className="font-medium"><Link href={`/admin/profiles/${d.target.id}`} className="text-emerald-600 hover:underline">{d.target.profile_code} · {d.target.first_name}</Link> <StatusBadge status={d.target.status} /></p>
                 {d.target.about && <p className="mt-2 line-clamp-3 text-muted">{d.target.about}</p>}
               </div>
             )}
@@ -179,7 +179,7 @@ function RiskQueue() {
               columns={[
                 { key: 'kind', label: 'Signal', render: (r) => <span className="capitalize text-ink">{human(r.kind)}</span> },
                 { key: 'severity', label: 'Severity', render: (r) => `${r.severity}/5` },
-                { key: 'member', label: 'Member', render: (r) => r.user_id ? <Link className="font-mono text-xs text-burgundy-600 hover:underline" href={`/admin/users/${r.user_id}`}>{r.profileCode ?? 'Account'}</Link> : '—' },
+                { key: 'member', label: 'Member', render: (r) => r.user_id ? <Link className="font-mono text-xs text-emerald-600 hover:underline" href={`/admin/users/${r.user_id}`}>{r.profileCode ?? 'Account'}</Link> : '—' },
                 { key: 'details', label: 'Details', render: (r) => <code className="text-xs">{JSON.stringify(r.details).slice(0, 80)}</code>, hideOnMobile: true },
                 { key: 'created', label: 'Raised', render: (r) => fmtDateTime(r.created_at), hideOnMobile: true },
                 { key: 'actions', label: 'Review', render: (r) => r.status === 'open' ? (
@@ -210,7 +210,7 @@ function ActionHistory() {
               columns={[
                 { key: 'action', label: 'Action', render: (a) => <span className="capitalize text-ink">{human(a.action)}</span> },
                 { key: 'reason', label: 'Reason', render: (a) => <span className="line-clamp-2">{a.reason}</span> },
-                { key: 'target', label: 'Member', render: (a) => a.target_user_id ? <Link className="text-burgundy-600 hover:underline" href={`/admin/users/${a.target_user_id}`}>View</Link> : '—' },
+                { key: 'target', label: 'Member', render: (a) => a.target_user_id ? <Link className="text-emerald-600 hover:underline" href={`/admin/users/${a.target_user_id}`}>View</Link> : '—' },
                 { key: 'expires', label: 'Expires', render: (a) => fmtDateTime(a.expires_at), hideOnMobile: true },
                 { key: 'created', label: 'When', render: (a) => fmtDateTime(a.created_at) },
               ]} />

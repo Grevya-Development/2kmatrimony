@@ -53,7 +53,7 @@ export function FilterReview({ filters, softPreferences, onChange, onApply, appl
           </span>
         ))}
         {softPreferences.map((s) => (
-          <span key={s} className="inline-flex items-center gap-1 rounded-full bg-champagne-100 px-3 py-1 text-sm text-ink" title="Used for ranking, not filtering">
+          <span key={s} className="inline-flex items-center gap-1 rounded-full bg-gold-100 px-3 py-1 text-sm text-ink" title="Used for ranking, not filtering">
             ~ {s}
             <button type="button" aria-label={`Remove ${s}`} className="text-muted hover:text-ink" onClick={() => onChange(filters, softPreferences.filter((x) => x !== s))}><X className="h-3.5 w-3.5" /></button>
           </span>

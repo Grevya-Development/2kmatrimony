@@ -41,7 +41,7 @@ export default function Notifications() {
         renderItem={({ item }) => (
           <Pressable onPress={() => open(item)} accessibilityRole="button" accessibilityLabel={`${item.readAt ? '' : 'Unread. '}${item.title}`} android_ripple={{ color: colors.line }}
             style={{ flexDirection: 'row', gap: space.md, paddingVertical: space.md, borderBottomWidth: 1, borderBottomColor: colors.line }}>
-            <View style={{ width: 8, height: 8, borderRadius: 4, marginTop: 7, backgroundColor: item.readAt ? 'transparent' : colors.burgundy600 }} />
+            <View style={{ width: 8, height: 8, borderRadius: 4, marginTop: 7, backgroundColor: item.readAt ? 'transparent' : colors.emerald600 }} />
             <View style={{ flex: 1, gap: 2 }}>
               <Text style={{ fontFamily: item.readAt ? fonts.body : fonts.semibold }}>{item.title}</Text>
               {item.body && <Text variant="bodyMuted">{item.body}</Text>}

@@ -25,8 +25,8 @@ export function VerifiedBadges({ verified, className }: { verified: ProfileCard[
 export function CompatibilityChip({ compatibility, className }: { compatibility: CompatibilitySummary | null; className?: string }) {
   if (!compatibility) return null;
   return (
-    <span className={cn('inline-flex items-center gap-2 rounded-full bg-champagne-100 px-3 py-1 text-xs font-medium text-ink', className)} title="How well your stated preferences align, in both directions. Not a prediction.">
-      <span className="font-serif text-base leading-none text-burgundy-700">{compatibility.mutual}</span>
+    <span className={cn('inline-flex items-center gap-2 rounded-full bg-gold-100 px-3 py-1 text-xs font-medium text-ink', className)} title="How well your stated preferences align, in both directions. Not a prediction.">
+      <span className="font-serif text-base leading-none text-emerald-700">{compatibility.mutual}</span>
       <span className="text-ink-2">{compatibility.label}</span>
     </span>
   );

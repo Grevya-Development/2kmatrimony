@@ -146,7 +146,7 @@ export function ReadinessView() {
       <div role="tablist" aria-label="Topics" className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {state.notes.map((n) => (
           <button key={n.topic} role="tab" aria-selected={topic === n.topic} type="button" onClick={() => setTopic(n.topic)}
-            className={cn('rounded-2xl border p-4 text-left transition-colors', topic === n.topic ? 'border-burgundy-600 bg-burgundy-50' : 'border-line bg-surface hover:border-line-strong')}>
+            className={cn('rounded-2xl border p-4 text-left transition-colors', topic === n.topic ? 'border-emerald-600 bg-emerald-50' : 'border-line bg-surface hover:border-line-strong')}>
             <p className="font-medium text-ink">{READINESS_TOPIC_LABELS[n.topic]}</p>
             <p className="mt-1 text-xs text-muted">{n.exploredAt ? 'Explored' : 'Not yet explored'}</p>
           </button>

@@ -36,10 +36,10 @@ export default function Billing() {
       {plans.isLoading ? <Loading /> : plans.error ? <ErrorState message={errorMessage(plans.error)} onRetry={() => plans.refetch()} /> : (plans.data ?? []).filter((p) => p.code !== 'free').map((p) => {
         const isCurrent = current?.code === p.code;
         return (
-          <Card key={p.id} style={{ gap: space.sm, borderColor: isCurrent ? colors.burgundy500 : colors.line }}>
+          <Card key={p.id} style={{ gap: space.sm, borderColor: isCurrent ? colors.emerald500 : colors.line }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Text variant="title">{p.name}</Text>
-              {isCurrent && <Badge label="Current" tone="burgundy" />}
+              {isCurrent && <Badge label="Current" tone="emerald" />}
             </View>
             {p.tagline && <Text variant="bodyMuted">{p.tagline}</Text>}
             {p.prices.map((pr) => (

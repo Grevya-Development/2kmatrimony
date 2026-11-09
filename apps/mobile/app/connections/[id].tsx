@@ -64,7 +64,7 @@ export default function ConnectionDetail() {
           {tab === 'meet' && <InsightTab<BeforeYouMeetBriefing> id={id} kind="before_you_meet" render={(b) => (
             <View style={{ gap: space.md }}>
               <Card style={{ gap: 6 }}><Text variant="heading">Shared ground</Text>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>{[...b.sharedInterests, ...b.sharedValues].map((x) => <Badge key={x} label={x} tone="champagne" />)}</View>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>{[...b.sharedInterests, ...b.sharedValues].map((x) => <Badge key={x} label={x} tone="gold" />)}</View>
               </Card>
               <Card style={{ gap: 6 }}><Text variant="heading">Conversation starters</Text>{b.conversationStarters.map((x) => <Text key={x}>• {x}</Text>)}</Card>
               <Card style={{ gap: 6 }}><Text variant="heading">Worth discussing before progressing</Text>{b.questionsToDiscuss.map((x) => <Text key={x}>• {x}</Text>)}</Card>
@@ -134,14 +134,14 @@ function VisionTab({ id }: { id: string }) {
         <TextField label="Your idea" multiline maxLength={500} value={content} onChangeText={setContent} placeholder="e.g. A trip to Japan in spring" />
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <Text variant="label">Share with them</Text>
-          <Switch accessibilityLabel="Share with them" value={shared} onValueChange={setShared} trackColor={{ true: colors.burgundy500, false: colors.lineStrong }} />
+          <Switch accessibilityLabel="Share with them" value={shared} onValueChange={setShared} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
         </View>
         {add.error && <ErrorState message={errorMessage(add.error)} />}
         <Button title="Add to vision board" onPress={() => add.mutate()} loading={add.isPending} disabled={!content.trim()} />
       </Card>
       {q.isLoading ? <Loading /> : q.error ? <ErrorState message={errorMessage(q.error)} onRetry={() => q.refetch()} /> : (q.data?.items ?? []).map((v) => (
         <Card key={v.id} style={{ gap: 4 }}>
-          <View style={{ flexDirection: 'row', gap: 6 }}><Badge label={VISION_CATEGORY_LABELS[v.category]} tone="champagne" />{!v.isShared && <Badge label="Private" />}{!v.isMine && <Badge label="Theirs" tone="info" />}</View>
+          <View style={{ flexDirection: 'row', gap: 6 }}><Badge label={VISION_CATEGORY_LABELS[v.category]} tone="gold" />{!v.isShared && <Badge label="Private" />}{!v.isMine && <Badge label="Theirs" tone="info" />}</View>
           <Text>{v.content}</Text>
           {v.isMine && <View style={{ flexDirection: 'row', gap: 8 }}>
             <Button title={v.isShared ? 'Make private' : 'Share'} size="sm" variant="ghost" onPress={() => toggleShare(v)} />

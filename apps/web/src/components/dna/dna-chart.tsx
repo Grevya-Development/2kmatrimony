@@ -26,15 +26,15 @@ export function DnaChart({ points, onSelect, compact }: { points: DnaPoint[]; on
               className={cn('grid w-full grid-cols-1 items-center gap-2 rounded-xl px-3 py-3 text-left sm:grid-cols-[11rem_1fr]', onSelect && 'transition-colors hover:bg-surface-2 focus-visible:bg-surface-2')}>
               <span className="flex items-center gap-2 text-sm font-medium text-ink">
                 {meta.label}
-                {p?.source === 'ai_suggested' && <span className="rounded-full bg-champagne-100 px-2 py-0.5 text-[0.65rem] text-champagne-600">AI-suggested</span>}
+                {p?.source === 'ai_suggested' && <span className="rounded-full bg-gold-100 px-2 py-0.5 text-[0.65rem] text-gold-600">AI-suggested</span>}
               </span>
               <span className="block">
                 <svg viewBox="0 0 400 28" className="h-7 w-full" role="presentation" aria-hidden preserveAspectRatio="none">
                   <line x1="8" x2="392" y1="14" y2="14" stroke="var(--color-line-strong)" strokeWidth={p ? 1 + p.importance * 0.9 : 1.5} strokeLinecap="round" opacity={p ? 0.35 + p.importance * 0.13 : 0.4} />
                   {p && p.partnerTarget !== null && (
-                    <circle cx={8 + (p.partnerTarget / 100) * 384} cy="14" r="8" fill="var(--color-surface)" stroke="var(--color-champagne-600)" strokeWidth="2.5" strokeDasharray={p.flexible ? '3 2' : undefined} />
+                    <circle cx={8 + (p.partnerTarget / 100) * 384} cy="14" r="8" fill="var(--color-surface)" stroke="var(--color-gold-600)" strokeWidth="2.5" strokeDasharray={p.flexible ? '3 2' : undefined} />
                   )}
-                  {p && <circle cx={8 + (p.selfScore / 100) * 384} cy="14" r="6.5" fill="var(--color-burgundy-600)" />}
+                  {p && <circle cx={8 + (p.selfScore / 100) * 384} cy="14" r="6.5" fill="var(--color-emerald-600)" />}
                 </svg>
                 {!compact && (
                   <span className="mt-0.5 flex justify-between text-[0.7rem] text-muted"><span>{meta.left}</span><span>{p ? '' : 'Not answered'}</span><span>{meta.right}</span></span>
@@ -51,9 +51,9 @@ export function DnaChart({ points, onSelect, compact }: { points: DnaPoint[]; on
 export function DnaLegend() {
   return (
     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted">
-      <span className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-burgundy-600" />You</span>
-      <span className="flex items-center gap-2"><span className="h-3 w-3 rounded-full border-2 border-champagne-600 bg-surface" />Partner you hope for</span>
-      <span className="flex items-center gap-2"><span className="h-3 w-3 rounded-full border-2 border-dashed border-champagne-600" />Flexible</span>
+      <span className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-emerald-600" />You</span>
+      <span className="flex items-center gap-2"><span className="h-3 w-3 rounded-full border-2 border-gold-600 bg-surface" />Partner you hope for</span>
+      <span className="flex items-center gap-2"><span className="h-3 w-3 rounded-full border-2 border-dashed border-gold-600" />Flexible</span>
       <span className="flex items-center gap-2"><span className="h-1 w-6 rounded bg-line-strong" />Thicker line = matters more</span>
     </div>
   );
