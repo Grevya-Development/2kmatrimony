@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "2K Matrimony",
+    "slug": "2k-matrimony",
+    "scheme": "twokmatrimony",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#faf7f2",
+    "ios": {
+      "bundleIdentifier": "com.twokmatrimony.app",
+      "supportsTablet": false,
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Take a photo for your profile or verification.",
+        "NSPhotoLibraryUsageDescription": "Choose photos for your profile.",
+        "NSFaceIDUsageDescription": "Unlock 2K Matrimony with Face ID.",
+        "NSMicrophoneUsageDescription": "Record your introduction video or speak to the matchmaker."
+      }
+    },
+    "android": {
+      "package": "com.twokmatrimony.app",
+      "adaptiveIcon": { "foregroundImage": "./assets/android-icon-foreground.png", "backgroundColor": "#faf7f2" },
+      "permissions": ["CAMERA", "USE_BIOMETRIC", "RECORD_AUDIO", "POST_NOTIFICATIONS"],
+      "intentFilters": [
+        { "action": "VIEW", "autoVerify": true, "data": [{ "scheme": "https", "host": "app.example.com", "pathPrefix": "/app" }], "category": ["BROWSABLE", "DEFAULT"] }
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
+      "expo-image",
+      "expo-web-browser",
+      "expo-video",
+      ["expo-splash-screen", { "backgroundColor": "#faf7f2", "image": "./assets/splash-icon.png", "imageWidth": 160 }],
+      ["expo-notifications", { "color": "#7a2e3c" }],
+      ["expo-local-authentication", { "faceIDPermission": "Unlock 2K Matrimony with Face ID." }],
+      ["expo-image-picker", { "photosPermission": "Choose photos for your profile.", "cameraPermission": "Take a photo for your profile or verification." }]
+    ],
+    "experiments": { "typedRoutes": true },
+    "extra": {
+      "apiUrl": "http://localhost:3000",
+      "supabaseUrl": "http://127.0.0.1:56321",
+      "supabaseAnonKey": ""
+    }
+  }
+}

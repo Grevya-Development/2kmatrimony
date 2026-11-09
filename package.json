@@ -2,7 +2,10 @@
   "name": "2k-matrimony",
   "private": true,
   "version": "0.1.0",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "npm run dev -w @2k/web",
     "build": "npm run build -w @2k/web",
@@ -20,5 +23,11 @@
     "vitest": "5.1.0",
     "prettier": "^3.6.0"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  },
+  "overrides": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  }
 }
