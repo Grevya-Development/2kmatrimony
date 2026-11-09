@@ -13,7 +13,7 @@ let b: Page;
 const errors: string[] = [];
 
 async function member(browser: Browser) {
-  const ctx = await browser.newContext();
+  const ctx = await browser.newContext({ storageState: 'tests/e2e/storage-state.json' });
   const page = await ctx.newPage();
   errors.push(...[]);
   const errs = trackPageErrors(page);

@@ -1,0 +1,6 @@
+{
+  "cookies": [],
+  "origins": [
+    { "origin": "http://localhost:3100", "localStorage": [{ "name": "tk_analytics_consent", "value": "denied" }] }
+  ]
+}

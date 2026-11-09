@@ -42,6 +42,13 @@ opt-in recorded as consent type `product_analytics` (Settings → Consents, web 
 - **Kill switch**: feature flag `product_analytics` (Admin → Configuration).
 - **Region**: set `*_POSTHOG_HOST` to `https://eu.i.posthog.com` for the EU cloud if preferred.
 
+**Configured project:** US Cloud, project ID `723053` — dashboard https://us.posthog.com/project/723053.
+The project API key (`phc_…`) is public by design (it ships in the browser bundle); it lives in
+`apps/web/.env.local` / `apps/mobile/.env` locally (gitignored) and must be added to Vercel (web) and
+EAS secrets (mobile) for deployed builds. Dead clicks, heatmaps, rage clicks, web vitals, exception
+capture, surveys, experiments and replay are disabled in code, so enabling them in PostHog project
+settings has no effect until the code is changed deliberately.
+
 Setup: create a PostHog project → copy the project API key (`phc_…`) into the env vars above for web
 (Vercel) and mobile (EAS secrets) → deploy. The `npx @posthog/wizard` CLI is not required (it needs an
 interactive login); this integration was implemented manually to respect the consent model above.

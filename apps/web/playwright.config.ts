@@ -19,6 +19,8 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}`,
     channel: 'chrome',
+    // Analytics consent already decided (declined) so the banner never covers UI under test.
+    storageState: 'tests/e2e/storage-state.json',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
