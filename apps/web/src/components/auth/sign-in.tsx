@@ -104,12 +104,12 @@ export function SignIn() {
       {step === 'enter' ? (
         <form onSubmit={sendCode} className="space-y-5">
           {method === 'phone' ? (
-            <Field label="Mobile number" htmlFor="phone" hint="We’ll text you a one-time code.">
-              <div className="flex gap-2">
-                <span className="flex h-12 items-center rounded-xl border border-line bg-surface-2 px-3 text-sm text-ink-2">+91</span>
-                <Input id="phone" type="tel" inputMode="tel" autoComplete="tel-national" placeholder="98765 43210" value={phone} onChange={(e) => setPhone(e.target.value)} required />
-              </div>
-            </Field>
+            <div className="relative">
+              <Field label="Mobile number" htmlFor="phone" hint="We’ll text you a one-time code. Indian numbers can omit +91.">
+                <Input type="tel" inputMode="tel" autoComplete="tel-national" placeholder="98765 43210" className="pl-14" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+              </Field>
+              <span aria-hidden className="pointer-events-none absolute left-4 top-[2.35rem] text-[0.95rem] text-muted">+91</span>
+            </div>
           ) : (
             <>
               <Field label="Email" htmlFor="email">

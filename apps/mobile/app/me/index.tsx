@@ -89,6 +89,7 @@ export default function MyProfile() {
               <LinkRow icon="gem" label="Plans & billing" href="/billing" detail={me.data?.plan.name} />
               <LinkRow icon="bell" label="Notifications" href="/notifications" />
               <LinkRow icon="settings" label="Settings & privacy" href="/settings" />
+              <LinkRow icon="chat" label="Help & support" href="/support" />
               <LinkRow icon="lock" label="Sign out" onPress={() => Alert.alert('Sign out?', undefined, [{ text: 'Cancel', style: 'cancel' }, { text: 'Sign out', style: 'destructive', onPress: () => void signOut() }])} />
             </View>
           </Section>

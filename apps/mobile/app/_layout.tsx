@@ -40,6 +40,10 @@ function Gate({ children }: { children: React.ReactNode }) {
       return;
     }
     if (!me.data) return;
+    if (me.data.user.status === 'suspended') {
+      if (first !== 'support' && first !== 'settings') router.replace('/support');
+      return;
+    }
     const helperOnly = !me.data.profile && me.data.familyOf.length > 0 && me.data.consentsRequired.length === 0;
     if (helperOnly) {
       // Family helpers may not have a profile of their own; they use the family view.

@@ -6,7 +6,7 @@ import { BellOff, MessagesSquare } from 'lucide-react';
 import { relativeTime, type ConversationItem } from '@2k/shared';
 import { Avatar, Button, EmptyState, ErrorState, Skeleton } from '@/components/ui';
 import { apiRaw } from '@/lib/api';
-import { supabaseBrowser } from '@/lib/supabase/browser';
+import { subscribeWhenReady } from '@/lib/supabase/browser';
 import { cn } from '@/lib/utils';
 
 export function ConversationList({ className }: { className?: string }) {
@@ -23,14 +23,13 @@ export function ConversationList({ className }: { className?: string }) {
 
   // Refresh previews/unread counts when any of my conversations change (RLS-scoped).
   React.useEffect(() => {
-    const sb = supabaseBrowser();
     let t: ReturnType<typeof setTimeout> | undefined;
     const debounced = () => { clearTimeout(t); t = setTimeout(() => void load(), 400); };
-    const ch = sb.channel('conversation-list')
+    const unsubscribe = subscribeWhenReady((sb) => sb.channel('conversation-list')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'conversations' }, debounced)
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'conversation_participants' }, debounced)
-      .subscribe();
-    return () => { clearTimeout(t); void sb.removeChannel(ch); };
+      .subscribe());
+    return () => { clearTimeout(t); unsubscribe(); };
   }, [load]);
 
   return (

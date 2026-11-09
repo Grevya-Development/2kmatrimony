@@ -20,6 +20,8 @@ describe('hrefToRoute', () => {
     expect(hrefToRoute('/app/connections/c1')).toBe('/connections/c1');
     expect(hrefToRoute('/app/dna')).toBe('/me/dna');
     expect(hrefToRoute('/app/readiness')).toBe('/readiness');
+    expect(hrefToRoute('/app/support')).toBe('/support');
+    expect(hrefToRoute('/app/support/7c1e')).toBe('/support/7c1e');
   });
   it('maps deep links', () => {
     expect(hrefToRoute('twokmatrimony://profile/abc')).toBe('/member/abc');

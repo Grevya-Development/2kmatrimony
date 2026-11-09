@@ -1,29 +1,13 @@
 'use client';
 import * as React from 'react';
 import Link from 'next/link';
-import { Check, Minus } from 'lucide-react';
 import { BILLING_INTERVAL_LABELS, formatInr, type BillingInterval, type Entitlements, type PlanItem } from '@2k/shared';
 import { Badge, Button } from '@/components/ui';
+import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ENTITLEMENT_ROWS, EntitlementValue } from './entitlement-rows';
 
-export const ENTITLEMENT_ROWS: { key: keyof Entitlements; label: string; format?: (v: Entitlements[keyof Entitlements]) => string }[] = [
-  { key: 'interests_per_day', label: 'Interests per day', format: (v) => String(v) },
-  { key: 'daily_recommendations', label: 'Curated matches per day', format: (v) => String(v) },
-  { key: 'advanced_filters', label: 'Advanced filters' },
-  { key: 'ai_insights', label: 'AI match insights', format: (v) => (v === 'full' ? 'Full' : v === 'basic' ? 'Basic' : '—') },
-  { key: 'ai_matchmaker_messages_per_day', label: 'AI matchmaker messages / day', format: (v) => String(v) },
-  { key: 'see_who_viewed', label: 'See who viewed you' },
-  { key: 'gap_analysis', label: 'Compatibility Gap Analysis' },
-  { key: 'before_you_meet', label: 'Before You Meet briefings' },
-  { key: 'curated_introductions', label: 'Curated introductions' },
-  { key: 'human_matchmaker', label: 'Personal human matchmaker' },
-  { key: 'priority_support', label: 'Priority support' },
-];
-
-export function EntitlementValue({ value, format }: { value: Entitlements[keyof Entitlements]; format?: (v: Entitlements[keyof Entitlements]) => string }) {
-  if (typeof value === 'boolean') return value ? <Check className="h-4 w-4 text-success" aria-label="Included" /> : <Minus className="h-4 w-4 text-line-strong" aria-label="Not included" />;
-  return <span>{format ? format(value) : String(value)}</span>;
-}
+export { ENTITLEMENT_ROWS, EntitlementValue };
 
 /** Plan cards from live plan data. `onChoose` turns CTAs into checkout actions (in-app). */
 export function PricingTable({ plans, ctaHref = '/login', onChoose, currentCode, busyKey }: {

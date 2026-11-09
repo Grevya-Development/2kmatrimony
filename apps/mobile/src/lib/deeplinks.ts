@@ -20,6 +20,7 @@ const SIMPLE: Record<string, string> = {
   'app/dna': '/me/dna',
   'app/family': '/family',
   'app/readiness': '/readiness',
+  'app/support': '/support',
   discover: '/discover',
   matchmaker: '/matchmaker',
   interests: '/interests',
@@ -68,6 +69,7 @@ export function hrefToRoute(href: string | null | undefined): string | null {
     if (b === 'messages' && id(c)) return `/chat/${c}`;
     if (b === 'profile' && id(c)) return `/member/${c}`;
     if (b === 'connections' && id(c)) return `/connections/${c}`;
+    if (b === 'support' && id(c)) return `/support/${c}`;
   }
   if (parts.length === 2) {
     if ((a === 'messages' || a === 'chat') && id(b)) return `/chat/${b}`;

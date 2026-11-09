@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
-import { PricingTable, ENTITLEMENT_ROWS, EntitlementValue } from '@/components/marketing/pricing-table';
+import { PricingTable } from '@/components/marketing/pricing-table';
+import { ENTITLEMENT_ROWS, EntitlementValue } from '@/components/marketing/entitlement-rows';
 import { Faq } from '@/components/marketing/faq';
 import { getBrand, getCms, getPlansSafe, isSignedIn } from '@/components/marketing/data';
 

@@ -10,7 +10,7 @@ export function StartStep({ onDone }: { onDone: (createdFor: CreatedFor) => void
   const [createdFor, setCreatedFor] = React.useState<CreatedFor | null>(null);
   const [relation, setRelation] = React.useState('');
   const [terms, setTerms] = React.useState(false);
-  const [ai, setAi] = React.useState(true);
+  const [ai, setAi] = React.useState(false); // DPDP: optional consent is opt-in, never pre-ticked
   const [busy, setBusy] = React.useState(false);
 
   const submit = async (e: React.FormEvent) => {

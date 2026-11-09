@@ -10,7 +10,7 @@ import { useMe } from '@/components/shell/me-context';
 import { ReportDialog } from '@/components/discovery/safety-dialogs';
 import { showApiError } from '@/components/discovery/hooks';
 import { api, apiRaw, newClientId, uploadToSignedUrl } from '@/lib/api';
-import { supabaseBrowser } from '@/lib/supabase/browser';
+import { realtimeReady, supabaseBrowser } from '@/lib/supabase/browser';
 import { cn } from '@/lib/utils';
 
 type Local = MessageItem & { pending?: boolean; failed?: boolean };
@@ -83,7 +83,11 @@ export function Thread({ conversationId }: { conversationId: string }) {
   React.useEffect(() => {
     if (!myId) return;
     const sb = supabaseBrowser();
-    const changes = sb.channel(`messages:${conversationId}`)
+    let changes: ReturnType<typeof sb.channel> | null = null;
+    let cancelled = false;
+    void realtimeReady().then(() => {
+      if (cancelled) return;
+      changes = sb.channel(`messages:${conversationId}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `conversation_id=eq.${conversationId}` }, (payload) => {
         const r = payload.new as Row;
         if (r.deleted_at) return;
@@ -99,10 +103,12 @@ export function Thread({ conversationId }: { conversationId: string }) {
         const c = payload.new as { is_locked: boolean };
         setConv((cur) => (cur ? { ...cur, isLocked: c.is_locked } : cur));
       })
-      .subscribe();
+      .subscribe((status) => { if (status === 'SUBSCRIBED') void loadLatest(); }); // catch up on anything sent while joining
+    });
 
     let room: ReturnType<typeof sb.channel> | null = null;
-    void sb.realtime.setAuth().then(() => {
+    void realtimeReady().then(() => {
+      if (cancelled) return;
       room = sb.channel(`conversation:${conversationId}`, { config: { private: true, presence: { key: myId } } })
         .on('broadcast', { event: 'typing' }, ({ payload }) => {
           if ((payload as { profileId?: string }).profileId === myId) return;
@@ -123,7 +129,8 @@ export function Thread({ conversationId }: { conversationId: string }) {
     return () => {
       document.removeEventListener('visibilitychange', onVisible);
       clearTimeout(typingTimer.current);
-      void sb.removeChannel(changes);
+      cancelled = true;
+      if (changes) void sb.removeChannel(changes);
       if (room) void sb.removeChannel(room);
       channelRef.current = null;
     };

@@ -6,7 +6,7 @@ import { relativeTime, type NotificationItem } from '@2k/shared';
 import { Button, EmptyState, ErrorState, PageHeader, Skeleton } from '@/components/ui';
 import { useMe } from '@/components/shell/me-context';
 import { api, apiRaw } from '@/lib/api';
-import { supabaseBrowser } from '@/lib/supabase/browser';
+import { subscribeWhenReady } from '@/lib/supabase/browser';
 import { showApiError } from '@/components/discovery/hooks';
 import { cn } from '@/lib/utils';
 
@@ -26,14 +26,12 @@ export function NotificationsView() {
   React.useEffect(() => { void load(); }, [load]);
 
   React.useEffect(() => {
-    const sb = supabaseBrowser();
-    const ch = sb.channel(`notifications-page:${me.user.id}`)
+    return subscribeWhenReady((sb) => sb.channel(`notifications-page:${me.user.id}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${me.user.id}` }, (payload) => {
         const n = payload.new as { id: string; type: string; title: string; body: string | null; data: Record<string, unknown> | null; read_at: string | null; created_at: string };
         setItems((cur) => (cur?.some((x) => x.id === n.id) ? cur : [{ id: n.id, type: n.type, title: n.title, body: n.body, data: n.data ?? {}, readAt: n.read_at, createdAt: n.created_at }, ...(cur ?? [])]));
       })
-      .subscribe();
-    return () => { void sb.removeChannel(ch); };
+      .subscribe());
   }, [me.user.id]);
 
   const markAll = async () => {
