@@ -128,7 +128,7 @@ export function Discover() {
               ) : loading ? (
                 <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="aspect-[4/6]" />)}</div>
               ) : upgrade ? (
-                <EmptyState icon={<SlidersHorizontal />} title="Advanced filters are part of Plus" description={upgrade} action={<div className="flex gap-2"><Button onClick={() => router.push('/app/billing')}>See plans</Button><Button variant="secondary" onClick={reset}>Clear advanced filters</Button></div>} />
+                <EmptyState icon={<SlidersHorizontal />} title="You’ve reached today’s search limit" description="To keep the community safe we cap searches per day. Please try again tomorrow." action={<Button variant="secondary" onClick={reset}>Reset filters</Button>} />
               ) : error ? (
                 <ErrorState message={error} onRetry={() => pushUrl(applied, sort, soft)} />
               ) : items.length === 0 ? (

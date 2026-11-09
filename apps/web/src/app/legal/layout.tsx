@@ -9,7 +9,7 @@ export default async function LegalLayout({ children }: { children: React.ReactN
   return (
     <>
       <SiteHeader signedIn={signedIn} />
-      <main id="main" className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      <main id="main" className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:py-20">
         <div role="note" className="mb-10 rounded-2xl border border-warning/30 bg-warning-bg px-5 py-4 text-sm text-warning">
           Draft — review with counsel before launch. This document is a working draft and is not yet legal advice or a binding policy.
         </div>
@@ -18,7 +18,7 @@ export default async function LegalLayout({ children }: { children: React.ReactN
         </article>
         <p className="mt-12 text-sm text-muted">Contact: <a className="text-emerald-600 underline-offset-4 hover:underline" href={`mailto:${brand.support_email}`}>{brand.support_email}</a></p>
       </main>
-      <SiteFooter brand={brand} />
+      <SiteFooter brand={brand} signedIn={signedIn} />
     </>
   );
 }

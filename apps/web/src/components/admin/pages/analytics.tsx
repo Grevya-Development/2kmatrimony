@@ -1,4 +1,5 @@
 'use client';
+import { useMe } from '@/components/shell/me-context';
 import * as React from 'react';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui';
@@ -13,6 +14,7 @@ const LABELS: Record<string, string> = {
 
 export function AnalyticsPage() {
   const can = useCan();
+  const payments = useMe().me.featureFlags.payments === true;
   const [report, setReport] = React.useState('acquisition');
   const [range, setRange] = React.useState(lastDays(30));
   const state = useAdminData<{ reports: string[]; report: Report }>(`/admin/analytics${qs({ report, ...range })}`);
@@ -20,7 +22,7 @@ export function AnalyticsPage() {
     <>
       <AdminHeader title="Analytics" description="Every view can be exported as CSV." actions={<RangePicker value={range} onChange={setRange} />} />
       <div role="tablist" aria-label="Reports" className="mb-4 flex flex-wrap gap-1">
-        {Object.entries(LABELS).map(([k, l]) => (
+        {Object.entries(LABELS).filter(([k]) => payments || (k !== 'subscriptions' && k !== 'revenue')).map(([k, l]) => (
           <button key={k} role="tab" aria-selected={report === k} type="button" onClick={() => setReport(k)}
             className={`rounded-full px-3.5 py-1.5 text-sm ${report === k ? 'bg-ink text-canvas' : 'border border-line bg-surface text-ink-2 hover:text-ink'}`}>{l}</button>
         ))}

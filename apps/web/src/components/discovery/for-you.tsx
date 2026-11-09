@@ -15,7 +15,7 @@ function ViewersButton({ data }: { data: ProfileViewersResponse }) {
   const [open, setOpen] = React.useState(false);
   const label = `${data.count} viewed you this month`;
   if (data.locked) {
-    return <Button variant="secondary" size="sm" asChild><Link href="/app/billing" title="See who viewed you on Plus and above"><Eye />{label}</Link></Button>;
+    return <span className="inline-flex items-center gap-2 text-sm text-muted"><Eye className="h-4 w-4" aria-hidden />{label}</span>;
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -63,6 +63,29 @@ function Feedback({ candidateId }: { candidateId: string }) {
   );
 }
 
+function RecCard({ rec, onRemoved }: { rec: RecommendationItem; onRemoved: () => void }) {
+  const handPicked = rec.source === 'matchmaker';
+  return (
+    <ProfileCardView
+      card={rec.profile}
+      href={`/app/profile/${rec.profile.id}?source=recommendation`}
+      reason={handPicked ? undefined : rec.reason}
+      actions={
+        <div className="space-y-3">
+          {handPicked && rec.reason && (
+            <figure className="rounded-xl border border-gold-200 bg-gold-50 px-4 py-3">
+              <figcaption className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-gold-600">From your matchmaker</figcaption>
+              <blockquote className="mt-1 text-sm leading-relaxed text-ink-2">“{rec.reason}”</blockquote>
+            </figure>
+          )}
+          <ProfileActions size="sm" recommendationId={rec.id} target={{ id: rec.profile.id, displayName: rec.profile.displayName, relationship: rec.profile.relationship }} onRemoved={onRemoved} />
+          {!handPicked && <Feedback candidateId={rec.profile.id} />}
+        </div>
+      }
+    />
+  );
+}
+
 export function ForYou() {
   const { me } = useMe();
   const profileActive = me.profile?.status === 'active';
@@ -70,13 +93,15 @@ export function ForYou() {
   const viewers = useApiData<ProfileViewersResponse>('/profiles/viewers');
   const name = me.profile?.firstName ?? me.user.fullName ?? '';
   const remove = (id: string) => setData((cur) => cur?.filter((r) => r.id !== id) ?? null);
+  const picked = (data ?? []).filter((r) => r.source === 'matchmaker');
+  const suggested = (data ?? []).filter((r) => r.source !== 'matchmaker');
 
   return (
     <div>
       <PageHeader
         eyebrow={`${greeting()}${name ? `, ${name}` : ''}`}
-        title="Today’s introductions"
-        description="A small, considered set — suggested because you align with each other, not just one way."
+        title="Your introductions"
+        description="A small, considered set. Everyone here fits what you’re looking for, and you fit what they’re looking for."
         actions={viewers.data && viewers.data.count > 0 ? <ViewersButton data={viewers.data} /> : undefined}
       />
 
@@ -90,22 +115,27 @@ export function ForYou() {
         <EmptyState icon={<Compass />} title="No new introductions today" description="We only suggest people who align with you both ways. Try widening your preferences, or explore on your own." action={<div className="flex gap-2"><Button asChild><Link href="/app/discover">Discover</Link></Button><Button variant="secondary" asChild><Link href="/app/profile">Review preferences</Link></Button></div>} />
       ) : (
         <>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {data.map((rec) => (
-              <ProfileCardView
-                key={rec.id}
-                card={rec.profile}
-                href={`/app/profile/${rec.profile.id}?source=recommendation`}
-                reason={rec.reason}
-                actions={
-                  <div className="space-y-3">
-                    <ProfileActions size="sm" recommendationId={rec.id} target={{ id: rec.profile.id, displayName: rec.profile.displayName, relationship: rec.profile.relationship }} onRemoved={() => remove(rec.id)} />
-                    <Feedback candidateId={rec.profile.id} />
-                  </div>
-                }
-              />
-            ))}
-          </div>
+          {picked.length > 0 && (
+            <section aria-labelledby="hand-picked" className="mb-14">
+              <div className="mb-5 flex items-end justify-between gap-4 border-b border-gold-200 pb-3">
+                <div>
+                  <h2 id="hand-picked" className="font-serif text-3xl text-ink">Hand-picked for you</h2>
+                  <p className="mt-1 text-sm text-muted">Chosen personally by your matchmaker, with a note on why.</p>
+                </div>
+              </div>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {picked.map((rec) => <RecCard key={rec.id} rec={rec} onRemoved={() => remove(rec.id)} />)}
+              </div>
+            </section>
+          )}
+          {suggested.length > 0 && (
+            <section aria-labelledby="suggested">
+              {picked.length > 0 && <h2 id="suggested" className="mb-5 font-serif text-2xl text-ink">More suggestions for today</h2>}
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {suggested.map((rec) => <RecCard key={rec.id} rec={rec} onRemoved={() => remove(rec.id)} />)}
+              </div>
+            </section>
+          )}
           <div className="mt-12 rounded-2xl border border-line bg-surface-2/60 px-6 py-10 text-center">
             <p className="font-serif text-3xl">You’re all caught up for today</p>
             <p className="mx-auto mt-2 max-w-md text-sm text-muted">New introductions arrive each day. Meanwhile, explore on your own or tell the matchmaker what matters most to you.</p>

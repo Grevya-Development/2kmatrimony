@@ -2,12 +2,15 @@ import 'server-only';
 import { track } from '@/server/analytics/track';
 import { DNA_DIMENSIONS, type Database } from '@2k/shared';
 import { db } from '@/lib/supabase/admin';
+import { getSetting } from '@/server/config';
 import { highestEducation, loadBundle, type ProfileBundle } from './load';
 
 export interface CompletionReport {
   pct: number;
   /** Minimum required to activate (become discoverable). */
   canActivate: boolean;
+  /** Profile status after this refresh ('in_review' while our team screens it). */
+  status?: string;
   missing: { section: string; label: string; required: boolean }[];
 }
 
@@ -52,7 +55,8 @@ export function buildSearchText(b: ProfileBundle): string {
 
 /**
  * Recompute completion %, search text and activation after any profile edit.
- * Profiles auto-activate when the required sections are complete; returns the report.
+ * When the required sections are complete a draft profile is submitted for human
+ * screening ('in_review') — or activated directly if screening is switched off.
  */
 export async function refreshProfileDerived(profileId: string): Promise<CompletionReport | null> {
   const b = await loadBundle(profileId, { includeUnapprovedMedia: true });
@@ -63,10 +67,21 @@ export async function refreshProfileDerived(profileId: string): Promise<Completi
     search_text: buildSearchText(b),
   };
   if (b.profile.status === 'draft' && report.canActivate) {
-    patch.status = 'active';
-    patch.activated_at = new Date().toISOString();
+    const curation = await getSetting<{ profile_screening: boolean }>('curation', { profile_screening: true });
+    if (curation.profile_screening) {
+      patch.status = 'in_review';
+      patch.review_submitted_at = new Date().toISOString();
+      patch.review_note = null;
+    } else {
+      patch.status = 'active';
+      patch.activated_at = new Date().toISOString();
+    }
   }
   await db().from('profiles').update(patch).eq('id', profileId);
+  report.status = patch.status ?? b.profile.status;
+  if (patch.status === 'in_review') {
+    await db().from('app_users').update({ onboarding_completed_at: new Date().toISOString() }).eq('id', b.profile.owner_user_id).is('onboarding_completed_at', null);
+  }
   if (patch.status === 'active') {
     void track(b.profile.owner_user_id, 'profile_activated', { completion: report.pct, created_for: b.profile.created_for });
     await db().from('app_users').update({ onboarding_completed_at: new Date().toISOString() }).eq('id', b.profile.owner_user_id).is('onboarding_completed_at', null);

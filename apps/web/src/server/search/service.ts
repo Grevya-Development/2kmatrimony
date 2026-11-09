@@ -16,7 +16,7 @@ export function assertFilterEntitlements(filters: SearchFilters, ent: Entitlemen
     const v = filters[k];
     return v !== undefined && v !== null && v !== false && !(Array.isArray(v) && v.length === 0) && v !== '';
   });
-  if (used.length) throw errors.entitlement('Advanced filters are available on Plus and above.', { filters: used });
+  if (used.length) throw errors.entitlement('Advanced filters aren’t available on your account right now.', { filters: used });
 }
 
 export interface SearchResult {

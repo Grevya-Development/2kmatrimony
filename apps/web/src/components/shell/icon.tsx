@@ -1,11 +1,11 @@
 import {
-  Bell, Bookmark, ChartLine, Compass, Cpu, Crown, Dna, FileText, Flag, Gem, GitCompare, Heart, Home, IdCard,
+  Bell, Bookmark, HeartHandshake, UserCheck, ChartLine, Compass, Cpu, Crown, Dna, FileText, Flag, Gem, GitCompare, Heart, Home, IdCard,
   LayoutDashboard, LifeBuoy, MessageCircleHeart, MessagesSquare, ReceiptIndianRupee, ScrollText, Settings, ShieldCheck,
   SlidersHorizontal, Sparkles, User, Users, type LucideIcon,
 } from 'lucide-react';
 
 const ICONS: Record<string, LucideIcon> = {
-  bell: Bell, bookmark: Bookmark, 'chart-line': ChartLine, compass: Compass, cpu: Cpu, crown: Crown, dna: Dna,
+  bell: Bell, 'heart-handshake': HeartHandshake, 'user-check': UserCheck, bookmark: Bookmark, 'chart-line': ChartLine, compass: Compass, cpu: Cpu, crown: Crown, dna: Dna,
   'file-text': FileText, flag: Flag, gem: Gem, 'git-compare': GitCompare, heart: Heart, home: Home, 'id-card': IdCard,
   'layout-dashboard': LayoutDashboard, 'life-buoy': LifeBuoy, 'message-circle-heart': MessageCircleHeart,
   'messages-square': MessagesSquare, 'receipt-indian-rupee': ReceiptIndianRupee, 'scroll-text': ScrollText,

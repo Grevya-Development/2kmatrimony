@@ -24,13 +24,18 @@ const pct = (n: number, d: number) => (d ? Math.round((n / d) * 1000) / 10 : 0);
 
 export async function buildOverview(r: Range) {
   const prev = previousRange(r);
-  const [cur, before, daily] = await Promise.all([
+  const [cur, before, daily, screening, intros, introsPrev] = await Promise.all([
     db().rpc('admin_overview_metrics', args(r)),
     db().rpc('admin_overview_metrics', args(prev)),
     multiSeries(['signups', 'revenue', 'interests', 'connections', 'messages'], r),
+    db().from('profiles').select('id', { count: 'exact', head: true }).eq('status', 'in_review'),
+    db().from('recommendations').select('id', { count: 'exact', head: true }).eq('source', 'matchmaker').gte('created_at', iso(r.from)).lt('created_at', iso(r.to)),
+    db().from('recommendations').select('id', { count: 'exact', head: true }).eq('source', 'matchmaker').gte('created_at', iso(prev.from)).lt('created_at', iso(prev.to)),
   ]);
   if (cur.error) throw cur.error;
-  return { range: { from: iso(r.from), to: iso(r.to) }, current: cur.data, previous: before.data, series: daily };
+  const current = { ...(cur.data as Record<string, unknown>), pendingScreening: screening.count ?? 0, introductions: intros.count ?? 0 };
+  const previous = { ...(before.data as Record<string, unknown>), introductions: introsPrev.count ?? 0 };
+  return { range: { from: iso(r.from), to: iso(r.to) }, current, previous, series: daily };
 }
 
 export async function buildReport(key: ReportKey, r: Range): Promise<Report> {

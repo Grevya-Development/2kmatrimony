@@ -86,8 +86,8 @@ export function SignIn() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-serif text-4xl leading-tight">{step === 'code' ? 'Enter your code' : 'Welcome'}</h1>
-        <p className="mt-2 text-muted">{step === 'code' ? `Sent to ${method === 'phone' ? e164() : email}.` : 'Sign in or create your account. It takes less than a minute.'}</p>
+        <h1 className="font-serif text-4xl leading-tight">{step === 'code' ? 'Enter your code' : 'Sign in or register'}</h1>
+        <p className="mt-2 text-muted">{step === 'code' ? `Sent to ${method === 'phone' ? e164() : email}.` : 'New here? Use your mobile number and we will create your free account.'}</p>
       </div>
 
       {step === 'enter' && (

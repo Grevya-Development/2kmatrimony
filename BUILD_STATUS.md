@@ -27,7 +27,7 @@ Montserrat typography, branded emails and invoices. Source kit: `2K_Matrimony_Br
 Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundles.
 
 ## Production deployment (Vercel)
-✅ **Live: https://2k-matrimony.vercel.app**
+✅ **Live: https://2kmarriage.com** (also https://2k-matrimony.vercel.app; `www.2kmarriage.com` redirects to the apex with a 308 once its DNS record exists)
 - Team "Grevya's projects" (Hobby), project `2k-matrimony`, root directory `apps/web`, Node 24.
 - Functions run in `icn1` (Seoul), the same region as Supabase.
 - Connected to GitHub: every push to `main` deploys to production.
@@ -37,13 +37,17 @@ Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundl
   - Pages and APIs return 200; health reports the database OK.
   - Sign in → onboarding → profile created, through the real UI on the live URL (temporary user deleted).
   - `/me` works with the session cookie; 0 page errors; 0 runtime errors or 5xx in logs.
+- ✅ **Domain & email (2026-11-10):**
+  - **Domain:** `2kmarriage.com` (DNS at GoDaddy) is verified on Vercel and serves the app. `NEXT_PUBLIC_APP_URL=https://2kmarriage.com` in production.
+  - **Resend:** `updates.2kmarriage.com` is verified (DKIM + SPF). App notifications send from `2K Matrimony <hello@updates.2kmarriage.com>`; `RESEND_API_KEY` is a Vercel secret.
+  - **Supabase Auth email:** routed through Resend SMTP (`smtp.resend.com:465`), with the limit raised from 2 to 100 emails per hour. Verified: a Supabase password-reset email was delivered through Resend.
+  - **Safety:** the email provider never sends to reserved test domains (`.test`, `.example`, `.invalid`, `localhost`).
 - ✅ **Supabase Auth URLs set** (2026-11-10, applied as a minimal `supabase config push` from a pulled copy of the hosted config; re-diff shows 0 differences).
-  - Site URL: `https://2k-matrimony.vercel.app`.
-  - Redirect allow-list: the live URL, `2kmatrimony.com`, `www.2kmatrimony.com`, and `twokmatrimony://auth/callback`.
+  - Site URL: `https://2kmarriage.com`.
+  - Redirect allow-list: `2kmarriage.com`, `www.2kmarriage.com`, `2k-matrimony.vercel.app`, and `twokmatrimony://auth/callback`.
   - Minimum password length raised to 8, matching the app.
 - **Pending (owner actions):**
-  - **Custom domain:** `2kmatrimony.com` is attached but DNS still points to Hostinger parking. Add A `@` → `216.198.79.1` and CNAME `www` → `05cd87ae7713455c.vercel-dns-017.com`, then set `NEXT_PUBLIC_APP_URL=https://2kmatrimony.com` and redeploy.
-  - **Email:** custom SMTP (Resend); the built-in sender is heavily rate-limited.
+  - **www:** add CNAME `www` → `cname.vercel-dns.com` at GoDaddy (the apex `2kmarriage.com` is already live on Vercel).
   - **Phone login:** an SMS provider.
   - **Plan:** upgrade to Vercel Pro before commercial launch (Hobby is non-commercial; Pro also restores the hourly cron and longer log retention).
 

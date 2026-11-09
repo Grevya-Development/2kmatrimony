@@ -128,15 +128,17 @@ export async function generateRecommendations(profileId: string, limit: number):
   if (candidateIds.length === 0) return { created: 0, considered: 0 };
 
   const today = new Date().toISOString().slice(0, 10);
-  const { data: existing } = await db().from('recommendations').select('candidate_profile_id').eq('profile_id', profileId).eq('batch_date', today);
+  const { data: existing } = await db().from('recommendations').select('candidate_profile_id, source').eq('profile_id', profileId).eq('batch_date', today);
+  // Never duplicate anyone already introduced today; hand-picked introductions don't use up the engine's daily slots.
   const already = new Set((existing ?? []).map((r) => r.candidate_profile_id));
+  const engineToday = (existing ?? []).filter((r) => r.source !== 'matchmaker').length;
 
   const bundles = await loadBundles(candidateIds.filter((id) => !already.has(id)));
   const scored = await scoreCandidates(viewer, [...bundles.values()]);
   const ranked = [...scored.values()]
     .filter((p) => p.recommended)
     .sort((x, y) => y.mutual - x.mutual || y.confidence - x.confidence)
-    .slice(0, Math.max(0, limit - already.size));
+    .slice(0, Math.max(0, limit - engineToday));
 
   await storePairScores(ranked);
   if (ranked.length) {

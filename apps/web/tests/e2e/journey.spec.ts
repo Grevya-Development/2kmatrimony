@@ -102,10 +102,14 @@ test('A and B exchange messages in real time', async () => {
   await expect(logA.getByText('Hi Ananya — likewise!')).toBeVisible({ timeout: 20_000 });
 });
 
-test('subscription page lists plans and explains checkout availability', async () => {
+test('the platform is free: no billing page, plans or upgrade prompts', async () => {
   await a.goto('/app/billing');
-  await expect(a.getByText('Premium').first()).toBeVisible();
-  await expect(a.getByText('Plus').first()).toBeVisible();
+  await expect(a).toHaveURL(/\/app$/);
+  await a.getByRole('button', { name: 'Account menu' }).click();
+  await expect(a.getByRole('menu')).toBeVisible();
+  await expect(a.getByRole('menu').getByText(/plans|billing/i)).toHaveCount(0);
+  await a.keyboard.press('Escape');
+  await expect(a.locator('body')).not.toContainText(/upgrade|premium plan|see plans/i);
 });
 
 test('no uncaught page errors during the journey', async () => {

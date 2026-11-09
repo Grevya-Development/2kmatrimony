@@ -21,6 +21,7 @@ import { processRefund } from '@/server/billing/refunds';
 import { resetRazorpayClient } from '@/server/billing/razorpay';
 import { hmacSha256Hex } from '@/server/billing/signatures';
 import { getPlanState } from '@/server/entitlements';
+import { invalidateConfigCache } from '@/server/config';
 import { getAuthContext } from '@/server/auth';
 import { admin, call, request, type TestUser } from './helpers';
 import { billingUser, cleanupBillingUsers, createPendingPayment } from './billing-helpers';
@@ -31,7 +32,20 @@ const couponIds: string[] = [];
 const rid = () => `pay_${randomUUID().slice(0, 12)}`;
 const newUser = async (l: string) => { const u = await billingUser(l); users.push(u); return u; };
 
+// 2K Matrimony is currently free (payments flag off, paid plans retired). The
+// billing code is kept for the future, so this suite switches payments back on
+// for its own run — restoring the free configuration afterwards.
+const PAID = ['plus', 'premium', 'elite'];
+beforeAll(async () => {
+  await admin().from('plans').update({ is_public: true, is_active: true }).in('code', PAID);
+  await admin().from('feature_flags').update({ enabled: true }).eq('key', 'payments');
+  invalidateConfigCache();
+});
+
 afterAll(async () => {
+  await admin().from('plans').update({ is_public: false, is_active: false }).in('code', PAID);
+  await admin().from('feature_flags').update({ enabled: false }).eq('key', 'payments');
+  invalidateConfigCache();
   await cleanupBillingUsers(users);
   if (couponIds.length) await admin().from('coupons').delete().in('id', couponIds);
 });

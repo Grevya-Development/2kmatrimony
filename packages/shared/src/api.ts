@@ -71,6 +71,8 @@ export interface MeResponse {
     completionPct: number;
     onboardingStep: string | null;
     primaryPhotoUrl: string | null;
+    /** Note from our screening team when changes were requested. */
+    reviewNote?: string | null;
   } | null;
   plan: { code: C.PlanCode; name: string; currentPeriodEnd: string | null; entitlements: Entitlements };
   admin: { role: string; permissions: string[]; mfaRequired: boolean } | null;
@@ -380,6 +382,8 @@ export interface CompletionReport {
   pct: number;
   canActivate: boolean;
   missing: { section: string; label: string; required: boolean }[];
+  /** Current profile status ('in_review' while our team screens a new profile). */
+  status?: string;
 }
 
 export interface OwnPhoto {

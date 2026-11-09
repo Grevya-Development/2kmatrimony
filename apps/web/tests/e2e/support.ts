@@ -43,7 +43,24 @@ export async function completeProfileViaApi(page: Page, p: { firstName: string; 
     livingArrangement: 'independent', settlePreference: 'india_any', coreValues: ['honesty', 'family', 'growth'], personalityTraits: ['calm', 'curious'],
   });
   await api(page, 'PUT', '/profile/dna', { entries: DNA.map((dimension) => ({ dimension, selfScore: 55, partnerTarget: null, importance: 3, flexible: true, statement: null })) });
-  return api(page, 'PUT', '/profile/preferences', { seekingGenders: [p.seeking], ageMin: 24, ageMax: 38, nonNegotiables: [] });
+  const prefs = await api(page, 'PUT', '/profile/preferences', { seekingGenders: [p.seeking], ageMin: 24, ageMax: 38, nonNegotiables: [] });
+  await approveScreening(page);
+  return prefs;
+}
+
+/**
+ * New profiles wait for human screening (production behaviour). E2E tests act
+ * as the review team and approve the profile so the journey can continue.
+ */
+export async function approveScreening(page: Page): Promise<void> {
+  const me = await (await page.request.get('/api/v1/me')).json();
+  const profileId = me?.data?.profile?.id as string | undefined;
+  expect(profileId, 'profile id from /me').toBeTruthy();
+  const { data } = await admin().from('profiles').select('status').eq('id', profileId!).single();
+  if (data?.status === 'in_review') {
+    const { error } = await admin().from('profiles').update({ status: 'active', activated_at: new Date().toISOString(), reviewed_at: new Date().toISOString() }).eq('id', profileId!);
+    expect(error).toBeNull();
+  }
 }
 
 /** Fail the test on uncaught page errors (React crashes, hydration errors). */

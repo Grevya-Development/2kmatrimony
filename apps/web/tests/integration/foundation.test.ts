@@ -53,7 +53,9 @@ describe('foundation', () => {
     expect(r.body.data?.user.id).toBe(u.userId);
     expect(r.body.data?.profile).toBeNull();
     expect(r.body.data?.plan.code).toBe('free');
-    expect(r.body.data?.plan.entitlements.interests_per_day).toBe(3);
+    expect(r.body.data?.plan.entitlements.interests_per_day).toBe(50); // free platform: generous caps for everyone
+    expect(r.body.data?.plan.entitlements.advanced_filters).toBe(true);
+    expect(r.body.data?.featureFlags.payments).toBe(false);
     expect(r.body.data?.consentsRequired).toEqual(['terms', 'privacy']);
     expect(r.body.data?.admin).toBeNull();
   });

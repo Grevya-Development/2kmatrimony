@@ -1,4 +1,5 @@
 'use client';
+import { ScreeningActions } from './screening';
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -151,6 +152,7 @@ export function AdminProfilePage({ id }: { id: string }) {
                 </>
               }
             />
+            {p.status === 'in_review' && can('profiles.moderate') && <ScreeningActions profileId={id} onDone={state.reload} />}
             <div className="mb-4 flex flex-wrap gap-2">
               <Badge tone={p.is_identity_verified ? 'success' : 'outline'}>{p.is_identity_verified ? 'Identity verified' : 'Identity not verified'}</Badge>
               <Badge tone={p.is_photo_verified ? 'success' : 'outline'}>{p.is_photo_verified ? 'Photo verified' : 'Photo not verified'}</Badge>

@@ -60,7 +60,7 @@ describe('stripAdvancedFilters', () => {
     expect(filters).toEqual({ ageMin: 25 });
     expect(removed).toEqual(expect.arrayContaining(['relocation', 'coreValues']));
     expect(soft).toEqual(expect.arrayContaining(['open', 'family']));
-    expect(removedFiltersNotice(removed)).toMatch(/Plus and above/);
+    expect(removedFiltersNotice(removed)).toMatch(/rank results instead/);
   });
   it('keeps everything when advanced filters are included', () => {
     const r = stripAdvancedFilters({ relocation: ['open'] }, { ...DEFAULT_ENTITLEMENTS, advanced_filters: true });

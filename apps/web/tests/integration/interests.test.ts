@@ -1,3 +1,4 @@
+import { setUsage } from './quota-helpers';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { ConnectionItem, InterestItem, SendInterestResult } from '@2k/shared';
 import { GET as listInterests, POST as sendInterest } from '@/app/api/v1/interests/route';
@@ -109,8 +110,9 @@ describe('mutual and other responses', () => {
     expect(dec.body.data!.status).toBe('declined');
   });
 
-  it('enforces the free plan daily interest quota', async () => {
-    // a has consumed 2 of 3 free interests today (b, d); the mutual auto-accept with c is free.
+  it('still enforces the anti-abuse daily interest cap (50 for everyone)', async () => {
+    // Pre-fill today's usage just under the cap (everything is free; caps remain for safety).
+    await setUsage(a.userId, 'interests', 49);
     expect((await send(a, f)).status).toBe(201);
     const r = await send(a, g);
     expect(r.status).toBe(402);

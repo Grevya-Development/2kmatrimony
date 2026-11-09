@@ -1,4 +1,5 @@
 'use client';
+import { useMe } from '@/components/shell/me-context';
 import * as React from 'react';
 import { Plus } from 'lucide-react';
 import { ADMIN_PERMISSIONS, BILLING_INTERVALS, BILLING_INTERVAL_LABELS } from '@2k/shared';
@@ -10,17 +11,18 @@ interface Role { id: string; key: string; name: string; description: string | nu
 interface Perm { key: string; description: string; category: string }
 
 export function SuperAdminPage() {
+  const payments = useMe().me.featureFlags.payments === true;
   return (
     <>
-      <AdminHeader title="Super admin" description="Accounts, permissions, pricing and the health of the platform. Every change here is audited." />
+      <AdminHeader title="Super admin" description="Accounts, permissions and the health of the platform. Every change here is audited." />
       <Tabs defaultValue="admins">
         <TabsList className="flex-wrap">
           <TabsTrigger value="admins">Admins</TabsTrigger><TabsTrigger value="roles">Roles & permissions</TabsTrigger>
-          <TabsTrigger value="plans">Plans & pricing</TabsTrigger><TabsTrigger value="system">System & integrations</TabsTrigger>
+          {payments && <TabsTrigger value="plans">Plans & pricing</TabsTrigger>}<TabsTrigger value="system">System & integrations</TabsTrigger>
         </TabsList>
         <TabsContent value="admins"><Admins /></TabsContent>
         <TabsContent value="roles"><Roles /></TabsContent>
-        <TabsContent value="plans"><Plans /></TabsContent>
+        {payments && <TabsContent value="plans"><Plans /></TabsContent>}
         <TabsContent value="system"><SystemTab /></TabsContent>
       </Tabs>
     </>

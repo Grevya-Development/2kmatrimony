@@ -10,7 +10,8 @@ import { colors } from '@/theme';
 
 export function handleEntitlementError(e: unknown): boolean {
   if (e instanceof ApiClientError && e.code === 'entitlement_required') {
-    Alert.alert('Upgrade to continue', e.message, [{ text: 'Not now', style: 'cancel' }, { text: 'See plans', onPress: () => router.push('/billing') }]);
+    // Everything is free; the only limits are anti-abuse daily caps.
+    Alert.alert('Daily limit reached', 'To keep the community safe we cap this per day. Please try again tomorrow.');
     return true;
   }
   return false;

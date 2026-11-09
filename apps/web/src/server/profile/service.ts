@@ -349,7 +349,7 @@ export async function getOwnProfile(auth: AuthContext, opts: { preview?: boolean
     status: bundle.profile.status as OwnProfileResponse['status'],
     createdFor: bundle.profile.created_for as OwnProfileResponse['createdFor'],
     onboardingStep: bundle.profile.onboarding_step,
-    completion: computeCompletion(bundle),
+    completion: { ...computeCompletion(bundle), status: bundle.profile.status },
     detail,
     form: toForm(bundle),
     photos: bundle.photos.map((ph) => ({

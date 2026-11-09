@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Pressable, View } from 'react-native';
+import { Alert, Pressable, View } from 'react-native';
 import { router } from 'expo-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { CREATED_FOR_OPTIONS, ONBOARDING_STEPS, type CreatedFor, type OnboardingQuestion, type OnboardingStep, type OwnProfileResponse } from '@2k/shared';
@@ -86,6 +86,9 @@ export default function Onboarding() {
       return;
     }
     haptic.success();
+    if (refreshed.data?.profile?.status === 'in_review') {
+      Alert.alert('Your profile is with our team', 'Every profile is reviewed by a real person before it goes live — usually within 24 hours. We’ll notify you when it’s approved.');
+    }
     router.replace('/');
   };
 

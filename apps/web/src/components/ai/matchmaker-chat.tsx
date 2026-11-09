@@ -255,7 +255,7 @@ export function MatchmakerChat() {
             )}
             <Button type="submit" size="icon" disabled={!input.trim() || busy || needsConsent || status?.remainingToday === 0} aria-label="Send"><Send /></Button>
           </form>
-          {status?.remainingToday === 0 && <p className="mt-2 text-xs text-muted">You’ve used today’s messages. <Link href="/app/billing" className="underline">See plans</Link> for more.</p>}
+          {status?.remainingToday === 0 && <p className="mt-2 text-xs text-muted">You’ve used today’s messages. The matchmaker will be ready again tomorrow.</p>}
           <p className="mt-2 text-xs text-muted">The matchmaker never contacts anyone for you and never reads your private messages.</p>
         </div>
       </section>

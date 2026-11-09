@@ -21,8 +21,8 @@ const { cleanupCreated, createMember, givePlan } = await import('./ai-fixtures')
 afterAll(cleanupCreated);
 
 describe('explanation with AI enrichment (mocked model)', () => {
-  it('free plan (ai_insights none) never calls the model', async () => {
-    const a = await createMember({ label: 'ma', gender: 'female', seeking: 'male', aiConsent: true });
+  it('never calls the model without the member’s AI-processing consent', async () => {
+    const a = await createMember({ label: 'ma', gender: 'female', seeking: 'male', aiConsent: false });
     const b = await createMember({ label: 'mb', gender: 'male', seeking: 'female' });
     runStructured.mockClear();
     const r = await call<MatchExplanation>(explanation, request(`/api/v1/profiles/${b.profileId}/explanation`, { token: a.user.token }), { id: b.profileId });
@@ -30,10 +30,9 @@ describe('explanation with AI enrichment (mocked model)', () => {
     expect(runStructured).not.toHaveBeenCalled();
   });
 
-  it('premium + consent: AI rewrite, cached by fingerprint', async () => {
+  it('free member + consent: full AI rewrite (everything is free), cached by fingerprint', async () => {
     const a = await createMember({ label: 'mc', gender: 'female', seeking: 'male', aiConsent: true });
     const b = await createMember({ label: 'md', gender: 'male', seeking: 'female' });
-    await givePlan(a, 'premium');
     runStructured.mockClear();
     const r1 = await call<MatchExplanation>(explanation, request(`/api/v1/profiles/${b.profileId}/explanation`, { token: a.user.token }), { id: b.profileId });
     expect(r1.status).toBe(200);

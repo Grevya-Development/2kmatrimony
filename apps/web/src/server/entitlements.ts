@@ -70,5 +70,5 @@ export async function getDailyUsage(userId: string, key: string): Promise<number
 
 export function requireEntitlement(ent: Entitlements, key: keyof Entitlements, label: string): void {
   const v = ent[key];
-  if (v === false || v === 'none' || v === 0) throw errors.entitlement(`${label} is available on a higher plan.`, { key });
+  if (v === false || v === 'none' || v === 0) throw errors.entitlement(`${label} isn’t available on your account right now.`, { key });
 }

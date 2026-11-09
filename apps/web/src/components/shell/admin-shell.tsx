@@ -15,6 +15,7 @@ export function AdminShell({ me, children }: { me: MeResponse; children: React.R
   const perms = new Set(me.admin?.permissions ?? []);
   const isSuper = perms.has('*');
   const can = (p?: string) => !p || isSuper || perms.has(p);
+  const flagOn = (f?: string) => !f || me.featureFlags[f] === true;
 
   return (
     <MeProvider initial={me}>
@@ -27,7 +28,7 @@ export function AdminShell({ me, children }: { me: MeResponse; children: React.R
           </div>
           <nav aria-label="Admin" className="flex-1 space-y-6 overflow-y-auto px-3 pb-6">
             {ADMIN_NAV.map((group) => {
-              const items = group.items.filter((i) => (i.superOnly ? isSuper : can(i.permission)));
+              const items = group.items.filter((i) => flagOn(i.flag) && (i.superOnly ? isSuper : can(i.permission)));
               if (items.length === 0) return null;
               return (
                 <div key={group.section}>
@@ -50,7 +51,7 @@ export function AdminShell({ me, children }: { me: MeResponse; children: React.R
         <div className="min-w-0 flex-1">
           <div className="border-b border-line bg-surface px-4 py-3 lg:hidden">
             <select aria-label="Admin section" className="w-full rounded-xl border border-line bg-canvas px-3 py-2 text-sm" value={path} onChange={(e) => { window.location.href = e.target.value; }}>
-              {ADMIN_NAV.flatMap((g) => g.items.filter((i) => (i.superOnly ? isSuper : can(i.permission)))).map((i) => <option key={i.href} value={i.href}>{i.label}</option>)}
+              {ADMIN_NAV.flatMap((g) => g.items.filter((i) => flagOn(i.flag) && (i.superOnly ? isSuper : can(i.permission)))).map((i) => <option key={i.href} value={i.href}>{i.label}</option>)}
             </select>
           </div>
           <main id="main" className="mx-auto max-w-7xl px-4 py-8 sm:px-8">{children}</main>

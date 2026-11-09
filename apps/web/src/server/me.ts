@@ -50,6 +50,7 @@ export async function buildMe(auth: AuthContext): Promise<MeResponse> {
           completionPct: auth.profile.completion_pct,
           onboardingStep: auth.profile.onboarding_step,
           primaryPhotoUrl,
+          reviewNote: auth.profile.status === 'draft' ? auth.profile.review_note : null,
         }
       : null,
     plan: { code: plan.code, name: plan.name, currentPeriodEnd: plan.currentPeriodEnd, entitlements: plan.entitlements },

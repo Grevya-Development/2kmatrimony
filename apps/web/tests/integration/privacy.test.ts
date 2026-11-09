@@ -28,6 +28,8 @@ describe('privacy operations', () => {
   it('schedules and cancels deletion, hiding then restoring the profile', async () => {
     const u = await startedUser('a-del-cancel');
     await completeRequired(u);
+    // Our review team approves the profile (it went live), so cancelling deletion must restore it without re-screening.
+    await admin().from('profiles').update({ status: 'active', activated_at: new Date().toISOString() }).eq('owner_user_id', u.userId);
     const bad = await call(scheduleDeletion, request('/api/v1/privacy/deletion', { token: u.token, body: { confirm: 'yes' } }));
     expect(bad.status).toBe(422);
     const r = await call<{ scheduledFor: string }>(scheduleDeletion, request('/api/v1/privacy/deletion', { token: u.token, body: { confirm: 'DELETE', reason: 'Found someone' } }));

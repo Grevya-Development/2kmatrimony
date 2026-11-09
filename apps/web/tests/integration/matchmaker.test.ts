@@ -1,3 +1,4 @@
+import { setUsage } from './quota-helpers';
 import { afterAll, describe, expect, it } from 'vitest';
 import type { MatchmakerMessage, MatchmakerStatus, MatchmakerThreadSummary, SearchFilters } from '@2k/shared';
 import { POST as turn } from '@/app/api/v1/matchmaker/route';
@@ -19,7 +20,7 @@ describe('AI matchmaker (rules mode, no AI key)', () => {
     await createMember({ label: 'mmc', gender: 'male', seeking: 'female', city, age: 44 }); // outside age range
 
     const st = await call<{ threads: MatchmakerThreadSummary[]; status: MatchmakerStatus }>(threads, request('/api/v1/matchmaker/threads', { token: seeker.user.token }));
-    expect(st.body.data?.status).toMatchObject({ aiAvailable: false, remainingToday: 3, dailyLimit: 3 });
+    expect(st.body.data?.status).toMatchObject({ aiAvailable: false, remainingToday: 200, dailyLimit: 200 }); // free platform: anti-abuse cap only
 
     // Rules parser does not know this synthetic city name, so use filters via apply after the first turn.
     const res = await turn(request('/api/v1/matchmaker', { token: seeker.user.token, body: { message: 'Someone vegetarian aged 28-35 who loves reading' } }), { params: Promise.resolve({}) });
@@ -61,6 +62,8 @@ describe('AI matchmaker (rules mode, no AI key)', () => {
     expect(last.filters).toMatchObject({ ageMin: 25, ageMax: 30, diets: ['vegetarian', 'vegan', 'jain'] });
     expect(last.filters.cities).toEqual(expect.arrayContaining(['Chennai']));
 
+    // Anti-abuse cap (200/day for everyone): pre-fill usage just under the cap.
+    await setUsage(seeker.user.userId, 'ai_matchmaker', 199);
     const r3 = await turn(request('/api/v1/matchmaker', { token: seeker.user.token, body: { threadId, message: 'hello' } }), { params: Promise.resolve({}) });
     await r3.text();
     const r4 = await call(turn as never, request('/api/v1/matchmaker', { token: seeker.user.token, body: { threadId, message: 'one more' } }));

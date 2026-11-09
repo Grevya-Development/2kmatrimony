@@ -86,7 +86,7 @@ export function InsightPanel({ connectionId, kind, entitled, active }: { connect
   if (env === undefined) return <div className="space-y-3"><Skeleton className="h-6 w-48" /><Skeleton className="h-32 w-full" /></div>;
   const action = entitled
     ? active ? <Button onClick={generate} loading={busy}>{env ? 'Refresh' : `Prepare ${label}`}</Button> : null
-    : <Button asChild variant="gold"><Link href="/app/billing">See plans that include this</Link></Button>;
+    : <p className="text-sm text-muted">This isn’t available on your account right now.</p>;
 
   return (
     <div className="space-y-6">

@@ -86,7 +86,7 @@ export default function MyProfile() {
               <LinkRow icon="shield" label="Verification" href="/verification" />
               {me.data?.featureFlags.family_mode !== false && <LinkRow icon="users" label="Family" href="/family" />}
               {me.data?.featureFlags.readiness_assistant !== false && <LinkRow icon="compass" label="Readiness assistant" href="/readiness" />}
-              <LinkRow icon="gem" label="Plans & billing" href="/billing" detail={me.data?.plan.name} />
+              {me.data?.featureFlags.payments === true && <LinkRow icon="gem" label="Plans & billing" href="/billing" detail={me.data?.plan.name} />}
               <LinkRow icon="bell" label="Notifications" href="/notifications" />
               <LinkRow icon="settings" label="Settings & privacy" href="/settings" />
               <LinkRow icon="chat" label="Help & support" href="/support" />

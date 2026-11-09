@@ -1,5 +1,6 @@
+import { ActiveProfileGate } from '@/components/shell/profile-gate';
 import type { Metadata } from 'next';
 import { ConnectionsView } from '@/components/interests/connections-view';
 
 export const metadata: Metadata = { title: 'Connections' };
-export default function ConnectionsPage() { return <ConnectionsView />; }
+export default function ConnectionsPage() { return <ActiveProfileGate><ConnectionsView /></ActiveProfileGate>; }

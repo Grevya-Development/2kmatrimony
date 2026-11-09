@@ -62,7 +62,7 @@ describe('profile start & sections', () => {
     expect(r.status).toBe(422);
   });
 
-  it('saves sections, tracks completion and activates when required sections are complete', async () => {
+  it('saves sections, tracks completion and submits for human screening when required sections are complete', async () => {
     const u = await startedUser('a-full');
     const r1 = await call<{ completion: { pct: number } }>(putBasics, request('/api/v1/profile/basics', { token: u.token, method: 'PUT', body: basics }));
     expect(r1.status).toBe(200);
@@ -73,14 +73,16 @@ describe('profile start & sections', () => {
     expect(car.status).toBe(200);
     await completeRequired(u);
     const p = await own(u.token);
-    expect(p.status).toBe('active');
+    expect(p.status).toBe('in_review'); // waits for our team; never goes live automatically
     expect(p.completion.canActivate).toBe(true);
+    expect(p.completion.status).toBe('in_review');
     expect(p.form.education).toHaveLength(2);
     expect(p.form.education.find((e) => e.isHighest)?.qualification).toBe('M.Tech');
     expect(p.form.basics.firstName).toBe('Ananya');
-    const { data: prof } = await admin().from('profiles').select('search_text, activated_at').eq('owner_user_id', u.userId).single();
+    const { data: prof } = await admin().from('profiles').select('search_text, activated_at, review_submitted_at').eq('owner_user_id', u.userId).single();
     expect(prof?.search_text).toContain('Software engineer');
-    expect(prof?.activated_at).not.toBeNull();
+    expect(prof?.activated_at).toBeNull();
+    expect(prof?.review_submitted_at).not.toBeNull();
     const { count } = await admin().from('audit_logs').select('id', { count: 'exact', head: true }).eq('actor_user_id', u.userId).eq('action', 'profile.update');
     expect(count).toBeGreaterThanOrEqual(4);
     const step = await call(patchProfile, request('/api/v1/profile', { token: u.token, method: 'PATCH', body: { onboardingStep: 'done' } }));

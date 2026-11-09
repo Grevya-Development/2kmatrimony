@@ -224,5 +224,5 @@ const FILTER_LABELS: Partial<Record<keyof SearchFilters, string>> = {
 };
 export const removedFiltersNotice = (removed: (keyof SearchFilters)[]): string | null =>
   removed.length
-    ? `Filtering by ${unique(removed.map((k) => FILTER_LABELS[k] ?? String(k))).join(', ')} is available on Plus and above — we used these to rank results instead.`
+    ? `Filtering by ${unique(removed.map((k) => FILTER_LABELS[k] ?? String(k))).join(', ')} isn’t available right now — we used these to rank results instead.`
     : null;

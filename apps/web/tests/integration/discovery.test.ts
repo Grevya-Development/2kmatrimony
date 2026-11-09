@@ -65,11 +65,11 @@ describe('profile view', () => {
     expect(count).toBe(1);
   });
 
-  it('who-viewed-me is locked to a count on the free plan', async () => {
+  it('who-viewed-me is available to every member (free platform)', async () => {
     const r = await call<ProfileViewersResponse>(viewers, request('/api/v1/profiles/viewers', { token: b.token }));
-    expect(r.body.data!.locked).toBe(true);
+    expect(r.body.data!.locked).toBe(false);
     expect(r.body.data!.count).toBeGreaterThanOrEqual(1);
-    expect(r.body.data!.items).toEqual([]);
+    expect(r.body.data!.items.length).toBeGreaterThanOrEqual(1);
   });
 
   it('404s for unknown ids', async () => {
@@ -89,10 +89,9 @@ describe('search', () => {
     expect(ids).not.toContain(a.profileId); // never yourself
   });
 
-  it('gates advanced filters behind the plan', async () => {
+  it('advanced filters are free for every member', async () => {
     const r = await call(search, request('/api/v1/search', { token: a.token, body: { filters: { professions: ['Engineer'] } } }));
-    expect(r.status).toBe(402);
-    expect(r.body.error?.code).toBe('entitlement_required');
+    expect(r.status).toBe(200);
   });
 
   it('validates input', async () => {

@@ -1,0 +1,5 @@
+/* Marketing-only motion (respects prefers-reduced-motion via `motion-safe:`). */
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}

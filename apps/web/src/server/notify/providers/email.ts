@@ -2,6 +2,10 @@ import { integrations, serverEnv } from '@/lib/env';
 import type { ChannelProvider } from '../types';
 import { toEmailHtml, toPlainText } from './format';
 
+/** Reserved / non-deliverable TLDs (RFC 2606/6761): never attempt delivery (protects sender reputation). */
+const UNDELIVERABLE = /[.@](test|example|invalid|localhost)$/i;
+export const isUndeliverableAddress = (email: string): boolean => UNDELIVERABLE.test(email.trim());
+
 /** Resend transactional email. */
 export const emailProvider: ChannelProvider = {
   channel: 'email',
@@ -9,6 +13,7 @@ export const emailProvider: ChannelProvider = {
   isConfigured: () => integrations.email,
   async send(target, message) {
     if (!target.email) return { status: 'failed', provider: 'resend', error: 'no_email_address' };
+    if (isUndeliverableAddress(target.email)) return { status: 'failed', provider: 'resend', error: 'undeliverable_test_address' };
     const subject = message.subject ?? '2K Matrimony';
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',

@@ -36,20 +36,28 @@ describe('email (Resend)', () => {
   it('sends HTML + text with real newlines and linkified URLs', async () => {
     process.env.RESEND_API_KEY = 're_test';
     fetchMock.mockResolvedValue(json({ id: 'email_1' }));
-    const r = await emailProvider.send(target(user), msg);
+    const r = await emailProvider.send(target(user, { email: 'asha.member@gmail.com' }), msg);
     expect(r).toMatchObject({ status: 'sent', providerMessageId: 'email_1' });
     const [url, init] = fetchMock.mock.calls[0]!;
     expect(url).toBe('https://api.resend.com/emails');
     expect(init.headers.authorization).toBe('Bearer re_test');
     const body = JSON.parse(init.body);
-    expect(body.to).toEqual([user.email]);
+    expect(body.to).toEqual(['asha.member@gmail.com']);
     expect(body.text).toContain('Hello Asha,\n\nRavi');
     expect(body.html).toContain('<a href="https://app.example.com/app/interests"');
   });
   it('reports API errors as failed', async () => {
     process.env.RESEND_API_KEY = 're_test';
     fetchMock.mockResolvedValue(json({ message: 'invalid from' }, 422));
-    expect(await emailProvider.send(target(user), msg)).toMatchObject({ status: 'failed', error: '422 invalid from' });
+    expect(await emailProvider.send(target(user, { email: 'asha.member@gmail.com' }), msg)).toMatchObject({ status: 'failed', error: '422 invalid from' });
+  });
+  it('never attempts delivery to reserved test domains (sender reputation)', async () => {
+    process.env.RESEND_API_KEY = 're_test';
+    fetchMock.mockClear();
+    for (const email of ['a@it.test', 'b@e2e.test', 'c@example', 'd@foo.invalid', 'e@localhost']) {
+      expect(await emailProvider.send(target(user, { email }), msg)).toMatchObject({ status: 'failed', error: 'undeliverable_test_address' });
+    }
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });
 

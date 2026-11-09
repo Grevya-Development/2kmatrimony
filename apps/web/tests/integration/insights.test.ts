@@ -30,18 +30,16 @@ describe('connection overview', () => {
     expect(r.body.data?.other.id).toBe(b.profileId);
     expect(r.body.data?.conversationId).toBe(conversationId);
     expect(r.body.data?.explanation?.dimensions).toHaveLength(9);
-    expect(r.body.data?.features).toMatchObject({ gapAnalysis: false, beforeYouMeet: false, visionBoard: true, journal: true, aiAvailable: false });
+    expect(r.body.data?.features).toMatchObject({ gapAnalysis: true, beforeYouMeet: true, visionBoard: true, journal: true, aiAvailable: false }); // everything is free
     const stranger = await createMember({ label: 'cis', gender: 'male', seeking: 'female' });
     expect((await call(overview, request(`/api/v1/connections/${connectionId}`, { token: stranger.user.token }), { id: connectionId })).status).toBe(404);
   });
 });
 
 describe('gap analysis & before you meet', () => {
-  it('requires entitlement, generates engine insight visible to both members', async () => {
+  it('is free for every member and generates an engine insight visible to both members', async () => {
     const { a, b, connectionId } = await setup();
     const url = (k: string) => `/api/v1/connections/${connectionId}/insights?kind=${k}`;
-    expect((await call(genInsight, request(url('gap_analysis'), { method: 'POST', token: a.user.token }), { id: connectionId })).status).toBe(402);
-    await givePlan(a, 'premium');
     const g = await call<InsightEnvelope<GapAnalysis>>(genInsight, request(url('gap_analysis'), { method: 'POST', token: a.user.token }), { id: connectionId });
     expect(g.status).toBe(200);
     expect(g.body.data?.generator).toBe('engine');

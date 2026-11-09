@@ -3,11 +3,11 @@ import * as React from 'react';
 import { toast } from 'sonner';
 import { api, ApiClientError } from '@/lib/api';
 
-/** Show a friendly toast for API errors; plan limits link to billing. */
+/** Show a friendly toast for API errors. Daily limits are anti-abuse caps (everything is free). */
 export function showApiError(err: unknown, fallback = 'Something went wrong. Please try again.') {
   if (err instanceof ApiClientError) {
     if (err.code === 'entitlement_required') {
-      toast(err.message, { action: { label: 'See plans', onClick: () => { window.location.href = '/app/billing'; } } });
+      toast('You’ve reached today’s limit for this. Please try again tomorrow.');
       return;
     }
     toast.error(err.message);

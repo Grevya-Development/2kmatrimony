@@ -1,7 +1,6 @@
 import 'server-only';
 import { db } from '@/lib/supabase/admin';
 import { getSetting } from '@/server/config';
-import { listPlans } from '@/server/billing/plans';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 export interface Brand { name: string; tagline: string; support_email: string }
@@ -11,15 +10,6 @@ export const getBrand = () => getSetting<Brand>('brand', { name: '2K Matrimony',
 export async function getCms(kind: 'faq' | 'success_story') {
   const { data } = await db().from('cms_entries').select('id, slug, title, body, metadata').eq('kind', kind).eq('locale', 'en').eq('is_published', true).order('sort_order');
   return data ?? [];
-}
-
-export async function getPlansSafe() {
-  try {
-    return await listPlans();
-  } catch (err) {
-    console.error('[marketing] plans unavailable', err);
-    return [];
-  }
 }
 
 /** Lightweight signed-in check for CTAs (no profile/admin lookups). */

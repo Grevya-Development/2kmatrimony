@@ -14,9 +14,10 @@ import { SafetySheet } from '@/components/domain/SafetySheet';
 export default function ForYou() {
   const qc = useQueryClient();
   const me = useMe();
-  const recs = useQuery({ queryKey: keys.recommendations, queryFn: () => api.get<RecommendationItem[]>('/recommendations') });
+  const recs = useQuery({ queryKey: keys.recommendations, queryFn: () => api.get<RecommendationItem[]>('/recommendations'), enabled: me.data?.profile?.status === 'active' });
   const [undo, setUndo] = React.useState<RecommendationItem | null>(null);
   const [safety, setSafety] = React.useState<RecommendationItem | null>(null);
+  const inReview = me.data?.profile?.status === 'in_review';
   const items = (recs.data ?? []).filter((r) => r.status !== 'passed' && !r.profile.relationship.passed);
 
   const pass = async (item: RecommendationItem) => {
@@ -39,7 +40,8 @@ export default function ForYou() {
     <View style={{ gap: 6, marginBottom: space.md }}>
       <Text variant="eyebrow">Today</Text>
       <Text variant="hero">Hello{me.data?.profile?.firstName ? `, ${me.data.profile.firstName}` : ''}</Text>
-      <Text variant="bodyMuted">A few thoughtful matches, chosen because you align — in both directions.</Text>
+      <Text variant="bodyMuted">A few thoughtful introductions. Hand-picked ones from your matchmaker come first.</Text>
+      {inReview && <Notice>Your profile is with our team for review — usually within 24 hours. We’ll notify you as soon as it’s live.</Notice>}
       {me.data?.profile && me.data.profile.completionPct < 80 && (
         <Notice>Your profile is {me.data.profile.completionPct}% complete. <Text style={{ color: colors.info, textDecorationLine: 'underline' }} onPress={() => router.push('/me')}>Add more</Text> for better matches.</Notice>
       )}
@@ -56,13 +58,19 @@ export default function ForYou() {
         ListHeaderComponent={header}
         refreshControl={<RefreshControl refreshing={recs.isRefetching} onRefresh={() => void recs.refetch()} tintColor={colors.emerald600} />}
         ListEmptyComponent={
-          recs.isLoading ? <View style={{ gap: space.md }}><Skeleton height={360} /><Skeleton height={20} width="60%" /></View>
+          inReview ? undefined
+          : recs.isLoading ? <View style={{ gap: space.md }}><Skeleton height={360} /><Skeleton height={20} width="60%" /></View>
           : recs.error ? <ErrorState message={errorMessage(recs.error)} onRetry={() => recs.refetch()} />
           : <EmptyState title="You’re all caught up" description="New matches arrive daily. Meanwhile, explore Discover or ask the Matchmaker." action={{ label: 'Discover', onPress: () => router.push('/discover') }} />
         }
         renderItem={({ item }) => (
           <View style={{ gap: 8 }}>
-            {item.reason && <Text variant="small">{item.reason}</Text>}
+            {item.source === 'matchmaker' ? (
+              <View style={{ backgroundColor: colors.gold50, borderColor: colors.gold200, borderWidth: 1, borderRadius: 14, padding: space.md, gap: 4 }}>
+                <Text variant="eyebrow">Hand-picked by your matchmaker</Text>
+                {item.reason && <Text>“{item.reason}”</Text>}
+              </View>
+            ) : item.reason ? <Text variant="small">{item.reason}</Text> : null}
             <ProfileCardView
               card={item.profile}
               actions={<>

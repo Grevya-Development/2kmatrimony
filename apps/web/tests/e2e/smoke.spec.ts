@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { admin, completeProfileViaApi, signInWithPhone, trackPageErrors } from './support';
 
-const PUBLIC = ['/', '/pricing', '/legal/terms', '/legal/privacy', '/login'];
+const PUBLIC = ['/', '/legal/terms', '/legal/privacy', '/login'];
 const MEMBER = ['/app', '/app/discover', '/app/matchmaker', '/app/interests', '/app/messages', '/app/connections', '/app/shortlist',
   '/app/notifications', '/app/profile', '/app/dna', '/app/readiness', '/app/family', '/app/verification', '/app/billing', '/app/settings', '/app/support'];
-const ADMIN = ['/admin', '/admin/users', '/admin/profiles', '/admin/verification', '/admin/moderation', '/admin/support', '/admin/matching',
+const ADMIN = ['/admin', '/admin/users', '/admin/screening', '/admin/introductions', '/admin/profiles', '/admin/verification', '/admin/moderation', '/admin/support', '/admin/matching',
   '/admin/ai', '/admin/analytics', '/admin/subscriptions', '/admin/payments', '/admin/content', '/admin/notifications', '/admin/config', '/admin/audit', '/admin/super'];
 
 const crashText = /Application error|Something went wrong|Unhandled Runtime Error|This page could not be found/i;
@@ -17,7 +17,11 @@ test('public pages render', async ({ page }) => {
     await expect(page.locator('body')).not.toHaveText(crashText);
   }
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'More Than a Match. A Meaningful Beginning.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hand-picked matches. A meaningful beginning.' })).toBeVisible();
+  await expect(page.getByRole('form', { name: 'Start your search' })).toBeVisible();
+  const pricing = await page.goto('/pricing');
+  expect(new URL(pricing!.url()).pathname).toBe('/'); // pricing removed: permanent redirect home
+  await page.goto('/');
   await expect(page.getByRole('link', { name: 'Find Your Match' }).first()).toBeVisible();
   expect(errs, errs.join('\n')).toEqual([]);
 });

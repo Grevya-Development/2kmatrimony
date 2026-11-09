@@ -42,7 +42,7 @@ export const MARITAL_STATUS_OPTIONS = opts<MaritalStatus>([
 export const NAME_VISIBILITY = ['full', 'first_name', 'initials'] as const;
 export type NameVisibility = (typeof NAME_VISIBILITY)[number];
 
-export const PROFILE_STATUSES = ['draft', 'active', 'hidden', 'suspended', 'deleted'] as const;
+export const PROFILE_STATUSES = ['draft', 'in_review', 'active', 'hidden', 'suspended', 'deleted'] as const;
 export type ProfileStatus = (typeof PROFILE_STATUSES)[number];
 
 export const AUDIENCES = ['members', 'connections', 'hidden'] as const;

@@ -42,7 +42,7 @@ export default function Discover() {
   const apply = (f: SearchFilters, soft: string[] = []) => {
     const used = usesAdvancedFilters(f);
     if (used.length && !advancedAllowed) {
-      handleEntitlementError(new ApiClientError(402, 'entitlement_required', 'Advanced filters are available on Plus and above.'));
+      handleEntitlementError(new ApiClientError(402, 'entitlement_required', 'Advanced filters are not available right now.'));
       return;
     }
     setFilters(f);

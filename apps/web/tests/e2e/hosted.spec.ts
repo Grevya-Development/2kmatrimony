@@ -41,14 +41,12 @@ test('hosted backend is healthy and configured', async ({ request }) => {
 
 test('public pages render', async ({ page }) => {
   errorLogs.push(trackPageErrors(page));
-  for (const path of ['/', '/pricing', '/login', '/legal/privacy']) {
+  for (const path of ['/', '/login', '/legal/privacy']) {
     const res = await page.goto(path);
     expect(res?.status(), path).toBeLessThan(400);
   }
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'More Than a Match. A Meaningful Beginning.' })).toBeVisible();
-  await page.goto('/pricing');
-  await expect(page.getByText('Premium').first()).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Hand-picked matches. A meaningful beginning.' })).toBeVisible();
 });
 
 test('two members sign in through the UI and complete profiles', async ({ browser }) => {

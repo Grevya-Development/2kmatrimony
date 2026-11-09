@@ -22,30 +22,31 @@ export const MEMBER_MENU_NAV: NavItem[] = [
   { href: '/app/readiness', label: 'Readiness assistant', icon: 'compass', flag: 'readiness_assistant' },
   { href: '/app/family', label: 'Family', icon: 'home', flag: 'family_mode' },
   { href: '/app/verification', label: 'Verification', icon: 'shield-check' },
-  { href: '/app/billing', label: 'Plans & billing', icon: 'gem' },
   { href: '/app/settings', label: 'Settings & privacy', icon: 'settings' },
   { href: '/app/support', label: 'Help & support', icon: 'life-buoy' },
 ];
 
-export interface AdminNavItem { href: string; label: string; icon: string; permission?: AdminPermission; superOnly?: boolean }
+export interface AdminNavItem { href: string; label: string; icon: string; permission?: AdminPermission; superOnly?: boolean; flag?: string }
 
 export const ADMIN_NAV: { section: string; items: AdminNavItem[] }[] = [
   { section: 'Operate', items: [
     { href: '/admin', label: 'Overview', icon: 'layout-dashboard' },
     { href: '/admin/users', label: 'Users', icon: 'users', permission: 'users.read' },
+    { href: '/admin/screening', label: 'Screening', icon: 'user-check', permission: 'profiles.moderate' },
     { href: '/admin/profiles', label: 'Profiles', icon: 'id-card', permission: 'profiles.read' },
     { href: '/admin/verification', label: 'Verification', icon: 'shield-check', permission: 'verification.review' },
     { href: '/admin/moderation', label: 'Moderation', icon: 'flag', permission: 'reports.manage' },
     { href: '/admin/support', label: 'Support', icon: 'life-buoy', permission: 'support.read' },
   ] },
   { section: 'Intelligence', items: [
+    { href: '/admin/introductions', label: 'Introductions', icon: 'heart-handshake', permission: 'matchmaker.curate' },
     { href: '/admin/matching', label: 'Matchmaking', icon: 'git-compare', permission: 'matching.read' },
     { href: '/admin/ai', label: 'AI operations', icon: 'cpu', permission: 'ai.read' },
     { href: '/admin/analytics', label: 'Analytics', icon: 'chart-line', permission: 'analytics.read' },
   ] },
   { section: 'Revenue', items: [
-    { href: '/admin/subscriptions', label: 'Subscriptions', icon: 'gem', permission: 'subscriptions.read' },
-    { href: '/admin/payments', label: 'Payments', icon: 'receipt-indian-rupee', permission: 'payments.read' },
+    { href: '/admin/subscriptions', label: 'Subscriptions', icon: 'gem', permission: 'subscriptions.read', flag: 'payments' },
+    { href: '/admin/payments', label: 'Payments', icon: 'receipt-indian-rupee', permission: 'payments.read', flag: 'payments' },
   ] },
   { section: 'Content', items: [
     { href: '/admin/content', label: 'Content', icon: 'file-text', permission: 'cms.manage' },

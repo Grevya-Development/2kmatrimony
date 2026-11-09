@@ -13,7 +13,7 @@ type Props = { value: SearchFilters; onChange: (f: SearchFilters) => void; onApp
 function Section({ title, children, locked }: { title: string; children: React.ReactNode; locked?: boolean }) {
   return (
     <fieldset className="space-y-3 border-t border-line pt-5 first:border-t-0 first:pt-0" disabled={locked}>
-      <legend className="flex items-center gap-2 text-sm font-medium text-ink">{title}{locked && <Badge tone="gold"><Lock />Plus</Badge>}</legend>
+      <legend className="flex items-center gap-2 text-sm font-medium text-ink">{title}{locked && <Badge tone="neutral"><Lock />Unavailable</Badge>}</legend>
       <div className={locked ? 'pointer-events-none opacity-50' : undefined}>{children}</div>
     </fieldset>
   );
@@ -58,7 +58,6 @@ export function FiltersPanel({ value: f, onChange, onApply, onReset, advanced }:
       <div className="rounded-2xl border border-gold-200 bg-gold-50/60 p-4">
         <div className="mb-4 flex items-center justify-between">
           <p className="font-serif text-xl">Advanced filters</p>
-          {!advanced && <Button variant="link" size="sm" asChild><Link href="/app/billing">Unlock with Plus</Link></Button>}
         </div>
         <div className="space-y-5">
           <Section title={`Height · ${height[0]}–${height[1]} cm`} locked={!advanced}>

@@ -3,7 +3,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { Check, CircleAlert } from 'lucide-react';
+import { Check, CircleAlert, Hourglass } from 'lucide-react';
 import type { CompletionReport, ConsentType, CreatedFor, OnboardingQuestion, OnboardingStep, OwnProfileResponse } from '@2k/shared';
 import { api } from '@/lib/api';
 import { Brand } from '@/components/shell/brand';
@@ -18,6 +18,7 @@ import { PreferencesForm } from '@/components/profile-edit/preferences-form';
 import { PhotoManager, VideoManager } from '@/components/profile-edit/photo-manager';
 import { StartStep } from './start-step';
 import { ConsentStep } from './consent-step';
+import { clearQuickStart, readQuickStartPreferences } from './quick-start-prefill';
 import { QuestionsStep } from './questions-step';
 
 const FLOW: { key: OnboardingStep; label: string }[] = [
@@ -89,6 +90,12 @@ export function OnboardingWizard({ initialProfile, questions, consentsRequired, 
   const skip = () => void go(nextOf(step));
   const h = headings(step, subject);
   const form = own?.form;
+  // Prefill partner preferences from the landing page quick-start card, only when none are saved yet.
+  const [quickPrefs, setQuickPrefs] = React.useState<ReturnType<typeof readQuickStartPreferences>>(null);
+  React.useEffect(() => { setQuickPrefs(readQuickStartPreferences()); }, []);
+  const savedPrefs = form?.preferences;
+  const hasSavedPrefs = !!savedPrefs && Array.isArray(savedPrefs.seekingGenders) && savedPrefs.seekingGenders.length > 0;
+  const preferencesInitial = hasSavedPrefs ? savedPrefs : { ...(savedPrefs ?? {}), ...(quickPrefs ?? {}) };
 
   if (needsConsent) {
     return (
@@ -108,7 +115,7 @@ export function OnboardingWizard({ initialProfile, questions, consentsRequired, 
       case 'lifestyle': return <LifestyleForm key="l" initial={form?.lifestyle ?? {}} subject={subject} submitLabel="Continue" onSaved={advance} onSkip={skip} />;
       case 'values': return <QuestionsStep key="v" questions={questions.filter((q) => q.section === 'values')} subject={subject} onDone={advance} onBack={back} />;
       case 'dna': return <QuestionsStep key="d" questions={questions.filter((q) => q.section === 'dna')} subject={subject} onDone={advance} onBack={back} />;
-      case 'preferences': return <PreferencesForm key="p" initial={form?.preferences ?? {}} subject={subject} submitLabel="Continue" onSaved={advance} />;
+      case 'preferences': return <PreferencesForm key={quickPrefs ? 'p-quick' : 'p'} initial={preferencesInitial} subject={subject} submitLabel="Continue" onSaved={(r) => { clearQuickStart(); advance(r); }} />;
       case 'photos': return (
         <div className="space-y-10">
           {own ? <PhotoManager photos={own.photos} maxPhotos={own.limits.maxPhotos} onChange={async () => { await refresh(); }} /> : null}
@@ -145,7 +152,12 @@ function DoneStep({ completion, onJump, onFinish }: { completion: CompletionRepo
   React.useEffect(() => { if (completion?.canActivate) void api('/profile', { method: 'PATCH', body: { onboardingStep: 'done' } }).catch(() => undefined); }, [completion?.canActivate]);
   return (
     <div className="space-y-8">
-      {completion?.canActivate ? (
+      {completion?.canActivate && completion.status !== 'active' ? (
+        <div className="rounded-2xl border border-gold-200 bg-gold-50 p-6">
+          <p className="flex items-center gap-2 font-serif text-2xl text-ink"><Hourglass className="h-6 w-6 text-gold-600" aria-hidden />Your profile is with our team</p>
+          <p className="mt-2 text-sm text-ink-2">Every profile is reviewed by a real person before it goes live — usually within 24 hours. We’ll notify you as soon as it’s approved, and your hand-picked introductions will begin.</p>
+        </div>
+      ) : completion?.canActivate ? (
         <div className="rounded-2xl border border-success/20 bg-success-bg p-6">
           <p className="flex items-center gap-2 font-serif text-2xl text-success"><Check className="h-6 w-6" />Your profile is live</p>
           <p className="mt-2 text-sm text-ink-2">We’ll begin introducing people whose values and plans align with yours — in both directions.</p>
@@ -165,7 +177,7 @@ function DoneStep({ completion, onJump, onFinish }: { completion: CompletionRepo
           <div className="flex flex-wrap gap-2">{optional.map((m) => <Button key={m.section} variant="secondary" size="sm" onClick={() => onJump(STEP_FOR_SECTION[m.section] ?? 'basics')}>{m.label}</Button>)}</div></div>
       )}
       <div className="flex flex-wrap gap-3">
-        <Button size="lg" onClick={onFinish}>{completion?.canActivate ? 'See your matches' : 'Go to the app'}</Button>
+        <Button size="lg" onClick={onFinish}>{completion?.status === 'active' ? 'See your matches' : 'Go to the app'}</Button>
         <Button asChild size="lg" variant="secondary"><Link href="/app/dna">View Relationship DNA</Link></Button>
       </div>
     </div>

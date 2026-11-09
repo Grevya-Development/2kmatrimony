@@ -31,9 +31,15 @@ export async function cancelDeletion(auth: AuthContext) {
   await c.from('data_requests').update({ status: 'cancelled', completed_at: new Date().toISOString() }).eq('id', open.id);
   await c.from('app_users').update({ status: 'active', deletion_requested_at: null }).eq('id', auth.userId);
   if (auth.profile) {
-    // Back to draft; re-activates automatically if the profile is complete.
-    await c.from('profiles').update({ status: 'draft' }).eq('id', auth.profile.id);
-    await refreshProfileDerived(auth.profile.id);
+    const { data: prof } = await c.from('profiles').select('activated_at').eq('id', auth.profile.id).single();
+    if (prof?.activated_at) {
+      // Already approved by our team before: restore the live profile without re-screening.
+      await c.from('profiles').update({ status: 'active' }).eq('id', auth.profile.id).eq('status', 'hidden');
+    } else {
+      // Never went live: back to draft, which resubmits it for screening if complete.
+      await c.from('profiles').update({ status: 'draft' }).eq('id', auth.profile.id);
+      await refreshProfileDerived(auth.profile.id);
+    }
   }
   await audit(auth, { action: 'privacy.deletion.cancel', entityType: 'app_user', entityId: auth.userId });
   return { ok: true };
