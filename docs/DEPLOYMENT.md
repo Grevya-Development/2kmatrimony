@@ -70,7 +70,7 @@ Production topology: **Supabase** (Postgres + Auth + Storage + Realtime, India r
 
 ## 4. Messaging providers
 
-- **Resend**: verify your sending domain (SPF/DKIM), set `EMAIL_FROM="2K Matrimony <no-reply@your-domain>"`.
+- **Resend**: verify your sending domain (SPF/DKIM), set `EMAIL_FROM="2K Marriage <no-reply@your-domain>"`.
 - **MSG91**: register sender ID and **DLT templates** for each SMS template; put the MSG91 flow/template id into `notification_templates.provider_template_id` (Admin → Notifications). Templates without an id are reported as failed deliveries.
 - **WhatsApp Cloud API**: create approved templates (one body variable `{{1}}`), store the template name in `provider_template_id`, then enable the `whatsapp_notifications` flag. Messages are only sent to members who granted WhatsApp consent.
 - **Expo push**: works without credentials; set `EXPO_ACCESS_TOKEN` if you enable enhanced security. Configure FCM (Android) and APNs (iOS) credentials in EAS.

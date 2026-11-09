@@ -29,7 +29,7 @@ export function renderInvoiceHtml({ invoice: inv, seller }: Awaited<ReturnType<t
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tax invoice ${esc(inv.invoice_number)}</title>
 <style>
-  :root{--ink:#062f2e;--muted:#5f6f6c;--line:#e7dfd0;--accent:#033b39}
+  :root{--ink:#062f2e;--muted:#5f6f6c;--line:#e7dfd0;--accent:#013833}
   *{box-sizing:border-box} body{margin:0;background:#fefaf4;color:var(--ink);font:14px/1.5 Montserrat,system-ui,sans-serif}
   .page{max-width:820px;margin:32px auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:40px}
   h1{font:500 30px/1.1 Newsreader,Georgia,serif;margin:0} .muted{color:var(--muted)} .r{text-align:right}

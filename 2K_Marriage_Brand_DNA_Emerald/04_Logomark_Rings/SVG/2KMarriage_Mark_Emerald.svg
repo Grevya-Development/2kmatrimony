@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="842 12 492 376" width="492" height="376" role="img" aria-label="2K Marriage mark"><title>2K Marriage mark</title><defs>
+  <linearGradient id="m16-gold" gradientUnits="userSpaceOnUse" x1="950" y1="40" x2="1240" y2="360"><stop offset="0" stop-color="#FCD27A"/><stop offset="0.4" stop-color="#F4B852"/><stop offset="0.75" stop-color="#ECAA41"/><stop offset="1" stop-color="#DE982C"/></linearGradient>
+  <clipPath id="m16-top"><rect x="820" y="0" width="540" height="230.5"/></clipPath>
+  <clipPath id="m16-bot"><rect x="820" y="230.5" width="540" height="200"/></clipPath>
+  <mask id="m16-mR" maskUnits="userSpaceOnUse" x="820" y="0" width="540" height="420">
+    <rect x="820" y="0" width="540" height="420" fill="#fff"/>
+    <path d="M863.00,229.75a146.50,138.50 0 1,0 293.00,0a146.50,138.50 0 1,0 -293.00,0ZM911.00,229.75a98.50,98.00 0 1,0 197.00,0a98.50,98.00 0 1,0 -197.00,0Z" fill-rule="evenodd" fill="#000" clip-path="url(#m16-top)"/>
+  </mask>
+  <mask id="m16-mL" maskUnits="userSpaceOnUse" x="820" y="0" width="540" height="420">
+    <rect x="820" y="0" width="540" height="420" fill="#fff"/>
+    <path d="M1033.00,231.50a140.50,134.50 0 1,0 281.00,0a140.50,134.50 0 1,0 -281.00,0ZM1081.50,231.50a92.00,94.00 0 1,0 184.00,0a92.00,94.00 0 1,0 -184.00,0Z" fill-rule="evenodd" fill="#000" clip-path="url(#m16-bot)"/>
+  </mask></defs>
+  <g fill="#013833">
+    <path d="M1041.00,231.50a132.50,126.50 0 1,0 265.00,0a132.50,126.50 0 1,0 -265.00,0ZM1073.50,231.50a100.00,102.00 0 1,0 200.00,0a100.00,102.00 0 1,0 -200.00,0Z" fill-rule="evenodd" mask="url(#m16-mR)"/>
+    <polygon points="1145,40 1207.5,40 1228,67.5 1194,113 1158,113 1124,67.5"/>
+    <path d="M871.00,229.75a138.50,130.50 0 1,0 277.00,0a138.50,130.50 0 1,0 -277.00,0ZM903.00,229.75a106.50,106.00 0 1,0 213.00,0a106.50,106.00 0 1,0 -213.00,0Z" fill-rule="evenodd" mask="url(#m16-mL)"/>
+  </g></svg>

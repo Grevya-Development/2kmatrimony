@@ -19,13 +19,13 @@ import mehendiImg from '../../public/images/mehendi-hand.webp';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: { absolute: '2K Matrimony — Free, hand-picked matrimony introductions' },
+  title: { absolute: '2K Marriage — Free, hand-picked matrimony introductions' },
   description: 'Free to join. Every profile is reviewed by our team before it goes live, and every introduction is hand-picked by a matchmaker who writes you a note about why.',
   openGraph: {
-    title: '2K Matrimony — Hand-picked matches. A meaningful beginning.',
+    title: '2K Marriage — Hand-picked matches. A meaningful beginning.',
     description: 'Free matrimony with real people behind every introduction.',
     type: 'website',
-    siteName: '2K Matrimony',
+    siteName: '2K Marriage',
   },
 };
 
@@ -130,7 +130,7 @@ export default async function LandingPage() {
               <ol className="mt-10 space-y-9">
                 {STEPS.map((s, i) => (
                   <Reveal as="li" key={s.n} delay={i * 0.08} className="grid grid-cols-[3.25rem_1fr] gap-4">
-                    <span className="font-serif text-3xl leading-none text-gold-500">{s.n}</span>
+                    <span className="font-serif text-3xl leading-none text-gold-600">{s.n}</span>
                     <div className="border-t border-line pt-4">
                       <h3 className="font-serif text-2xl text-ink">{s.title}</h3>
                       <p className="mt-2 max-w-lg leading-relaxed text-ink-2">{s.body}</p>
@@ -214,7 +214,7 @@ export default async function LandingPage() {
             <dl className="grid gap-x-12 gap-y-10 sm:grid-cols-2">
               {[
                 { t: 'Photos on your terms', b: 'Show photos to all members, only to people you connect with, or keep them blurred until you accept an interest.' },
-                { t: 'Contact details stay private', b: 'Your phone number and email are never shown on your profile. Talk inside 2K Matrimony until you are ready to share more.' },
+                { t: 'Contact details stay private', b: 'Your phone number and email are never shown on your profile. Talk inside 2K Marriage until you are ready to share more.' },
                 { t: 'Badges mean something', b: 'A verified badge is only added after we check that specific detail, such as ID, photo or employment. Everything else is labelled as the member’s own words.' },
                 { t: 'Block or report in one tap', b: 'Blocking hides you from each other everywhere. Reports are read by a person on our team, and serious action is always a human decision.' },
                 { t: 'Your data, your choice', b: 'Download a copy of your data or delete your account from Settings at any time. We follow India’s Digital Personal Data Protection Act.' },

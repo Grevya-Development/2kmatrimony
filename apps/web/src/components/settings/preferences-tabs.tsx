@@ -66,7 +66,7 @@ export function NotificationsTab() {
 }
 
 const CONSENT_COPY: Record<ConsentType, { title: string; body: string }> = {
-  terms: { title: 'Terms of Service', body: 'Required to use 2K Matrimony.' },
+  terms: { title: 'Terms of Service', body: 'Required to use 2K Marriage.' },
   privacy: { title: 'Privacy Policy', body: 'Required. Explains how we handle your data under India’s DPDP Act.' },
   ai_processing: { title: 'AI assistance', body: 'Lets AI use your profile answers to personalise matches, explanations and suggestions. AI never reads private messages.' },
   ai_message_analysis: { title: 'AI conversation insights', body: 'Allows specific features to analyse conversations you choose. Off unless you turn it on.' },
@@ -76,7 +76,7 @@ const CONSENT_COPY: Record<ConsentType, { title: string; body: string }> = {
   whatsapp: { title: 'WhatsApp updates', body: 'Receive notifications on WhatsApp where available.' },
   identity_verification: { title: 'Identity verification processing', body: 'Allows our team or a compliant provider to process documents you submit for verification.' },
   data_sharing_partner: { title: 'Partner offers', body: 'Share limited data with vetted partners for offers you request.' },
-  product_analytics: { title: 'Product analytics', body: 'Helps us improve 2K Matrimony with anonymous usage data (pages visited, features used). Never your name, contact details, profile text or messages.' },
+  product_analytics: { title: 'Product analytics', body: 'Helps us improve 2K Marriage with anonymous usage data (pages visited, features used). Never your name, contact details, profile text or messages.' },
 };
 
 export function ConsentsTab() {

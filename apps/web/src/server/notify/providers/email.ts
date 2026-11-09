@@ -14,7 +14,7 @@ export const emailProvider: ChannelProvider = {
   async send(target, message) {
     if (!target.email) return { status: 'failed', provider: 'resend', error: 'no_email_address' };
     if (isUndeliverableAddress(target.email)) return { status: 'failed', provider: 'resend', error: 'undeliverable_test_address' };
-    const subject = message.subject ?? '2K Matrimony';
+    const subject = message.subject ?? '2K Marriage';
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { authorization: `Bearer ${serverEnv.resendApiKey}`, 'content-type': 'application/json' },

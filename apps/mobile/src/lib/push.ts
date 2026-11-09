@@ -15,7 +15,7 @@ Notifications.setNotificationHandler({
 export async function registerForPush(): Promise<string | null> {
   if (!Device.isDevice) return null;
   if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', { name: 'Default', importance: Notifications.AndroidImportance.DEFAULT, lightColor: '#033b39' });
+    await Notifications.setNotificationChannelAsync('default', { name: 'Default', importance: Notifications.AndroidImportance.DEFAULT, lightColor: '#013833' });
   }
   const existing = await Notifications.getPermissionsAsync();
   let granted = existing.granted;

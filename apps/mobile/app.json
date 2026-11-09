@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "2K Matrimony",
+    "name": "2K Marriage",
     "slug": "2k-matrimony",
     "scheme": "twokmatrimony",
     "version": "0.1.0",
@@ -15,7 +15,7 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Take a photo for your profile or verification.",
         "NSPhotoLibraryUsageDescription": "Choose photos for your profile.",
-        "NSFaceIDUsageDescription": "Unlock 2K Matrimony with Face ID.",
+        "NSFaceIDUsageDescription": "Unlock 2K Marriage with Face ID.",
         "NSMicrophoneUsageDescription": "Record your introduction video or speak to the matchmaker."
       },
       "associatedDomains": [
@@ -27,7 +27,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/android-icon-foreground.png",
         "monochromeImage": "./assets/android-icon-monochrome.png",
-        "backgroundColor": "#033b39"
+        "backgroundColor": "#013833"
       },
       "permissions": [
         "CAMERA",
@@ -63,7 +63,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#033b39",
+          "backgroundColor": "#013833",
           "image": "./assets/splash-icon.png",
           "imageWidth": 180
         }
@@ -71,14 +71,14 @@
       [
         "expo-notifications",
         {
-          "color": "#033b39",
+          "color": "#013833",
           "icon": "./assets/android-icon-monochrome.png"
         }
       ],
       [
         "expo-local-authentication",
         {
-          "faceIDPermission": "Unlock 2K Matrimony with Face ID."
+          "faceIDPermission": "Unlock 2K Marriage with Face ID."
         }
       ],
       [

@@ -1,4 +1,4 @@
-# 2K Matrimony — Architecture
+# 2K Marriage — Architecture
 
 ## Overview
 
@@ -90,8 +90,8 @@ See `docs/DATABASE.md`. Migrations live in `supabase/migrations`. After adding o
 - E2E: Playwright (`apps/web/tests/e2e`).
 
 ## Design system & brand
-Brand: **2K Matrimony — "Tradition Meets AI"** (Brand DNA, Emerald Edition). Source assets live in
-`2K_Matrimony_Brand_DNA_Emerald/` (logos, app icons, favicons, colour tokens, fonts, guidelines PDF).
+Brand: **2K Marriage — "Tradition Meets AI"** (Brand DNA, Emerald Edition). Source assets live in
+`2K_Marriage_Brand_DNA_Emerald/` (logos, app icons, favicons, colour tokens, fonts, guidelines PDF).
 - Logos: always the supplied artwork, never retyped — `BrandLogo` / `Brand` in
   `apps/web/src/components/shell/brand.tsx` (horizontal, reverse, stacked, stacked-reverse, mark) and
   `apps/mobile/src/components/ui/BrandLogo.tsx`. Web copies in `apps/web/public/brand/`.

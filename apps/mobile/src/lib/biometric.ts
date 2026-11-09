@@ -13,7 +13,7 @@ export async function isBiometricEnabled(): Promise<boolean> {
   return (await securePrefs.get(KEY)) === '1';
 }
 
-export async function authenticate(prompt = 'Unlock 2K Matrimony'): Promise<boolean> {
+export async function authenticate(prompt = 'Unlock 2K Marriage'): Promise<boolean> {
   const r = await LocalAuthentication.authenticateAsync({ promptMessage: prompt, cancelLabel: 'Cancel', disableDeviceFallback: false });
   return r.success;
 }

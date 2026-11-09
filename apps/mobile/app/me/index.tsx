@@ -58,7 +58,7 @@ export default function MyProfile() {
           )}
           <View style={{ flexDirection: 'row', gap: space.sm }}>
             <Button title="Preview as others see it" variant="secondary" size="sm" onPress={() => router.push(`/member/${p.profileId}` as Href)} />
-            <Button title="Share" variant="ghost" size="sm" icon={<Icon name="share" size={16} />} onPress={() => Share.share({ message: `My 2K Matrimony profile code is ${p.profileCode}.` })} />
+            <Button title="Share" variant="ghost" size="sm" icon={<Icon name="share" size={16} />} onPress={() => Share.share({ message: `My 2K Marriage profile code is ${p.profileCode}.` })} />
           </View>
           <Section title="Photos">
             <PhotoManager photos={p.photos} max={p.limits.maxPhotos} onChanged={refresh} />

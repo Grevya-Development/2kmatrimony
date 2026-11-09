@@ -6,14 +6,14 @@ export default function PrivacyPage() {
   return (
     <>
       <h1>Privacy policy</h1>
-      <p>Version 2026-11-01. This policy explains how 2K Matrimony processes your personal data as a Data Fiduciary under India’s Digital Personal Data Protection Act, 2023 (DPDP Act).</p>
+      <p>Version 2026-11-01. This policy explains how 2K Marriage processes your personal data as a Data Fiduciary under India’s Digital Personal Data Protection Act, 2023 (DPDP Act).</p>
       <h2>What we collect</h2>
       <ul>
         <li><strong>Account data:</strong> phone number, email, sign-in identifiers, devices.</li>
         <li><strong>Profile data you provide:</strong> personal details, education, career, family, lifestyle, values, Relationship DNA answers, partner preferences, photos and an optional video. Fields such as religion or community are optional and only ever taken from what you enter — we never infer sensitive characteristics.</li>
         <li><strong>Verification data:</strong> documents you submit for optional identity, photo or employment checks. These are kept in restricted storage, visible only to authorised reviewers, and deleted 90 days after a decision.</li>
         <li><strong>Activity:</strong> interests, connections and messages needed to run the service, and minimal pseudonymous usage events for operating it. Optional product analytics (PostHog) runs only after you allow it, and you can withdraw that in Settings → Consents at any time.</li>
-        <li><strong>No payment data:</strong> 2K Matrimony is free. We do not collect card, UPI or bank details.</li>
+        <li><strong>No payment data:</strong> 2K Marriage is free. We do not collect card, UPI or bank details.</li>
       </ul>
       <h2>Why we use it (purposes and consent)</h2>
       <ul>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="2K Marriage app icon">
+<title>2K Marriage app icon</title><defs><linearGradient id="m23bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1C5550"/><stop offset="1" stop-color="#00241F"/></linearGradient></defs><rect width="1024" height="1024" rx="204.8" fill="url(#m23bg)"/><g transform="translate(-1532.24,104.48) scale(1.87890)"><defs>
+  <linearGradient id="m24-gold" gradientUnits="userSpaceOnUse" x1="950" y1="40" x2="1240" y2="360"><stop offset="0" stop-color="#FCD27A"/><stop offset="0.4" stop-color="#F4B852"/><stop offset="0.75" stop-color="#ECAA41"/><stop offset="1" stop-color="#DE982C"/></linearGradient>
+  <clipPath id="m24-top"><rect x="820" y="0" width="540" height="230.5"/></clipPath>
+  <clipPath id="m24-bot"><rect x="820" y="230.5" width="540" height="200"/></clipPath>
+  <mask id="m24-mR" maskUnits="userSpaceOnUse" x="820" y="0" width="540" height="420">
+    <rect x="820" y="0" width="540" height="420" fill="#fff"/>
+    <path d="M863.00,229.75a146.50,138.50 0 1,0 293.00,0a146.50,138.50 0 1,0 -293.00,0ZM911.00,229.75a98.50,98.00 0 1,0 197.00,0a98.50,98.00 0 1,0 -197.00,0Z" fill-rule="evenodd" fill="#000" clip-path="url(#m24-top)"/>
+  </mask>
+  <mask id="m24-mL" maskUnits="userSpaceOnUse" x="820" y="0" width="540" height="420">
+    <rect x="820" y="0" width="540" height="420" fill="#fff"/>
+    <path d="M1033.00,231.50a140.50,134.50 0 1,0 281.00,0a140.50,134.50 0 1,0 -281.00,0ZM1081.50,231.50a92.00,94.00 0 1,0 184.00,0a92.00,94.00 0 1,0 -184.00,0Z" fill-rule="evenodd" fill="#000" clip-path="url(#m24-bot)"/>
+  </mask></defs>
+  <g fill="url(#m24-gold)">
+    <path d="M1041.00,231.50a132.50,126.50 0 1,0 265.00,0a132.50,126.50 0 1,0 -265.00,0ZM1073.50,231.50a100.00,102.00 0 1,0 200.00,0a100.00,102.00 0 1,0 -200.00,0Z" fill-rule="evenodd" mask="url(#m24-mR)"/>
+    <polygon points="1145,40 1207.5,40 1228,67.5 1194,113 1158,113 1124,67.5"/>
+    <path d="M871.00,229.75a138.50,130.50 0 1,0 277.00,0a138.50,130.50 0 1,0 -277.00,0ZM903.00,229.75a106.50,106.00 0 1,0 213.00,0a106.50,106.00 0 1,0 -213.00,0Z" fill-rule="evenodd" mask="url(#m24-mL)"/>
+  </g></g>
+</svg>

@@ -54,7 +54,7 @@ export default function SupportThread() {
             <View style={{ backgroundColor: m.is_staff ? colors.surface : colors.emerald600, borderWidth: m.is_staff ? 1 : 0, borderColor: colors.line, borderRadius: radius.lg, padding: space.md }}>
               <Text style={{ color: m.is_staff ? colors.ink : colors.white }}>{m.body}</Text>
             </View>
-            <Text variant="small" style={{ textAlign: m.is_staff ? 'left' : 'right' }}>{m.is_staff ? '2K Matrimony support' : 'You'} · {relativeTime(m.created_at)}</Text>
+            <Text variant="small" style={{ textAlign: m.is_staff ? 'left' : 'right' }}>{m.is_staff ? '2K Marriage support' : 'You'} · {relativeTime(m.created_at)}</Text>
           </View>
         ))}
         {canReply(ticket.status) ? (

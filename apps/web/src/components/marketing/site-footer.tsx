@@ -21,7 +21,7 @@ export function SiteFooter({ brand, signedIn = false }: { brand: BrandSettings; 
           </div>
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
             <nav aria-label="Footer: about" className={col}>
-              <p className="pb-1 text-xs font-semibold uppercase tracking-[0.14em] text-gold-400">2K Matrimony</p>
+              <p className="pb-1 text-xs font-semibold uppercase tracking-[0.14em] text-gold-400">2K Marriage</p>
               <Link className={link} href="/#how-it-works">How it works</Link>
               <Link className={link} href="/#curated">Why curated</Link>
               <Link className={link} href="/#families">For families</Link>

@@ -1,7 +1,7 @@
 # Photography credits
 
 All photographs are free-licence images from Unsplash, used as atmosphere only.
-They do not depict 2K Matrimony members or success stories.
+They do not depict 2K Marriage members or success stories.
 
 Licence: [Unsplash License](https://unsplash.com/license). Commercial use is
 allowed without attribution. Unaltered resale and building a competing photo

@@ -102,7 +102,7 @@ export function SupportThread({ id }: { id: string }) {
             <ol className="space-y-3" aria-label="Conversation">
               {data.messages.map((m) => (
                 <li key={m.id} className={cn('max-w-[85%] rounded-2xl px-4 py-3 text-sm', m.is_staff ? 'bg-emerald-50 text-ink' : 'ml-auto bg-surface-2 text-ink')}>
-                  <p className="mb-1 text-xs text-muted">{m.is_staff ? '2K Matrimony support' : 'You'} · {when(m.created_at)}</p>
+                  <p className="mb-1 text-xs text-muted">{m.is_staff ? '2K Marriage support' : 'You'} · {when(m.created_at)}</p>
                   <p className="whitespace-pre-line">{m.body}</p>
                 </li>
               ))}

@@ -1,4 +1,4 @@
-# BUILD STATUS — 2K Matrimony
+# BUILD STATUS — 2K Marriage
 
 _Last updated: 2026-11-10. All 12 milestones are implemented. Everything listed as ✅ has passed automated tests on a database rebuilt from scratch._
 
@@ -20,10 +20,10 @@ Legend: ✅ done & tested · ⚙️ built, needs credentials or provider setup �
 Commands: `npm test` · `npm run test:integration -w @2k/web` · `npm run build && npm run test:e2e -w @2k/web` · `PERF=1 npx vitest run --config vitest.integration.config.ts tests/perf` (after seeding `tests/perf/seed.sql`).
 
 ## Brand
-✅ **2K Matrimony — "Tradition Meets AI"** (Brand DNA, Emerald Edition) applied across web and mobile:
+✅ **2K Marriage — "Tradition Meets AI"** (Brand DNA, Emerald Edition) applied across web and mobile:
 supplied logo artwork (horizontal, stacked, reverse, rings mark), favicon / apple icon / PWA manifest,
-Expo app icon + adaptive icon + splash, Royal Emerald / Heritage Gold / Ivory palette, Newsreader +
-Montserrat typography, branded emails and invoices. Source kit: `2K_Matrimony_Brand_DNA_Emerald/`.
+Expo app icon + adaptive icon + splash, Royal Emerald / Marigold Gold / Ivory palette, Newsreader +
+Montserrat typography, branded emails and invoices. Source kit: `2K_Marriage_Brand_DNA_Emerald/`.
 Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundles.
 
 ## Free, curated, hand-picked (2026-11-10)
@@ -55,7 +55,7 @@ Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundl
   - `/me` works with the session cookie; 0 page errors; 0 runtime errors or 5xx in logs.
 - ✅ **Domain & email (2026-11-10):**
   - **Domain:** `2kmarriage.com` (DNS at GoDaddy) is verified on Vercel and serves the app. `NEXT_PUBLIC_APP_URL=https://2kmarriage.com` in production.
-  - **Resend:** `updates.2kmarriage.com` is verified (DKIM + SPF). App notifications send from `2K Matrimony <hello@updates.2kmarriage.com>`; `RESEND_API_KEY` is a Vercel secret.
+  - **Resend:** `updates.2kmarriage.com` is verified (DKIM + SPF). App notifications send from `2K Marriage <hello@updates.2kmarriage.com>`; `RESEND_API_KEY` is a Vercel secret.
   - **Supabase Auth email:** routed through Resend SMTP (`smtp.resend.com:465`), with the limit raised from 2 to 100 emails per hour. Verified: a Supabase password-reset email was delivered through Resend.
   - **Safety:** the email provider never sends to reserved test domains (`.test`, `.example`, `.invalid`, `localhost`).
 - ✅ **Supabase Auth URLs set** (2026-11-10, applied as a minimal `supabase config push` from a pulled copy of the hosted config; re-diff shows 0 differences).

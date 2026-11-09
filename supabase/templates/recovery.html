@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Reset your password</title>
+</head>
+<body style="margin:0;padding:0;background:#fefaf4">
+  <span style="display:none!important;visibility:hidden;opacity:0;height:0;width:0;overflow:hidden">Reset your 2K Marriage password</span>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#fefaf4">
+    <tr><td align="center" style="padding:32px 16px">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;background:#ffffff;border:1px solid #e7dfd0;border-radius:16px">
+        <tr><td style="padding:32px 40px 8px"><img src="https://2kmarriage.com/brand/logo-horizontal.png" width="168" height="40" alt="2K Marriage" style="display:block;border:0;height:40px;width:auto"></td></tr>
+        <tr><td style="padding:16px 40px 8px;font:500 26px/1.25 Newsreader,Georgia,'Times New Roman',serif;color:#062f2e">Reset your password</td></tr>
+        <tr><td style="padding:0 40px 20px;font:400 15px/1.6 Montserrat,'Helvetica Neue',Arial,sans-serif;color:#2c4a48">We received a request to reset the password for {{ .Email }}. Choose a new one using the button below. The link works for the next hour.</td></tr>
+        <tr><td style="padding:0 40px 24px">
+          <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:13px 26px;border-radius:999px;background:#013833;color:#ffffff;text-decoration:none;font:600 15px/1 Montserrat,'Helvetica Neue',Arial,sans-serif">Choose a new password</a>
+        </td></tr>
+        <tr><td style="padding:0 40px 28px;font:400 13px/1.6 Montserrat,'Helvetica Neue',Arial,sans-serif;color:#5f6f6c">If the button doesn&rsquo;t work, copy this link into your browser:<br><span style="word-break:break-all">{{ .ConfirmationURL }}</span></td></tr>
+        <tr><td style="padding:18px 40px 28px;border-top:1px solid #e7dfd0;font:400 12px/1.6 Montserrat,'Helvetica Neue',Arial,sans-serif;color:#5f6f6c">If you didn&rsquo;t ask to reset your password, ignore this email. Your current password still works.<br>Questions? Write to <a href="mailto:2kmatrimonysupport@gmail.com" style="color:#013833">2kmatrimonysupport@gmail.com</a>.<br>2K Marriage &middot; Free, personally curated matrimony.</td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

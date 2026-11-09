@@ -32,7 +32,7 @@ const couponIds: string[] = [];
 const rid = () => `pay_${randomUUID().slice(0, 12)}`;
 const newUser = async (l: string) => { const u = await billingUser(l); users.push(u); return u; };
 
-// 2K Matrimony is currently free (payments flag off, paid plans retired). The
+// 2K Marriage is currently free (payments flag off, paid plans retired). The
 // billing code is kept for the future, so this suite switches payments back on
 // for its own run — restoring the free configuration afterwards.
 const PAID = ['plus', 'premium', 'elite'];

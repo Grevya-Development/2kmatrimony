@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Your sign-in code</title>
+</head>
+<body style="margin:0;padding:0;background:#fefaf4">
+  <span style="display:none!important;visibility:hidden;opacity:0;height:0;width:0;overflow:hidden">Your 2K Marriage sign-in code: {{ .Token }}</span>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#fefaf4">
+    <tr><td align="center" style="padding:32px 16px">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;background:#ffffff;border:1px solid #e7dfd0;border-radius:16px">
+        <tr><td style="padding:32px 40px 8px"><img src="https://2kmarriage.com/brand/logo-horizontal.png" width="168" height="40" alt="2K Marriage" style="display:block;border:0;height:40px;width:auto"></td></tr>
+        <tr><td style="padding:16px 40px 8px;font:500 26px/1.25 Newsreader,Georgia,'Times New Roman',serif;color:#062f2e">Your sign-in code</td></tr>
+        <tr><td style="padding:0 40px 20px;font:400 15px/1.6 Montserrat,'Helvetica Neue',Arial,sans-serif;color:#2c4a48">Enter this code on the sign-in page to continue. It works for the next hour and can be used once.</td></tr>
+          <tr><td style="padding:8px 40px 4px;font:600 12px/1.4 Montserrat,'Helvetica Neue',Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#946719">Sign-in code</td></tr>
+          <tr><td style="padding:4px 40px 20px">
+            <div style="display:inline-block;padding:14px 22px;border:1px solid #e7dfd0;border-radius:12px;background:#fbf6ea;font:600 30px/1 'SFMono-Regular',Menlo,Consolas,monospace;letter-spacing:.32em;color:#062f2e">{{ .Token }}</div>
+          </td></tr>
+        <tr><td style="padding:0 40px 24px">
+          <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:13px 26px;border-radius:999px;background:#013833;color:#ffffff;text-decoration:none;font:600 15px/1 Montserrat,'Helvetica Neue',Arial,sans-serif">Sign in to 2K Marriage</a>
+        </td></tr>
+        <tr><td style="padding:0 40px 28px;font:400 13px/1.6 Montserrat,'Helvetica Neue',Arial,sans-serif;color:#5f6f6c">Or use the button to sign in on this device.</td></tr>
+        <tr><td style="padding:18px 40px 28px;border-top:1px solid #e7dfd0;font:400 12px/1.6 Montserrat,'Helvetica Neue',Arial,sans-serif;color:#5f6f6c">If you didn&rsquo;t ask for this, you can ignore this email. Your account stays safe; nobody can sign in without this code.<br>Questions? Write to <a href="mailto:2kmatrimonysupport@gmail.com" style="color:#013833">2kmatrimonysupport@gmail.com</a>.<br>2K Marriage &middot; Free, personally curated matrimony.</td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

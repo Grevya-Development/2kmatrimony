@@ -1,0 +1,142 @@
+{
+  "Royal Emerald": {
+    "hex": "#013833",
+    "rgb": [
+      1,
+      56,
+      51
+    ],
+    "cmyk_approx": [
+      98,
+      0,
+      9,
+      78
+    ],
+    "use": "Primary. Backgrounds, cards, wordmark on light."
+  },
+  "Emerald Glow": {
+    "hex": "#1C5550",
+    "rgb": [
+      28,
+      85,
+      80
+    ],
+    "cmyk_approx": [
+      67,
+      0,
+      6,
+      67
+    ],
+    "use": "App-icon gradient start; hover states."
+  },
+  "Emerald Depth": {
+    "hex": "#00241F",
+    "rgb": [
+      0,
+      36,
+      31
+    ],
+    "cmyk_approx": [
+      100,
+      0,
+      14,
+      86
+    ],
+    "use": "App-icon gradient end; deep shadows."
+  },
+  "Marigold Gold": {
+    "hex": "#F4B852",
+    "rgb": [
+      244,
+      184,
+      82
+    ],
+    "cmyk_approx": [
+      0,
+      25,
+      66,
+      4
+    ],
+    "use": "Flat gold for the rings; accents."
+  },
+  "Gold Rule": {
+    "hex": "#EEAA33",
+    "rgb": [
+      238,
+      170,
+      51
+    ],
+    "cmyk_approx": [
+      0,
+      29,
+      79,
+      7
+    ],
+    "use": "Tagline rules and fine dividers."
+  },
+  "Gold Highlight": {
+    "hex": "#FCD27A",
+    "rgb": [
+      252,
+      210,
+      122
+    ],
+    "cmyk_approx": [
+      0,
+      17,
+      52,
+      1
+    ],
+    "use": "Ring gradient highlight."
+  },
+  "Ivory": {
+    "hex": "#FEFAF4",
+    "rgb": [
+      254,
+      250,
+      244
+    ],
+    "cmyk_approx": [
+      0,
+      2,
+      4,
+      0
+    ],
+    "use": "Light background and paper stock."
+  },
+  "Pure White": {
+    "hex": "#FFFFFF",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "cmyk_approx": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "use": "Wordmark and tagline on Emerald."
+  },
+  "Ring Gold Gradient": {
+    "stops": [
+      {
+        "offset": 0,
+        "hex": "#FCD27A"
+      },
+      {
+        "offset": 0.4,
+        "hex": "#F4B852"
+      },
+      {
+        "offset": 0.75,
+        "hex": "#ECAA41"
+      },
+      {
+        "offset": 1,
+        "hex": "#DE982C"
+      }
+    ]
+  }
+}

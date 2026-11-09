@@ -28,7 +28,7 @@ export const serverEnv = {
   get razorpayKeySecret() { return process.env.RAZORPAY_KEY_SECRET ?? ''; },
   get razorpayWebhookSecret() { return process.env.RAZORPAY_WEBHOOK_SECRET ?? ''; },
   get resendApiKey() { return process.env.RESEND_API_KEY ?? ''; },
-  get emailFrom() { return process.env.EMAIL_FROM ?? '2K Matrimony <no-reply@example.com>'; },
+  get emailFrom() { return process.env.EMAIL_FROM ?? '2K Marriage <no-reply@example.com>'; },
   get msg91AuthKey() { return process.env.MSG91_AUTH_KEY ?? ''; },
   get msg91SenderId() { return process.env.MSG91_SENDER_ID ?? ''; },
   get whatsappPhoneNumberId() { return process.env.WHATSAPP_PHONE_NUMBER_ID ?? ''; },

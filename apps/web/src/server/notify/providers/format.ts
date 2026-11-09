@@ -11,11 +11,11 @@ export function toPlainText(body: string): string {
 const logoUrl = () => `${(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/$/, '')}/brand/logo-horizontal.png`;
 
 /** Minimal branded HTML email (inline styles for client compatibility). */
-export function toEmailHtml(subject: string, body: string, brand = '2K Matrimony'): string {
+export function toEmailHtml(subject: string, body: string, brand = '2K Marriage'): string {
   const paragraphs = normaliseNewlines(body)
     .trim()
     .split(/\n{2,}/)
-    .map((p) => `<p style="margin:0 0 16px">${esc(p).replace(/\n/g, '<br>').replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" style="color:#033b39">$1</a>')}</p>`)
+    .map((p) => `<p style="margin:0 0 16px">${esc(p).replace(/\n/g, '<br>').replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" style="color:#013833">$1</a>')}</p>`)
     .join('');
   return `<!doctype html><html><body style="margin:0;background:#fefaf4;padding:32px 16px;font-family:Montserrat,'Helvetica Neue',Arial,sans-serif;color:#062f2e">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center">

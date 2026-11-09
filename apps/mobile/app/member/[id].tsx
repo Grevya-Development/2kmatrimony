@@ -43,7 +43,7 @@ export default function MemberProfile() {
         title: d.displayName,
         headerRight: () => (
           <View style={{ flexDirection: 'row', gap: 8 }}>
-            <IconButton label="Share profile code" tone="subtle" size={36} onPress={() => Share.share({ message: `Profile ${d.profileCode} on 2K Matrimony` })}><Icon name="share" size={18} /></IconButton>
+            <IconButton label="Share profile code" tone="subtle" size={36} onPress={() => Share.share({ message: `Profile ${d.profileCode} on 2K Marriage` })}><Icon name="share" size={18} /></IconButton>
             {!d.isOwnProfile && <IconButton label="Report or block" tone="subtle" size={36} onPress={() => setSafety(true)}><Icon name="flag" size={18} /></IconButton>}
           </View>
         ),

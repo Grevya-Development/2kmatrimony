@@ -53,7 +53,7 @@ const PROFILE_TABLES: Q[] = [
 
 export async function buildExport(userId: string, profileId: string | null): Promise<Record<string, unknown>> {
   const c = db();
-  const out: Record<string, unknown> = { generatedAt: new Date().toISOString(), userId, profileId, note: 'Personal data held by 2K Matrimony about you. Other members\' private data is excluded.' };
+  const out: Record<string, unknown> = { generatedAt: new Date().toISOString(), userId, profileId, note: 'Personal data held by 2K Marriage about you. Other members\' private data is excluded.' };
   const run = async (q: Q, id: string, prefix: string) => {
     const { data, error } = await c.from(q.table as 'profiles').select(q.select ?? '*').eq(q.column, id).limit(5000);
     out[`${prefix}${q.table}`] = error ? { error: 'unavailable' } : data;
@@ -80,7 +80,7 @@ export async function requestExport(auth: AuthContext) {
     const { error: upErr } = await c.storage.from('data-exports').upload(path, new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }), { contentType: 'application/json', upsert: true });
     if (upErr) throw upErr;
     const ttl = privacy.export_link_hours * 3600;
-    const { data: signed, error: sErr } = await c.storage.from('data-exports').createSignedUrl(path, ttl, { download: `2k-matrimony-data-${new Date().toISOString().slice(0, 10)}.json` });
+    const { data: signed, error: sErr } = await c.storage.from('data-exports').createSignedUrl(path, ttl, { download: `2k-marriage-data-${new Date().toISOString().slice(0, 10)}.json` });
     if (sErr || !signed) throw sErr ?? new Error('sign failed');
     await c.from('data_requests').update({ status: 'completed', result_path: path, completed_at: new Date().toISOString() }).eq('id', req.id);
     await audit(auth, { action: 'privacy.export', entityType: 'data_request', entityId: req.id });

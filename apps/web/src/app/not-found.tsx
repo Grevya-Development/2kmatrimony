@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <main id="main" className="flex min-h-dvh flex-col items-center justify-center bg-canvas px-6 text-center">
       <Brand className="mb-12" />
-      <p className="font-serif text-7xl leading-none text-gold-400">404</p>
+      <p className="font-serif text-7xl leading-none text-gold-600">404</p>
       <h1 className="mt-6 font-serif text-4xl text-ink sm:text-5xl">We couldn’t find that page</h1>
       <p className="mt-4 max-w-md text-ink-2">The link may be old, or the profile you were looking for is no longer available.</p>
       <div className="mt-9 flex flex-wrap justify-center gap-3">

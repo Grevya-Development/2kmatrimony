@@ -14,7 +14,7 @@ import { highestEducation, loadBundle, loadBundles, type ProfileBundle } from '@
 import { scoreCandidates } from '@/server/matching/service';
 
 /**
- * CURATION — the human side of 2K Matrimony.
+ * CURATION — the human side of 2K Marriage.
  *  - Screening: every completed profile is reviewed by a team member before it goes live.
  *  - Introductions: matchmakers hand-pick matches for a member, with a personal note.
  */

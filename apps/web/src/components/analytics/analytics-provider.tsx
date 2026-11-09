@@ -62,7 +62,7 @@ function ConsentBanner({ onDecide }: { onDecide: (granted: boolean) => void }) {
         <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold-100 text-gold-600"><BarChart3 className="h-4 w-4" aria-hidden /></span>
         <div className="space-y-3">
           <div>
-            <p id="analytics-consent-title" className="font-medium text-ink">Help us improve 2K Matrimony?</p>
+            <p id="analytics-consent-title" className="font-medium text-ink">Help us improve 2K Marriage?</p>
             <p className="mt-1 text-sm text-muted">With your permission we use anonymous usage analytics — pages visited and features used. Never your name, contact details, profile or messages. <Link href="/legal/privacy" className="underline underline-offset-2">Privacy policy</Link></p>
           </div>
           <div className="flex gap-2">

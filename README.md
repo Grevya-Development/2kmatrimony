@@ -1,4 +1,4 @@
-# 2K Matrimony
+# 2K Marriage
 
 AI-assisted, privacy-first matrimony platform: mutual compatibility matching, transparent
 explanations, relationship intelligence (Relationship DNA, Gap Analysis, Before You Meet,

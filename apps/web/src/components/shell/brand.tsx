@@ -2,22 +2,22 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 /**
- * 2K Matrimony logo — always the supplied Brand DNA artwork (never retyped).
+ * 2K Marriage logo — always the supplied Brand DNA artwork (never retyped).
  *  - horizontal: rings | wordmark lockup for headers (light backgrounds)
  *  - reverse:    white/gold horizontal lockup for emerald/dark backgrounds
  *  - stacked:    primary stacked logo with "Tradition Meets AI" tagline
  *  - stacked-reverse: stacked logo for emerald/dark backgrounds
  *  - mark:       interlocked rings only (gold)
- * Artwork lives in /public/brand (copied from 2K_Matrimony_Brand_DNA_Emerald).
+ * Artwork lives in /public/brand (copied from 2K_Marriage_Brand_DNA_Emerald).
  */
 type Variant = 'horizontal' | 'reverse' | 'stacked' | 'stacked-reverse' | 'mark';
 
 const ART: Record<Variant, { src: string; w: number; h: number }> = {
   horizontal: { src: '/brand/logo-horizontal.svg', w: 479, h: 114 },
   reverse: { src: '/brand/logo-horizontal-reverse.svg', w: 479, h: 114 },
-  stacked: { src: '/brand/logo-stacked.svg', w: 891, h: 481.5 },
-  'stacked-reverse': { src: '/brand/logo-stacked-reverse.svg', w: 891, h: 481.5 },
-  mark: { src: '/brand/mark-gold.svg', w: 343, h: 263.25 },
+  stacked: { src: '/brand/logo-stacked.svg', w: 1351.5, h: 699.5 },
+  'stacked-reverse': { src: '/brand/logo-stacked-reverse.svg', w: 1351.5, h: 699.5 },
+  mark: { src: '/brand/mark-gold.svg', w: 492, h: 376 },
 };
 
 const DEFAULT_HEIGHT: Record<Variant, string> = {
@@ -37,7 +37,7 @@ export function BrandLogo({ variant = 'horizontal', className, priority }: { var
       src={a.src}
       width={a.w}
       height={a.h}
-      alt="2K Matrimony"
+      alt="2K Marriage"
       className={cn('w-auto select-none', DEFAULT_HEIGHT[variant], className)}
       loading={priority ? 'eager' : 'lazy'}
       fetchPriority={priority ? 'high' : undefined}
@@ -48,7 +48,7 @@ export function BrandLogo({ variant = 'horizontal', className, priority }: { var
 
 export function Brand({ href = '/', className, variant = 'horizontal', logoClassName }: { href?: string; className?: string; variant?: Variant; logoClassName?: string }) {
   return (
-    <Link href={href} className={cn('inline-flex shrink-0 items-center rounded-md', className)} aria-label="2K Matrimony home">
+    <Link href={href} className={cn('inline-flex shrink-0 items-center rounded-md', className)} aria-label="2K Marriage home">
       <BrandLogo variant={variant} className={logoClassName} priority />
     </Link>
   );

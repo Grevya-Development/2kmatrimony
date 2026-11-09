@@ -1,6 +1,6 @@
 /** Design tokens mirrored from apps/web/src/app/globals.css. */
 export const colors = {
-  // Brand DNA — Emerald Edition (see 2K_Matrimony_Brand_DNA_Emerald/09_Colour_Tokens)
+  // Brand DNA — Emerald Edition (see 2K_Marriage_Brand_DNA_Emerald/09_Colour_Tokens)
   canvas: '#fefaf4', // Ivory
   surface: '#ffffff',
   surface2: '#f7f1e6',
@@ -11,14 +11,14 @@ export const colors = {
   lineStrong: '#d4c8b3',
   emerald50: '#ebf3f2',
   emerald100: '#d3e5e3',
-  emerald500: '#205b5b', // Emerald Glow
-  emerald600: '#033b39', // Royal Emerald (primary)
+  emerald500: '#1c5550', // Emerald Glow
+  emerald600: '#013833', // Royal Emerald (primary)
   emerald700: '#062f2e',
-  emerald800: '#012929', // Emerald Depth
+  emerald800: '#00241f', // Emerald Depth
   gold50: '#fbf6ea',
   gold100: '#f6eacd',
   gold200: '#ecd5a2',
-  gold400: '#cc9c44', // Heritage Gold
+  gold400: '#f4b852', // Marigold Gold
   gold600: '#946719', // gold text on ivory
   success: '#3f6b4f',
   successBg: '#eaf2ec',

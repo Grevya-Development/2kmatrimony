@@ -17,7 +17,7 @@ export const pushProvider: ChannelProvider = {
     if (tokens.length === 0) return { status: 'failed', provider: 'expo', error: 'no_push_tokens' };
     const headers: Record<string, string> = { 'content-type': 'application/json', accept: 'application/json' };
     if (serverEnv.expoAccessToken) headers.authorization = `Bearer ${serverEnv.expoAccessToken}`;
-    const title = message.subject ?? '2K Matrimony';
+    const title = message.subject ?? '2K Marriage';
     const ids: string[] = [];
     const errorsSeen: string[] = [];
     for (let i = 0; i < tokens.length; i += 100) {

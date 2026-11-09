@@ -35,7 +35,7 @@ export function BiometricGate({ children, active }: { children: React.ReactNode;
       {locked && (
         <View style={[StyleSheet.absoluteFill, styles.lock]} accessibilityViewIsModal>
           <BrandLogo variant="mark" height={56} />
-          <Text variant="title">2K Matrimony is locked</Text>
+          <Text variant="title">2K Marriage is locked</Text>
           <Text variant="bodyMuted" style={{ textAlign: 'center' }}>Use Face ID, Touch ID or your fingerprint to continue.</Text>
           <Button title="Unlock" onPress={unlock} />
         </View>

@@ -6,7 +6,7 @@ export default function TermsPage() {
   return (
     <>
       <h1>Terms of service</h1>
-      <p>Version 2026-11-01. These terms govern your use of 2K Matrimony (“we”, “us”) on the web and in our mobile apps.</p>
+      <p>Version 2026-11-01. These terms govern your use of 2K Marriage (“we”, “us”) on the web and in our mobile apps.</p>
       <h2>1. Eligibility</h2>
       <ul>
         <li>You must be at least 18 years old and legally eligible to marry under the laws that apply to you.</li>
@@ -27,7 +27,7 @@ export default function TermsPage() {
         <li>You remain responsible for your decisions about whom to meet. Please follow our safety guidance and meet in public places.</li>
       </ul>
       <h2>4. Cost</h2>
-      <p>2K Matrimony is free to join and use. We do not charge for any feature. If we ever offer an optional paid service, we will announce it clearly in advance, and it will not be required to use the core service.</p>
+      <p>2K Marriage is free to join and use. We do not charge for any feature. If we ever offer an optional paid service, we will announce it clearly in advance, and it will not be required to use the core service.</p>
       <h2>5. Privacy</h2>
       <p>Our <a className="text-emerald-600 underline" href="/legal/privacy">Privacy Policy</a> explains how we process personal data in line with India’s Digital Personal Data Protection Act, 2023.</p>
       <h2>6. Termination</h2>

@@ -30,7 +30,7 @@ export default function Family() {
       haptic.success(); setContact(''); void q.refetch();
       Alert.alert('Invitation created', r.delivered ? 'We sent them the invitation. You can also share the link yourself.' : 'Share the invitation link with them.', [
         { text: 'Done', style: 'cancel' },
-        { text: 'Share link', onPress: () => void Share.share({ message: `Join me on 2K Matrimony to help with my search: ${r.inviteLink}` }) },
+        { text: 'Share link', onPress: () => void Share.share({ message: `Join me on 2K Marriage to help with my search: ${r.inviteLink}` }) },
       ]);
     } catch (e) { setError(errorMessage(e)); } finally { setBusy(false); }
   };

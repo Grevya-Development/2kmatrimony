@@ -36,7 +36,7 @@ export function AnalyticsSync() {
         void qc.invalidateQueries({ queryKey: ['me'] });
       };
       Alert.alert(
-        'Help us improve 2K Matrimony?',
+        'Help us improve 2K Marriage?',
         'With your permission we use anonymous usage analytics — screens visited and features used. Never your name, contact details, profile or messages. You can change this anytime in Settings.',
         [
           { text: 'No thanks', style: 'cancel', onPress: () => void decide(false) },
