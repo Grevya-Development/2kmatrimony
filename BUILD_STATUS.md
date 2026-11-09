@@ -91,7 +91,7 @@ Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundl
 - **Before production:**
   - In Auth settings: SMS provider and Apple credentials (Google is done). Site URL, redirects, SMTP and email templates are done.
   - Regenerate the service-role key, since it was shared in chat, and update the env var.
-  - Run the `create-super-admin` script once.
+  - ✅ First super admin created (2026-11-10): `2kmatrimonysupport@gmail.com`, with authenticator-app 2FA required.
 
 ## Product analytics (PostHog)
 ✅ Integrated on web, server and mobile; **consent-gated** (DPDP opt-in `product_analytics`, revocable in Settings).
