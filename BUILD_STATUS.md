@@ -26,6 +26,26 @@ Expo app icon + adaptive icon + splash, Royal Emerald / Heritage Gold / Ivory pa
 Montserrat typography, branded emails and invoices. Source kit: `2K_Matrimony_Brand_DNA_Emerald/`.
 Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundles.
 
+## Production deployment (Vercel)
+✅ **Live: https://2k-matrimony.vercel.app**
+- Team "Grevya's projects" (Hobby), project `2k-matrimony`, root directory `apps/web`, Node 24.
+- Functions run in `icn1` (Seoul), the same region as Supabase.
+- Connected to GitHub: every push to `main` deploys to production.
+- Env vars set for production and preview; the service role key and cron secret are stored as secrets.
+- Daily cron at 21:00 UTC. Hobby allows daily crons only, so the daily run also abandons stale checkouts.
+- **Verified live:**
+  - Pages and APIs return 200; health reports the database OK.
+  - Sign in → onboarding → profile created, through the real UI on the live URL (temporary user deleted).
+  - `/me` works with the session cookie; 0 page errors; 0 runtime errors or 5xx in logs.
+- **Pending (owner actions):**
+  - **Custom domain:** `2kmatrimony.com` is attached but DNS still points to Hostinger parking. Add A `@` → `216.198.79.1` and CNAME `www` → `05cd87ae7713455c.vercel-dns-017.com`, then set `NEXT_PUBLIC_APP_URL=https://2kmatrimony.com` and redeploy.
+  - **Supabase Auth URL configuration:**
+    - Site URL: the live URL.
+    - Redirect URLs: `https://2k-matrimony.vercel.app/auth/callback`, `https://2kmatrimony.com/auth/callback`, `https://www.2kmatrimony.com/auth/callback`, `twokmatrimony://auth/callback`.
+  - **Email:** custom SMTP (Resend); the built-in sender is heavily rate-limited.
+  - **Phone login:** an SMS provider.
+  - **Plan:** upgrade to Vercel Pro before commercial launch (Hobby is non-commercial; Pro also restores the hourly cron and longer log retention).
+
 ## Hosted Supabase (production project)
 ✅ **Project `ohhxeljnssgfkugbeixx` (Seoul) linked; all 20 migrations pushed.**
 - **Verified on hosted:** 79 tables, all with row-level security; no client write grants; 5 private buckets; realtime publication; full default configuration; signup trigger; pgvector 0.8.2.
