@@ -26,6 +26,22 @@ Expo app icon + adaptive icon + splash, Royal Emerald / Heritage Gold / Ivory pa
 Montserrat typography, branded emails and invoices. Source kit: `2K_Matrimony_Brand_DNA_Emerald/`.
 Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundles.
 
+## Free, curated, hand-picked (2026-11-10)
+✅ **Live on 2kmarriage.com.**
+- **Free:** every member gets every feature. Paid plans are hidden and the `payments` flag is off; billing code is kept dormant. `/pricing` redirects to `/` with a 308.
+- **Human screening:** completed profiles go to `in_review` and appear in Admin → Screening. Reviewers approve or request changes, and members are notified either way. Target: 24 hours (setting `curation`).
+- **Hand-picked introductions:** in Admin → Introductions (permission `matchmaker.curate`), a matchmaker picks a candidate and writes a personal note. Members see these first under "Hand-picked for you".
+- **Website redesign:** structure and tone inspired by Shaadi.com and Tamil Matrimony.
+  - Photography-led, using 6 Unsplash photos credited in `public/images/CREDITS.md`.
+  - A quick-start card ("I'm looking for…") that pre-fills onboarding preferences.
+  - Honest trust band, how curation works, families, safety, browse by mother tongue and city, FAQ.
+  - No fabricated numbers, testimonials or pricing.
+- **Support contact:** `2kmatrimonysupport@gmail.com`.
+- **Verified:**
+  - 187 integration and 11 E2E tests pass; all unit tests and typechecks pass.
+  - Hosted migrations applied and checked.
+  - Live: the quick-start flow, sign-in → onboarding, and the `/pricing` redirect.
+
 ## Production deployment (Vercel)
 ✅ **Live: https://2kmarriage.com** (also https://2k-matrimony.vercel.app; `www.2kmarriage.com` redirects to the apex with a 308 once its DNS record exists)
 - Team "Grevya's projects" (Hobby), project `2k-matrimony`, root directory `apps/web`, Node 24.
