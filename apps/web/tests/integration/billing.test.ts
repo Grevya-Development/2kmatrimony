@@ -5,7 +5,7 @@ import type { CheckoutOrder, PlanItem, BillingHistoryResponse } from '@2k/shared
 // Mock the Razorpay SDK — no network calls in tests.
 const rzpMock = {
   orders: { create: vi.fn() },
-  payments: { fetch: vi.fn(), refund: vi.fn() },
+  payments: { fetch: vi.fn(), refund: vi.fn(), capture: vi.fn() },
 };
 vi.mock('razorpay', () => ({ default: class { orders = rzpMock.orders; payments = rzpMock.payments; } }));
 
@@ -181,6 +181,32 @@ describe('checkout + verify with (mocked) Razorpay', () => {
     expect(denied.status).toBe(404);
   });
 
+  it('captures an authorized payment before activating, and never activates an uncaptured one', async () => {
+    const u = await newUser('authorized');
+    const pay = await createPendingPayment(u, 'plus', 'month');
+    const paymentId = rid();
+    const sig = hmacSha256Hex('test_secret_value', `${pay.razorpay_order_id}|${paymentId}`);
+    const body = { razorpayOrderId: pay.razorpay_order_id, razorpayPaymentId: paymentId, razorpaySignature: sig };
+
+    // Capture fails and the payment is still only authorized -> no plan.
+    rzpMock.payments.fetch.mockResolvedValue({ id: paymentId, order_id: pay.razorpay_order_id, amount: pay.amount_paise, status: 'authorized', method: 'card' });
+    rzpMock.payments.capture.mockRejectedValueOnce(new Error('gateway timeout'));
+    const blocked = await call(verifyPOST, request('/x', { token: u.token, body }));
+    expect(blocked.status).toBe(409);
+    const { data: stillPending } = await admin().from('payments').select('status').eq('id', pay.id).single();
+    expect(stillPending!.status).not.toBe('captured');
+    const { count: subs } = await admin().from('subscriptions').select('id', { count: 'exact', head: true }).eq('user_id', u.userId).eq('status', 'active');
+    expect(subs).toBe(0);
+
+    // Capture succeeds for the exact order amount -> activates.
+    rzpMock.payments.capture.mockResolvedValueOnce({ id: paymentId, status: 'captured', method: 'card' });
+    const ok = await call<{ already: boolean }>(verifyPOST, request('/x', { token: u.token, body }));
+    expect(ok.status).toBe(200);
+    expect(rzpMock.payments.capture).toHaveBeenLastCalledWith(paymentId, pay.amount_paise, 'INR');
+    const { data: captured } = await admin().from('payments').select('status').eq('id', pay.id).single();
+    expect(captured!.status).toBe('captured');
+  });
+
   it('refuses to verify someone else\'s order', async () => {
     const owner = await newUser('owner');
     const thief = await newUser('thief');
@@ -225,6 +251,15 @@ describe('Razorpay webhook', () => {
   it('rejects bad signatures', async () => {
     const r = await send({ event: 'payment.captured', payload: {} }, { sig: 'deadbeef' });
     expect(r.status).toBe(401);
+  });
+
+  it('ignores order.paid/payment.captured events whose payment is not captured', async () => {
+    const u = await newUser('wh-auth');
+    const pay = await createPendingPayment(u, 'plus', 'month');
+    const r = await send({ event: 'order.paid', created_at: 1, payload: { payment: { entity: { id: rid(), order_id: pay.razorpay_order_id, amount: pay.amount_paise, status: 'authorized' } } } });
+    expect(r.status).toBe(200);
+    const { data: p } = await admin().from('payments').select('status').eq('id', pay.id).single();
+    expect(p!.status).toBe('created');
   });
 
   it('activates on payment.captured exactly once across duplicate deliveries', async () => {

@@ -104,7 +104,9 @@ export async function getAuthContext(req: NextRequest | Request): Promise<AuthCo
       roleName: role.name,
       displayName: adminRow.display_name,
       permissions,
-      mfaRequired: (flag?.enabled ?? true) && adminRow.mfa_required,
+      // Super admins always follow their own row's MFA setting: the global flag
+      // can only relax MFA for other roles (and only a super admin can change it).
+      mfaRequired: adminRow.mfa_required && (isSuperAdmin || (flag?.enabled ?? true)),
       isSuperAdmin,
       can: (p) => isSuperAdmin || permissions.has(p),
     };

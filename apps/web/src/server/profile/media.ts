@@ -7,6 +7,9 @@ import { errors } from '@/server/http';
 import { assertUploaded, createUpload, removeObjects } from '@/server/media';
 import { refreshProfileDerived } from '@/server/profiles/completion';
 import { PROFILE_LIMITS_DEFAULT, requireProfile } from './service';
+import { revokeBadge } from './badges';
+
+const PHOTO_CHANGED = 'Your photos changed after photo verification.';
 
 export async function requestUpload(auth: AuthContext, kind: 'photo' | 'video' | 'verification', contentType: string, sizeBytes: number) {
   const p = requireProfile(auth);
@@ -37,6 +40,7 @@ export async function confirmPhoto(auth: AuthContext, input: { path: string; wid
     .single();
   if (error) throw error.code === '23505' ? errors.conflict('This photo was already added.') : error;
   await audit(auth, { action: 'profile.photo.add', entityType: 'profile_photo', entityId: data.id });
+  if (p.is_photo_verified) await revokeBadge(auth, p.id, 'photo', PHOTO_CHANGED);
   const completion = await refreshProfileDerived(p.id);
   return { id: data.id, completion };
 }
@@ -47,8 +51,10 @@ export async function updatePhoto(auth: AuthContext, photoId: string, input: { i
   const { data: photo } = await c.from('profile_photos').select('id, profile_id').eq('id', photoId).maybeSingle();
   if (!photo || photo.profile_id !== p.id) throw errors.notFound('Photo not found.');
   if (input.isPrimary) {
+    const { data: current } = await c.from('profile_photos').select('id').eq('profile_id', p.id).eq('is_primary', true).maybeSingle();
     await c.from('profile_photos').update({ is_primary: false }).eq('profile_id', p.id).eq('is_primary', true);
     await c.from('profile_photos').update({ is_primary: true }).eq('id', photoId);
+    if (p.is_photo_verified && current?.id !== photoId) await revokeBadge(auth, p.id, 'photo', PHOTO_CHANGED);
   }
   const patch: { visibility?: string; sort_order?: number } = {};
   if (input.visibility) patch.visibility = input.visibility;
@@ -72,6 +78,7 @@ export async function deletePhoto(auth: AuthContext, photoId: string) {
     if (next) await c.from('profile_photos').update({ is_primary: true }).eq('id', next.id);
   }
   await audit(auth, { action: 'profile.photo.delete', entityType: 'profile_photo', entityId: photoId });
+  if (p.is_photo_verified) await revokeBadge(auth, p.id, 'photo', PHOTO_CHANGED);
   const completion = await refreshProfileDerived(p.id);
   return { completion };
 }

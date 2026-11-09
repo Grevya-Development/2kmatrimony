@@ -73,3 +73,29 @@ export function toMatchProfile(b: ProfileBundle): MatchProfile {
     prefs,
   };
 }
+
+const audienceAllows = (audience: string | null | undefined, connected: boolean) =>
+  audience === 'members' || (audience === 'connections' && connected);
+
+/**
+ * Viewer-relative privacy mask for the matching engine. Attributes the member
+ * hides from this viewer are nulled AND declared hidden, so the engine skips
+ * them entirely (no met/unmet/missing signal a viewer could probe).
+ * Mirrors the visibility rules in projection.ts.
+ */
+export function maskForViewer(mp: MatchProfile, b: ProfileBundle, connected: boolean): MatchProfile {
+  const sensitiveOk = audienceAllows(b.profile.sensitive_fields_visibility, connected);
+  const incomeOk = sensitiveOk && audienceAllows(b.career?.income_visibility ?? 'connections', connected);
+  const hidden: NonNullable<MatchProfile['hiddenFields']> = [];
+  const out: MatchProfile = { ...mp };
+  if (!sensitiveOk) {
+    out.religion = null;
+    hidden.push('religion');
+  }
+  if (!incomeOk) {
+    out.incomeRange = null;
+    hidden.push('income');
+  }
+  out.hiddenFields = hidden;
+  return out;
+}

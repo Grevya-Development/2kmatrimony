@@ -125,7 +125,8 @@ export function route<P extends Params = Params>(
 
       if (auth) {
         if (auth.user.status === 'deleted') throw errors.unauthorized('This account has been deleted.');
-        if (auth.user.status === 'suspended' && !opts.allowSuspended && !auth.admin) throw errors.suspended();
+        // Suspension applies to everyone, including admins (suspending an admin also deactivates their admin row).
+        if (auth.user.status === 'suspended' && !opts.allowSuspended) throw errors.suspended();
         if (opts.profile) {
           if (!auth.profile) throw errors.profileIncomplete('Create your profile first.');
           if (opts.profile === 'active' && auth.profile.status !== 'active') {

@@ -158,7 +158,7 @@ describe('user management', () => {
   });
 
   it('cannot suspend yourself', async () => {
-    expect((await call(suspend, sa('/', { body: { reason: 'Testing self suspend' } }), { id: superAdmin.userId })).status).toBe(409);
+    expect((await call(suspend, sa('/', { body: { reason: 'Testing self suspend' } }), { id: superAdmin.userId })).status).toBe(403);
   });
 
   it('grants, extends and cancels subscriptions (reflected in /me)', async () => {
@@ -401,7 +401,7 @@ describe('super admin', () => {
     const list = await call<{ user_id: string }[]>(adminsList, sa('/'));
     expect(list.body.data?.some((a) => a.user_id === plain.userId)).toBe(true);
     await call(adminPatch, sa('/', { method: 'PATCH', body: { isActive: false } }), { userId: plain.userId });
-    expect((await call(adminPatch, sa('/', { method: 'PATCH', body: { isActive: false } }), { userId: superAdmin.userId })).status).toBe(409);
+    expect((await call(adminPatch, sa('/', { method: 'PATCH', body: { isActive: false } }), { userId: superAdmin.userId })).status).toBe(403);
     // support role cannot manage admins
     expect((await call(adminsList, request('/', { token: supportAdmin.token }))).status).toBe(403);
 

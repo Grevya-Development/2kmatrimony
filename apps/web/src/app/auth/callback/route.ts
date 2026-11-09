@@ -1,12 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { safeNextPath } from '@/lib/safe-redirect';
 
 /** OAuth / magic-link / recovery callback: exchange the code for a session cookie. */
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
-  const nextParam = url.searchParams.get('next') ?? '/app';
-  const next = nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : '/app';
+  const next = safeNextPath(url.searchParams.get('next'), url.origin);
   if (code) {
     const supabase = await createSupabaseServerClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);

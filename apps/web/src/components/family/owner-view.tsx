@@ -59,7 +59,7 @@ function InviteForm({ onInvited }: { onInvited: (m: FamilyMemberItem, link: stri
   };
   return (
     <form onSubmit={submit} className="space-y-4">
-      <Field label="Email or mobile number" htmlFor="fam-contact"><Input value={contact} onChange={(e) => setContact(e.target.value)} required placeholder="amma@example.com or 98765 43210" /></Field>
+      <Field label="Email or mobile number" htmlFor="fam-contact" hint="They must sign in with this exact email or number to accept — a forwarded link alone won’t work."><Input value={contact} onChange={(e) => setContact(e.target.value)} required placeholder="amma@example.com or 98765 43210" /></Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Relation" htmlFor="fam-rel"><NativeSelect value={relation} onChange={(e) => setRelation(e.target.value as FamilyRelation)}>{FAMILY_RELATIONS.map((r) => <option key={r} value={r}>{relLabel(r)}</option>)}</NativeSelect></Field>
         <Field label="Name" htmlFor="fam-name" optional><Input value={name} maxLength={80} onChange={(e) => setName(e.target.value)} placeholder="How you call them" /></Field>

@@ -82,7 +82,15 @@ export interface MatchProfile {
   personalityTraits: string[];
   dna: Partial<Record<DnaDimension, DnaPoint>>;
   prefs: MatchPreferences | null;
+  /**
+   * Attributes this member hides from the current viewer (privacy settings).
+   * The engine skips every check on them — never met/unmet/missing — so a
+   * viewer cannot infer the hidden value by toggling their own preferences.
+   */
+  hiddenFields?: HiddenField[];
 }
+
+export type HiddenField = 'religion' | 'income';
 
 export type Weights = Record<ScoreDimension, number>;
 

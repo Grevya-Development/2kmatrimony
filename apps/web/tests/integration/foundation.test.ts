@@ -2,7 +2,7 @@ import { afterAll, describe, expect, it } from 'vitest';
 import { GET as me } from '@/app/api/v1/me/route';
 import { GET as health } from '@/app/api/v1/health/route';
 import { GET as config } from '@/app/api/v1/config/route';
-import { admin, call, createTestUser, request } from './helpers';
+import { admin, call, createTestUser, makeAdmin, request } from './helpers';
 
 afterAll(async () => {
   // Leave users for debugging when TEST_KEEP=1
@@ -17,6 +17,20 @@ describe('foundation', () => {
     const r = await call<{ status: string; database: string }>(health, request('/api/v1/health'));
     expect(r.status).toBe(200);
     expect(r.body.data?.database).toBe('ok');
+  });
+
+  it('health hides integration details from the public and shows them to admins', async () => {
+    const pub = await call<Record<string, unknown>>(health, request('/api/v1/health'));
+    expect(Object.keys(pub.body.data ?? {}).sort()).toEqual(['database', 'status', 'time']);
+    const member = await createTestUser('health-member');
+    const asMember = await call<Record<string, unknown>>(health, request('/api/v1/health', { token: member.token }));
+    expect(asMember.body.data).not.toHaveProperty('integrations');
+    const adm = await createTestUser('health-admin');
+    await makeAdmin(adm, 'support');
+    const asAdmin = await call<Record<string, unknown>>(health, request('/api/v1/health', { token: adm.token }));
+    expect(asAdmin.body.data).toHaveProperty('integrations');
+    expect(asAdmin.body.data).toHaveProperty('dbLatencyMs');
+    await admin().from('admin_users').delete().eq('user_id', adm.userId);
   });
 
   it('public config exposes only public settings', async () => {

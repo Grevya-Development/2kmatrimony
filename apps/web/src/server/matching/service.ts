@@ -10,7 +10,7 @@ import {
 import type { Json, MatchExplanation } from '@2k/shared';
 import { db } from '@/lib/supabase/admin';
 import { loadBundles, type ProfileBundle } from '@/server/profiles/load';
-import { toMatchProfile } from '@/server/profiles/match-profile';
+import { maskForViewer, toMatchProfile } from '@/server/profiles/match-profile';
 
 const CONFIG_TTL = 60_000;
 const configCache = new Map<string, { at: number; config: MatchingConfig & { raw: { daily_batch_size?: number; candidate_pool?: number } } }>();
@@ -61,14 +61,35 @@ export async function storePairScores(pairs: PairResult[]): Promise<void> {
   if (error) console.error('[matching] store scores failed', error.message);
 }
 
-/** Score viewer against many candidates (already-loaded bundles). */
+/** Profiles (among ids) that have an active connection with the viewer. */
+export async function activeConnectionSet(viewerId: string, ids: string[]): Promise<Set<string>> {
+  const out = new Set<string>();
+  const unique = [...new Set(ids)].filter((id) => id && id !== viewerId);
+  for (let i = 0; i < unique.length; i += 60) {
+    const part = unique.slice(i, i + 60);
+    const [a, b] = await Promise.all([
+      db().from('connections').select('profile_b').eq('profile_a', viewerId).eq('status', 'active').in('profile_b', part),
+      db().from('connections').select('profile_a').eq('profile_b', viewerId).eq('status', 'active').in('profile_a', part),
+    ]);
+    for (const r of a.data ?? []) out.add(r.profile_b);
+    for (const r of b.data ?? []) out.add(r.profile_a);
+  }
+  return out;
+}
+
+/**
+ * Score viewer against many candidates (already-loaded bundles).
+ * Candidates are privacy-masked relative to the viewer (maskForViewer), so
+ * hidden attributes never influence anything the viewer can observe.
+ */
 export async function scoreCandidates(viewer: ProfileBundle, candidates: ProfileBundle[], opts: { persist?: boolean } = {}): Promise<Map<string, PairResult>> {
   const config = await getMatchingConfig();
   const v = toMatchProfile(viewer);
   const out = new Map<string, PairResult>();
-  for (const c of candidates) {
-    if (c.profile.id === viewer.profile.id) continue;
-    out.set(c.profile.id, evaluatePair(v, toMatchProfile(c), config));
+  const others = candidates.filter((c) => c.profile.id !== viewer.profile.id);
+  const connected = await activeConnectionSet(viewer.profile.id, others.map((c) => c.profile.id));
+  for (const c of others) {
+    out.set(c.profile.id, evaluatePair(v, maskForViewer(toMatchProfile(c), c, connected.has(c.profile.id)), config));
   }
   if (opts.persist) await storePairScores([...out.values()]);
   return out;

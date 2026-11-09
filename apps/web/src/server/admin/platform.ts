@@ -12,6 +12,20 @@ import { likeSafe, paged, qp, type Page } from './common';
 
 const asJson = (v: unknown) => v as NonNullable<Json>;
 
+/** Flags that weaken platform security if misused — super admin only. */
+export const SUPER_ADMIN_ONLY_FLAGS = new Set(['require_admin_mfa']);
+
+function requireSuperAdmin(auth: AuthContext, message = 'Only a super admin can do this.'): void {
+  if (!auth.admin?.isSuperAdmin) throw errors.forbidden(message);
+}
+
+/** Non-super admins may never grant permissions they do not hold themselves. */
+function assertGrantable(auth: AuthContext, permissions: readonly string[]): void {
+  if (auth.admin?.isSuperAdmin) return;
+  const missing = permissions.filter((p) => !auth.admin?.permissions.has(p));
+  if (missing.length) throw errors.forbidden(`You cannot grant permissions you do not hold: ${missing.join(', ')}.`);
+}
+
 // ---------------------------------------------------------------------------
 // CMS
 // ---------------------------------------------------------------------------
@@ -203,7 +217,7 @@ export async function broadcast(auth: AuthContext, input: z.infer<typeof broadca
 export async function listFlags() {
   const { data, error } = await db().from('feature_flags').select('*').order('key');
   if (error) throw error;
-  return data ?? [];
+  return (data ?? []).map((f) => ({ ...f, superAdminOnly: SUPER_ADMIN_ONLY_FLAGS.has(f.key) }));
 }
 
 export const flagSchema = z.object({ enabled: z.boolean().optional(), rolloutPercent: z.number().int().min(0).max(100).optional(), description: z.string().trim().min(3).max(300).optional() });
@@ -212,6 +226,7 @@ export async function updateFlag(auth: AuthContext, key: string, input: z.infer<
   const c = db();
   const { data: before } = await c.from('feature_flags').select('*').eq('key', key).maybeSingle();
   if (!before) throw errors.notFound('Flag not found.');
+  if (SUPER_ADMIN_ONLY_FLAGS.has(key)) requireSuperAdmin(auth, 'Only a super admin can change security settings.');
   const patch = {
     ...(input.enabled !== undefined && { enabled: input.enabled }),
     ...(input.rolloutPercent !== undefined && { rollout_percent: input.rolloutPercent }),
@@ -437,6 +452,9 @@ export async function inviteAdmin(auth: AuthContext, input: z.infer<typeof admin
   if (!user) throw errors.notFound('No account found. The person must sign up once before they can be made an admin.');
   const { data: role } = await c.from('admin_roles').select('id, key').eq('id', input.roleId).maybeSingle();
   if (!role) throw errors.notFound('Role not found.');
+  if (user.id === auth.userId) throw errors.forbidden('You cannot change your own admin access.');
+  if (role.key === 'super_admin') requireSuperAdmin(auth, 'Only a super admin can create super admins.');
+  if (!input.mfaRequired) requireSuperAdmin(auth, 'Only a super admin can create admins without MFA.');
   const { data: existing } = await c.from('admin_users').select('user_id').eq('user_id', user.id).maybeSingle();
   if (existing) throw errors.conflict('This person is already an admin.');
   const { error } = await c.from('admin_users').insert({ user_id: user.id, role_id: role.id, display_name: input.displayName, mfa_required: input.mfaRequired, created_by: auth.userId });
@@ -458,12 +476,16 @@ export async function updateAdmin(auth: AuthContext, userId: string, input: z.in
   let newRoleKey: string | null = null;
   if (input.roleId) newRoleKey = (await c.from('admin_roles').select('key').eq('id', input.roleId).maybeSingle()).data?.key ?? null;
   if (input.roleId && !newRoleKey) throw errors.notFound('Role not found.');
+  if (userId === auth.userId && (input.roleId !== undefined || input.isActive !== undefined || input.mfaRequired !== undefined)) {
+    throw errors.forbidden('You cannot change your own admin access.');
+  }
+  if (wasSuper || newRoleKey === 'super_admin') requireSuperAdmin(auth, 'Only a super admin can change super admin access.');
+  if (input.mfaRequired !== undefined) requireSuperAdmin(auth, 'Only a super admin can change MFA requirements.');
   const losesSuper = wasSuper && before.is_active && (input.isActive === false || (newRoleKey !== null && newRoleKey !== 'super_admin'));
   if (losesSuper) {
     const supers = await activeSuperAdmins();
     if (supers.length <= 1) throw errors.conflict('There must always be at least one active super admin.');
   }
-  if (userId === auth.userId && input.isActive === false) throw errors.conflict('You cannot deactivate yourself.');
   const patch = {
     ...(input.roleId !== undefined && { role_id: input.roleId }),
     ...(input.isActive !== undefined && { is_active: input.isActive }),
@@ -498,6 +520,8 @@ async function setRolePermissions(roleId: string, permissions: string[]) {
 }
 
 export async function createRole(auth: AuthContext, input: z.infer<typeof roleCreateSchema>) {
+  requireSuperAdmin(auth, 'Only a super admin can create roles.');
+  assertGrantable(auth, input.permissions);
   const { data, error } = await db().from('admin_roles').insert({ key: input.key, name: input.name, description: input.description ?? null, is_system: false }).select('id').single();
   if (error) {
     if (error.code === '23505') throw errors.conflict('A role with this key exists.');
@@ -509,6 +533,8 @@ export async function createRole(auth: AuthContext, input: z.infer<typeof roleCr
 }
 
 export async function updateRole(auth: AuthContext, id: string, input: z.infer<typeof roleUpdateSchema>) {
+  requireSuperAdmin(auth, 'Only a super admin can edit roles.');
+  if (input.permissions) assertGrantable(auth, input.permissions);
   const c = db();
   const { data: role } = await c.from('admin_roles').select('id, key, name, description, admin_role_permissions(permission_key)').eq('id', id).maybeSingle();
   if (!role) throw errors.notFound('Role not found.');
@@ -520,6 +546,7 @@ export async function updateRole(auth: AuthContext, id: string, input: z.infer<t
 }
 
 export async function deleteRole(auth: AuthContext, id: string) {
+  requireSuperAdmin(auth, 'Only a super admin can delete roles.');
   const c = db();
   const { data: role } = await c.from('admin_roles').select('id, key, is_system').eq('id', id).maybeSingle();
   if (!role) throw errors.notFound('Role not found.');

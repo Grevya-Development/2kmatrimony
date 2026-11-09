@@ -246,8 +246,13 @@ export async function streamChat(call: ChatCall): Promise<{ textStream: Readable
   return { textStream, final };
 }
 
-/** Wrap untrusted member content so the model treats it as data, not instructions. */
+/**
+ * Wrap untrusted member content so the model treats it as data, not instructions.
+ * `&` and `<` are escaped so member text can never open or close a tag (a
+ * single-pass strip of `</tag>` is bypassable with `<</tag>/tag>`).
+ */
 export function untrusted(tag: string, value: unknown): string {
   const body = typeof value === 'string' ? value : JSON.stringify(value, null, 2);
-  return `<${tag}>\n${body.replaceAll(`</${tag}>`, '')}\n</${tag}>`;
+  const safe = body.replaceAll('&', '&amp;').replaceAll('<', '&lt;');
+  return `<${tag}>\n${safe}\n</${tag}>`;
 }

@@ -148,17 +148,41 @@ export async function revealContact(auth: AuthContext, userId: string) {
   return { email: data.email, phone: data.phone, signupIp: data.signup_ip };
 }
 
+/**
+ * Guard for account actions (suspend/ban/reactivate/delete/plan changes):
+ * never on yourself; acting on another admin needs a super admin (or
+ * admins.manage when the target is not a super admin); the last active super
+ * admin can never be locked out.
+ */
+export async function assertCanActOnUser(auth: AuthContext, targetUserId: string): Promise<{ isAdmin: boolean }> {
+  if (targetUserId === auth.userId) throw errors.forbidden('You cannot take this action on your own account.');
+  const c = db();
+  const { data: target } = await c.from('admin_users').select('is_active, admin_roles(key)').eq('user_id', targetUserId).maybeSingle();
+  if (!target) return { isAdmin: false };
+  const targetIsSuper = (target.admin_roles as unknown as { key: string } | null)?.key === 'super_admin';
+  if (!auth.admin?.isSuperAdmin && (targetIsSuper || !auth.admin?.can('admins.manage'))) {
+    throw errors.forbidden('Only a super admin can take this action on another admin account.');
+  }
+  if (targetIsSuper && target.is_active) {
+    const { data: supers } = await c.from('admin_users').select('user_id, admin_roles!inner(key)').eq('is_active', true).eq('admin_roles.key', 'super_admin');
+    if ((supers ?? []).length <= 1) throw errors.conflict('This is the last active super admin and cannot be locked out.');
+  }
+  return { isAdmin: true };
+}
+
 async function setAuthBan(userId: string, hours: number | 'none') {
   const { error } = await db().auth.admin.updateUserById(userId, { ban_duration: hours === 'none' ? 'none' : `${Math.max(1, Math.ceil(hours))}h` });
   if (error) console.error('[admin] auth ban update failed', error.message);
 }
 
 export async function suspendUser(auth: AuthContext, userId: string, input: z.infer<typeof suspendSchema>, opts: { ban?: boolean; reportId?: string | null } = {}) {
-  if (userId === auth.userId) throw errors.conflict('You cannot suspend your own account.');
+  const { isAdmin } = await assertCanActOnUser(auth, userId);
   const c = db();
   const { data: before } = await c.from('app_users').select('status, suspended_reason, suspended_until').eq('id', userId).maybeSingle();
   if (!before) throw errors.notFound('User not found.');
   if (before.status === 'deleted') throw errors.conflict('This account is deleted.');
+  // A suspended admin loses admin access too; restoring it is an explicit admin-accounts action.
+  if (isAdmin) await c.from('admin_users').update({ is_active: false }).eq('user_id', userId);
   const until = opts.ban ? null : input.until ?? null;
   await c.from('app_users').update({ status: 'suspended', suspended_reason: input.reason, suspended_until: until }).eq('id', userId);
   const { data: profile } = await c.from('profiles').select('id, status').eq('owner_user_id', userId).maybeSingle();
@@ -173,6 +197,7 @@ export async function suspendUser(auth: AuthContext, userId: string, input: z.in
 }
 
 export async function reactivateUser(auth: AuthContext, userId: string, reason = 'Reinstated by admin', reportId: string | null = null) {
+  await assertCanActOnUser(auth, userId);
   const c = db();
   const { data: before } = await c.from('app_users').select('status, suspended_reason, suspended_until').eq('id', userId).maybeSingle();
   if (!before) throw errors.notFound('User not found.');
@@ -188,6 +213,7 @@ export async function reactivateUser(auth: AuthContext, userId: string, reason =
 /** Schedule deletion through the same data_requests pipeline used by members (executed by the privacy job). */
 export async function scheduleUserDeletion(auth: AuthContext, userId: string, reason: string) {
   if (userId === auth.userId) throw errors.conflict('Use account settings to delete your own account.');
+  const { isAdmin } = await assertCanActOnUser(auth, userId);
   const c = db();
   const { data: user } = await c.from('app_users').select('status').eq('id', userId).maybeSingle();
   if (!user) throw errors.notFound('User not found.');
@@ -200,11 +226,13 @@ export async function scheduleUserDeletion(auth: AuthContext, userId: string, re
   const now = new Date().toISOString();
   await c.from('app_users').update({ status: 'pending_deletion', deletion_requested_at: now }).eq('id', userId);
   await c.from('profiles').update({ status: 'hidden' }).eq('owner_user_id', userId).neq('status', 'deleted');
+  if (isAdmin) await c.from('admin_users').update({ is_active: false }).eq('user_id', userId);
   await audit(auth, { action: 'admin.user.delete_scheduled', entityType: 'app_user', entityId: userId, before: { status: user.status }, after: { status: 'pending_deletion', scheduledFor, requestId: reqRow?.id } , metadata: { reason } });
   return { scheduledFor };
 }
 
 export async function manageSubscription(auth: AuthContext, userId: string, input: z.infer<typeof subscriptionActionSchema>) {
+  await assertCanActOnUser(auth, userId);
   const c = db();
   const nowIso = new Date().toISOString();
   const { data: current } = await c.from('subscriptions').select('id, plan_id, status, current_period_end').eq('user_id', userId).eq('status', 'active').gt('current_period_end', nowIso).order('current_period_end', { ascending: false }).limit(1).maybeSingle();

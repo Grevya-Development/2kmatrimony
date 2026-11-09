@@ -218,10 +218,11 @@ function checkPreferences(seeker: MatchProfile, c: MatchProfile): PreferenceChec
   if (p.drinkingOk.length) add('drinking', NON_NEGOTIABLE_LABELS.drinking, inList(p.drinkingOk, c.drinking), hard('drinking'));
   if (p.childrenPreferences.length) add('children', NON_NEGOTIABLE_LABELS.children, inList(p.childrenPreferences, c.childrenPreference), hard('children'));
   if (p.motherTongues.length) add('mother_tongue', NON_NEGOTIABLE_LABELS.mother_tongue, inList(p.motherTongues, c.motherTongue), hard('mother_tongue'));
-  if (p.religions.length) add('religion', NON_NEGOTIABLE_LABELS.religion, inList(p.religions, c.religion), hard('religion'));
+  const hidden = new Set(c.hiddenFields ?? []);
+  if (p.religions.length && !hidden.has('religion')) add('religion', NON_NEGOTIABLE_LABELS.religion, inList(p.religions, c.religion), hard('religion'));
   if (p.livingArrangements.length) add('living_arrangement', NON_NEGOTIABLE_LABELS.living_arrangement, inList(p.livingArrangements, c.livingArrangement), hard('living_arrangement'));
   if (p.familyValues.length) add('family_values', 'Family values', inList(p.familyValues, c.familyValues), false);
-  if (p.minIncomeRange) {
+  if (p.minIncomeRange && !hidden.has('income')) {
     const want = INCOME_RANK[p.minIncomeRange];
     const has = c.incomeRange ? INCOME_RANK[c.incomeRange] : null;
     add('income', 'Income', want === null || has === null ? 'unknown' : has >= want ? 'met' : 'unmet', false);

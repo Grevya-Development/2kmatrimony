@@ -8,7 +8,7 @@ import { viewerBundle } from '@/server/discovery/cards';
 const UUID_RE = /^[0-9a-f-]{36}$/i;
 
 /** Another member's profile, privacy-projected. Records a (deduplicated) view. */
-export const GET = route<{ id: string }>({ profile: 'required', rateLimit: { name: 'profile-view', limit: 120, windowSec: 60 } }, async ({ params, auth, req }) => {
+export const GET = route<{ id: string }>({ profile: 'active', rateLimit: { name: 'profile-view', limit: 120, windowSec: 60 } }, async ({ params, auth, req }) => {
   if (!UUID_RE.test(params.id)) throw errors.notFound('Profile not found.');
   const me = auth.profile!;
   if (params.id === me.id) {

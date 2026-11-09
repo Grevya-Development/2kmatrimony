@@ -13,6 +13,7 @@ import type {
   VisionThemes,
 } from '@2k/shared';
 import { db } from '@/lib/supabase/admin';
+import { isBlockedBetween } from '@/server/safety/service';
 import type { AuthContext } from '@/server/auth';
 import { isEnabled } from '@/server/config';
 import { getPlanState, requireEntitlement } from '@/server/entitlements';
@@ -44,6 +45,7 @@ export async function loadMemberConnection(auth: AuthContext, connectionId: stri
   if (!me) throw errors.profileIncomplete();
   const { data } = await db().from('connections').select('id, status, created_at, profile_a, profile_b').eq('id', connectionId).maybeSingle();
   if (!data || (data.profile_a !== me && data.profile_b !== me)) throw errors.notFound('Connection not found.');
+  if (await isBlockedBetween(data.profile_a, data.profile_b)) throw errors.notFound('Connection not found.');
   if (opts.requireActive && data.status !== 'active') throw errors.conflict('This connection has been closed.');
   return {
     id: data.id,
@@ -60,6 +62,7 @@ export async function loadMemberConnection(auth: AuthContext, connectionId: stri
 export async function loadConnectionForMeetings(auth: AuthContext, connectionId: string): Promise<{ conn: { id: string; status: string; profile_a: string; profile_b: string }; role: 'member' | 'family'; actingForProfileId: string }> {
   const { data } = await db().from('connections').select('id, status, profile_a, profile_b').eq('id', connectionId).maybeSingle();
   if (!data) throw errors.notFound('Connection not found.');
+  if (await isBlockedBetween(data.profile_a, data.profile_b)) throw errors.notFound('Connection not found.');
   const me = auth.profile?.id;
   if (me && (data.profile_a === me || data.profile_b === me)) return { conn: data, role: 'member', actingForProfileId: me };
   const { data: fam } = await db()
@@ -300,7 +303,7 @@ export async function addVision(auth: AuthContext, connectionId: string, input: 
 }
 
 export async function updateVision(auth: AuthContext, connectionId: string, itemId: string, patch: { category?: VisionCategory; content?: string; isShared?: boolean }): Promise<VisionItem> {
-  const conn = await loadMemberConnection(auth, connectionId);
+  const conn = await loadMemberConnection(auth, connectionId, { requireActive: true });
   const update: { category?: string; content?: string; is_shared?: boolean } = {};
   if (patch.category) update.category = patch.category;
   if (patch.content !== undefined) update.content = patch.content;

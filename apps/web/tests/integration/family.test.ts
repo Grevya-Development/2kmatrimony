@@ -83,7 +83,7 @@ describe('family collaboration', () => {
   it('rejects expired invitations and regenerates links', async () => {
     const owner = await createMember({ label: 'fown2', gender: 'male', seeking: 'female' });
     const relative = await trackUser(await createTestUser('frel'));
-    const inv = await call<{ member: FamilyMemberItem; inviteLink: string }>(invite, request('/api/v1/family', { token: owner.user.token, body: { contact: '9876543210', relation: 'brother', permissions: ['view_profiles'] } }));
+    const inv = await call<{ member: FamilyMemberItem; inviteLink: string }>(invite, request('/api/v1/family', { token: owner.user.token, body: { contact: relative.email, relation: 'brother', permissions: ['view_profiles'] } }));
     const token = new URL(inv.body.data!.inviteLink).searchParams.get('token')!;
     await admin().from('family_members').update({ invite_expires_at: new Date(Date.now() - 1000).toISOString() }).eq('id', inv.body.data!.member.id);
     expect((await call(accept, request('/api/v1/family/accept', { token: relative.token, body: { token } }))).status).toBe(409);
@@ -93,5 +93,30 @@ describe('family collaboration', () => {
     expect((await call(accept, request('/api/v1/family/accept', { token: relative.token, body: { token } }))).status).toBe(404);
     expect((await call(accept, request('/api/v1/family/accept', { token: relative.token, body: { token: token2 } }))).status).toBe(200);
     expect((await call(invite, request('/api/v1/family', { token: owner.user.token, body: { contact: 'not-a-contact', relation: 'brother', permissions: ['view_profiles'] } }))).status).toBe(422);
+  });
+
+  it('binds acceptance to the invited contact (forwarded links are refused)', async () => {
+    const owner = await createMember({ label: 'fbind', gender: 'female', seeking: 'male' });
+    const intended = await trackUser(await createTestUser('fint'));
+    const stranger = await trackUser(await createTestUser('fstr'));
+    const inv = await call<{ inviteLink: string }>(invite, request('/api/v1/family', { token: owner.user.token, body: { contact: intended.email.toUpperCase(), relation: 'sister', permissions: ['view_profiles'] } }));
+    expect(inv.status).toBeLessThan(300);
+    const token = new URL(inv.body.data!.inviteLink).searchParams.get('token')!;
+    const denied = await call(accept, request('/api/v1/family/accept', { token: stranger.token, body: { token, acceptTerms: true } }));
+    expect(denied.status).toBe(403);
+    expect(denied.body.error?.message).toMatch(/different email or phone/i);
+    expect((await call(accept, request('/api/v1/family/accept', { token: intended.token, body: { token, acceptTerms: true } }))).status).toBe(200);
+
+    // Phone invites match the account's verified phone in E.164.
+    const phone = `91${String(Date.now()).slice(-10)}`;
+    const { data: created } = await admin().auth.admin.createUser({ phone, phone_confirm: true, password: `Pw-${crypto.randomUUID()}`, email: `fph-${crypto.randomUUID().slice(0, 8)}@it.test`, email_confirm: true });
+    const { createClient } = await import('@supabase/supabase-js');
+    const anon = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, { auth: { persistSession: false } });
+    await admin().auth.admin.updateUserById(created.user!.id, { password: 'Phone-Test-Pass-123' });
+    const { data: sess } = await anon.auth.signInWithPassword({ email: created.user!.email!, password: 'Phone-Test-Pass-123' });
+    await trackUser({ userId: created.user!.id, email: created.user!.email!, token: sess.session!.access_token });
+    const inv2 = await call<{ inviteLink: string }>(invite, request('/api/v1/family', { token: owner.user.token, body: { contact: phone.slice(2), relation: 'brother', permissions: ['view_profiles'] } }));
+    const token2 = new URL(inv2.body.data!.inviteLink).searchParams.get('token')!;
+    expect((await call(accept, request('/api/v1/family/accept', { token: sess.session!.access_token, body: { token: token2, acceptTerms: true } }))).status).toBe(200);
   });
 });

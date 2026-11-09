@@ -158,3 +158,40 @@ describe('evaluateDirection', () => {
     expect(r.confidence).toBe(0);
   });
 });
+
+describe('hidden sensitive fields (privacy)', () => {
+  const target = (hidden: boolean) =>
+    base('t', 'male', 'female', { religion: 'Hindu', incomeRange: '25_50l', hiddenFields: hidden ? ['religion', 'income'] : [] });
+  const seeker = (religions: string[], minIncome: MatchPreferences['minIncomeRange'], hard = false) =>
+    base('s', 'female', 'male', { prefs: prefs({ seekingGenders: ['male'], religions, minIncomeRange: minIncome, nonNegotiables: hard ? ['religion'] : [] }) });
+
+  it('produces identical results regardless of what the viewer probes for', () => {
+    const variants = [
+      seeker([], null),
+      seeker(['Hindu'], null),
+      seeker(['Muslim'], null),
+      seeker(['Muslim'], null, true),
+      seeker([], 'gt_1cr'),
+      seeker([], 'lt_3l'),
+    ].map((s) => {
+      const pair = evaluatePair(s, target(true));
+      const ex = buildExplanation(pair, 's', 't', 'fixed');
+      return JSON.stringify({ m: pair.mutual, a: pair.aToB.score, c: pair.confidence, e: pair.eligible, ex });
+    });
+    expect(new Set(variants).size).toBe(1);
+  });
+
+  it('never reports hidden fields as missing or unmet', () => {
+    const pair = evaluatePair(seeker(['Muslim'], 'gt_1cr', true), target(true));
+    const ex = buildExplanation(pair, 's', 't');
+    const text = JSON.stringify(ex).toLowerCase();
+    expect(text).not.toContain('religion');
+    expect(text).not.toContain('income');
+    expect(pair.aToB.dealbreakers).toHaveLength(0);
+  });
+
+  it('still applies the preference when the field is visible', () => {
+    const pair = evaluatePair(seeker(['Muslim'], null, true), target(false));
+    expect(pair.eligible).toBe(false);
+  });
+});

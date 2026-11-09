@@ -52,6 +52,7 @@ async function processEvent(evt: RzpEvent): Promise<void> {
       const p = evt.payload.payment?.entity;
       const pay = await paymentForOrder(p?.order_id);
       if (!p || !pay) return; // not one of ours
+      if (p.status && p.status !== 'captured') return; // only captured money activates a plan
       if (Number(p.amount) !== pay.amount_paise) throw new Error('amount mismatch');
       await activatePayment(pay.id, p.id, p.method ?? null, 'webhook');
       return;

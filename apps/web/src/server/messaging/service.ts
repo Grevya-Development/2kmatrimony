@@ -1,6 +1,7 @@
 import 'server-only';
 import { displayName, type ConversationItem, type MessageItem, type SendMessageInput } from '@2k/shared';
 import { db } from '@/lib/supabase/admin';
+import { isBlockedBetween } from '@/server/safety/service';
 import type { AuthContext } from '@/server/auth';
 import { getSetting, isEnabled } from '@/server/config';
 import { cursor, errors } from '@/server/http';
@@ -22,6 +23,9 @@ export async function requireParticipant(conversationId: string, myProfileId: st
     .eq('profile_id', myProfileId)
     .maybeSingle();
   if (!data) throw errors.notFound('Conversation not found.');
+  // Blocking fully separates members: no reads or sends in either direction.
+  const { data: other } = await db().from('conversation_participants').select('profile_id').eq('conversation_id', conversationId).neq('profile_id', myProfileId).maybeSingle();
+  if (other && (await isBlockedBetween(myProfileId, other.profile_id))) throw errors.notFound('Conversation not found.');
   const conv = data.conversations as unknown as { id: string; connection_id: string; is_locked: boolean };
   return { participant: data, conversation: conv };
 }

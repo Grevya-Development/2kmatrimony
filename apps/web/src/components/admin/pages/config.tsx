@@ -4,7 +4,7 @@ import { Plus } from 'lucide-react';
 import { Badge, Button, Dialog, DialogContent, Field, Input, NativeSelect, Switch, Tabs, TabsContent, TabsList, TabsTrigger, Textarea } from '@/components/ui';
 import { AdminHeader, DataTable, ErrorOr, JsonEditor, Panel, fmtDateTime, human, mutate, useAdminData, useCan } from '../kit';
 
-interface Flag { key: string; description: string; enabled: boolean; rollout_percent: number; updated_at: string }
+interface Flag { key: string; description: string; enabled: boolean; rollout_percent: number; updated_at: string; superAdminOnly?: boolean }
 interface Setting { key: string; value: Record<string, unknown>; description: string | null; is_public: boolean; validated: boolean; updated_at: string }
 interface Region { code: string; name: string; country_code: string; is_enabled: boolean; matching_config_region: string }
 interface Language { code: string; name: string; native_name: string; is_enabled: boolean; ai_supported: boolean }
@@ -35,6 +35,8 @@ export function ConfigPage() {
 
 function Flags() {
   const state = useAdminData<Flag[]>('/admin/flags');
+  const can = useCan();
+  const isSuper = can('*');
   const update = async (key: string, body: Record<string, unknown>, msg: string) => {
     if (await mutate(`/admin/flags/${key}`, 'PATCH', body, msg)) state.reload();
   };
@@ -43,19 +45,22 @@ function Flags() {
       <ErrorOr state={state}>
         {(flags) => (
           <ul className="divide-y divide-line">
-            {flags.map((f) => (
+            {flags.map((f) => {
+              const locked = !!f.superAdminOnly && !isSuper;
+              return (
               <li key={f.key} className="flex flex-wrap items-center gap-4 py-3">
                 <div className="min-w-0 flex-1">
-                  <p className="font-mono text-sm text-ink">{f.key}</p>
+                  <p className="flex items-center gap-2 font-mono text-sm text-ink">{f.key}{f.superAdminOnly && <Badge tone="burgundy">Super admin only</Badge>}</p>
                   <p className="text-sm text-muted">{f.description}</p>
                 </div>
                 <label className="flex items-center gap-2 text-xs text-muted">Rollout
-                  <Input type="number" min={0} max={100} defaultValue={f.rollout_percent} aria-label={`Rollout percent for ${f.key}`} className="h-8 w-20 text-sm"
+                  <Input type="number" min={0} max={100} defaultValue={f.rollout_percent} disabled={locked} aria-label={`Rollout percent for ${f.key}`} className="h-8 w-20 text-sm"
                     onBlur={(e) => { const v = Number(e.target.value); if (v !== f.rollout_percent && v >= 0 && v <= 100) update(f.key, { rolloutPercent: v }, 'Rollout updated'); }} />%
                 </label>
-                <Switch checked={f.enabled} onCheckedChange={(enabled) => update(f.key, { enabled }, `${f.key} ${enabled ? 'enabled' : 'disabled'}`)} aria-label={`Toggle ${f.key}`} />
+                <Switch checked={f.enabled} disabled={locked} onCheckedChange={(enabled) => update(f.key, { enabled }, `${f.key} ${enabled ? 'enabled' : 'disabled'}`)} aria-label={locked ? `${f.key} (only a super admin can change this)` : `Toggle ${f.key}`} />
               </li>
-            ))}
+              );
+            })}
           </ul>
         )}
       </ErrorOr>

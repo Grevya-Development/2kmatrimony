@@ -6,16 +6,16 @@ import { Mail, Smartphone } from 'lucide-react';
 import { Button, ErrorState, Field, Input, Notice } from '@/components/ui';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import { cn } from '@/lib/utils';
+import { safeNextPath } from '@/lib/safe-redirect';
 
 type Method = 'phone' | 'email';
 type Step = 'enter' | 'code';
 
-const safeNext = (n: string | null) => (n && n.startsWith('/') && !n.startsWith('//') ? n : '/app');
 
 export function SignIn() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = safeNext(params.get('next'));
+  const next = safeNextPath(params.get('next'), typeof window === 'undefined' ? 'http://localhost' : window.location.origin);
   const supabase = supabaseBrowser();
   const [method, setMethod] = React.useState<Method>('phone');
   const [step, setStep] = React.useState<Step>('enter');

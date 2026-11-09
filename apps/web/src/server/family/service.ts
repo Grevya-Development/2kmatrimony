@@ -62,6 +62,20 @@ export function normaliseContact(raw: string): { kind: 'email' | 'phone'; value:
   throw errors.validation('Enter a valid email address or mobile number.');
 }
 
+/**
+ * Invites are bound to the invited contact: the accepting account must have that
+ * email or phone number *verified* in Supabase Auth (a forwarded link is not enough).
+ */
+export async function matchesInvitedContact(userId: string, invitedContact: string): Promise<boolean> {
+  const { data } = await db().auth.admin.getUserById(userId);
+  const u = data.user;
+  if (!u) return false;
+  const invited = invitedContact.trim().toLowerCase();
+  if (invited.includes('@')) return !!u.email && !!u.email_confirmed_at && u.email.toLowerCase() === invited;
+  const phone = u.phone ? `+${u.phone.replace(/\D/g, '')}` : null;
+  return !!phone && !!u.phone_confirmed_at && phone === `+${invited.replace(/\D/g, '')}`;
+}
+
 const inviteLink = (token: string) => `${publicEnv.appUrl}/family/accept?token=${token}`;
 
 function requireOwner(auth: AuthContext): string {
@@ -188,6 +202,9 @@ export async function acceptInvite(auth: AuthContext, token: string, acceptTerms
   const owner = row.profiles as unknown as { owner_user_id: string; first_name: string | null } | null;
   if (!owner) throw errors.notFound('This invitation is invalid.');
   if (owner.owner_user_id === auth.userId) throw errors.validation('You can’t accept an invitation to your own profile.');
+  if (!(await matchesInvitedContact(auth.userId, row.invited_contact))) {
+    throw errors.forbidden('This invitation was sent to a different email or phone number. Sign in with that account to accept it.');
+  }
   const { data: existing } = await c.from('family_members').select('id').eq('profile_id', row.profile_id).eq('member_user_id', auth.userId).eq('status', 'active').maybeSingle();
   if (existing) throw errors.conflict('You are already part of this family circle.');
 

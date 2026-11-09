@@ -11,7 +11,7 @@ import { prepareTurn } from '@/server/ai/features/matchmaker';
  * with GET /matchmaker/threads/{x-thread-id} once the stream ends.
  * Errors before streaming (quota, consent, validation) return JSON as usual.
  */
-export const POST = route({ profile: 'required', rateLimit: { name: 'matchmaker', limit: 30, windowSec: 600 } }, async ({ req, auth }) => {
+export const POST = route({ profile: 'active', rateLimit: { name: 'matchmaker', limit: 30, windowSec: 600 } }, async ({ req, auth }) => {
   await requireFlag('ai_matchmaker');
   const body = await parseJson(req, matchmakerMessageSchema);
   const turn = await prepareTurn(auth, body);

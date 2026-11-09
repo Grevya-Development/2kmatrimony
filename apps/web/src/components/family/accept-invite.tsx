@@ -34,7 +34,7 @@ export function AcceptInvite({ token, signedIn }: { token: string; signedIn: boo
         </div>
         {!token ? <ErrorState message="This invitation link is incomplete." /> : !signedIn ? (
           <div className="space-y-3">
-            <p className="text-sm text-ink-2">Sign in or create a free account to accept. You don’t need a matrimony profile of your own.</p>
+            <p className="text-sm text-ink-2">Sign in with the email or mobile number this invitation was sent to. You don’t need a matrimony profile of your own.</p>
             <Button asChild className="w-full"><Link href={`/login?next=${encodeURIComponent(next)}`}>Sign in to continue</Link></Button>
           </div>
         ) : (

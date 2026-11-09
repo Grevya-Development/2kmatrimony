@@ -1,4 +1,5 @@
 import 'server-only';
+import { revokeBadge } from './badges';
 import type {
   BasicsInput,
   CareerInput,
@@ -109,6 +110,14 @@ export async function saveBasics(auth: AuthContext, input: BasicsInput) {
   };
   const { error } = await db().from('profiles').update(patch).eq('id', p.id);
   dbFail(error);
+  // An ID badge vouches for these exact details; changing them withdraws it.
+  const norm = (v: string | null | undefined) => (v ?? '').trim().toLowerCase();
+  const identityChanged =
+    norm(p.first_name) !== norm(input.firstName) || norm(p.last_name) !== norm(input.lastName) ||
+    (p.date_of_birth ?? '') !== input.dateOfBirth || (p.gender ?? '') !== input.gender;
+  if (p.is_identity_verified && identityChanged) {
+    await revokeBadge(auth, p.id, 'government_id', 'Your name, date of birth or gender changed after ID verification.');
+  }
   if (!auth.user.full_name && auth.profile?.created_for === 'self') {
     await db().from('app_users').update({ full_name: [input.firstName, input.lastName].filter(Boolean).join(' ') }).eq('id', auth.userId);
   }

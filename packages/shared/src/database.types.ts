@@ -1805,6 +1805,9 @@ isOneToOne: false
 "billing_activate_payment":
 { Args: { "p_method": string,"p_paid_at"?: string,"p_payment_id": string,"p_razorpay_payment_id": string }; Returns: Json
                            },
+"conversation_not_blocked":
+{ Args: { "p_conversation_id": string }; Returns: boolean
+                           },
 "family_can":
 { Args: { "p_permission": string,"p_profile_id": string }; Returns: boolean
                            },
