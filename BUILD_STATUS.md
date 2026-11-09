@@ -68,8 +68,9 @@ Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundl
   - **New members:** `POST /api/v1/auth/email-start` creates the account first, so everyone gets the same sign-in email with a code.
   - **Branded auth emails:** all six Supabase templates (`supabase/templates/`) use the logo, the code and the support address. They send as `2K Marriage <hello@updates.2kmarriage.com>` with "2K Marriage" subjects and a 6-digit code.
   - **Verified live:** a new member on 2kmarriage.com received the branded code email, entered it and landed in onboarding. The sign-up confirmation and sign-in emails were also checked through Resend. Test users were deleted.
+- ✅ **Google sign-in enabled (2026-11-10).** The provider is on in hosted Supabase. The client secret is kept only in the gitignored `apps/web/.env.hosted.local` and in Supabase. Verified live: "Continue with Google" shows on 2kmarriage.com and opens Google's sign-in page with no redirect error.
 - **Pending (owner actions):**
-  - **Google sign-in:** create a Web OAuth client in Google Cloud Console. Set the authorised redirect URI to `https://ohhxeljnssgfkugbeixx.supabase.co/auth/v1/callback` and provide the Client ID and Secret.
+  - **Google OAuth consent screen:** publish the app ("In production") so any Google account can sign in, not only test users. Set the app name, logo and `2kmarriage.com` as an authorised domain.
   - **Apple sign-in:** Apple Developer Services ID, Key ID, Team ID and the .p8 key.
   - **www:** add CNAME `www` → `cname.vercel-dns.com` at GoDaddy (the apex `2kmarriage.com` is already live on Vercel).
   - **Phone login:** an SMS provider.
@@ -88,7 +89,7 @@ Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundl
   - The test deletes its users; the hosted project was left with 0 users.
 - **Network note:** from the development Mac, new TLS connections to Supabase took 1–10 s (packet loss or throttling on that network), so hosted UI runs are slow from there. Deploy the web tier in the database's region.
 - **Before production:**
-  - In Auth settings: SMS provider and Google/Apple credentials. Site URL, redirects, SMTP and email templates are done.
+  - In Auth settings: SMS provider and Apple credentials (Google is done). Site URL, redirects, SMTP and email templates are done.
   - Regenerate the service-role key, since it was shared in chat, and update the env var.
   - Run the `create-super-admin` script once.
 
