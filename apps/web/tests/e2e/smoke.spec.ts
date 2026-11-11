@@ -39,7 +39,7 @@ test('every member and admin page renders for a super admin member', async ({ pa
   await expect(page).toHaveURL(/\/onboarding/);
   await page.getByRole('radio', { name: 'Myself' }).click();
   await page.locator('#terms').click();
-  await page.getByRole('button', { name: /let.s begin/i }).click();
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect(page.getByLabel('First name')).toBeVisible();
   await completeProfileViaApi(page, { firstName: 'Meera', gender: 'female', seeking: 'male', dob: '1993-01-20', city: 'Chennai' });
 

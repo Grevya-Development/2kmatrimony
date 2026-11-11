@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActivityIndicator, Animated, Image, RefreshControl, ScrollView, StyleSheet, View, type ScrollViewProps, type StyleProp, type ViewStyle } from 'react-native';
+import { ActivityIndicator, Animated, Image, RefreshControl, ScrollView, StyleSheet, View, type ScrollViewInstance, type ScrollViewProps, type StyleProp, type ViewStyle } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 import { colors, fonts, radius, shadow, space } from '@/theme';
 import { useOnline } from '@/lib/network';
@@ -32,14 +32,16 @@ export function Avatar({ uri, name, size = 44, blurred }: { uri?: string | null;
 }
 
 /** Safe-area screen with optional scroll + pull to refresh. */
-export function Screen({ children, scroll = true, refreshing, onRefresh, edges = ['top'], style, contentStyle, ...rest }: {
+export function Screen({ children, scroll = true, refreshing, onRefresh, edges = ['top'], style, contentStyle, scrollRef, ...rest }: {
   children: React.ReactNode; scroll?: boolean; refreshing?: boolean; onRefresh?: () => void; edges?: Edge[]; style?: StyleProp<ViewStyle>; contentStyle?: StyleProp<ViewStyle>;
+  /** Ref to the inner ScrollView (e.g. to scroll to a section). */
+  scrollRef?: React.Ref<ScrollViewInstance>;
 } & Pick<ScrollViewProps, 'keyboardShouldPersistTaps'>) {
   return (
     <SafeAreaView edges={edges} style={[styles.screen, style]}>
       <OfflineBanner />
       {scroll ? (
-        <ScrollView contentContainerStyle={[styles.content, contentStyle]} keyboardShouldPersistTaps={rest.keyboardShouldPersistTaps ?? 'handled'}
+        <ScrollView ref={scrollRef} contentContainerStyle={[styles.content, contentStyle]} keyboardShouldPersistTaps={rest.keyboardShouldPersistTaps ?? 'handled'}
           refreshControl={onRefresh ? <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} tintColor={colors.emerald600} /> : undefined}>
           {children}
         </ScrollView>

@@ -50,7 +50,7 @@ export function StartStep({ onDone }: { onDone: (createdFor: CreatedFor) => void
           </Label>
         </div>
       </div>
-      <Button type="submit" size="lg" className="w-full sm:w-auto" disabled={!createdFor || !terms} loading={busy}>Let’s begin</Button>
+      <Button type="submit" size="lg" className="w-full sm:w-auto" disabled={!createdFor || !terms} loading={busy}>Continue</Button>
     </form>
   );
 }

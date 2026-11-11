@@ -1,5 +1,5 @@
 import { expect, test, type Browser, type Page } from '@playwright/test';
-import { completeProfileViaApi, signInWithPhone, trackPageErrors } from './support';
+import { admin, completeProfileViaApi, signInWithPhone, trackPageErrors } from './support';
 
 /**
  * Core journey: Registration → Onboarding → Profile → Discovery → Match →
@@ -28,19 +28,39 @@ test('A registers by phone OTP and starts onboarding through the UI', async ({ b
   await expect(a).toHaveURL(/\/onboarding/);
   await a.getByRole('radio', { name: 'Myself' }).click();
   await a.locator('#terms').click();
-  await a.getByRole('button', { name: /let.s begin/i }).click();
+  await a.getByRole('button', { name: 'Continue', exact: true }).click();
 
-  // Basics step through the UI
-  await expect(a.getByLabel('First name')).toBeVisible();
+  // The whole quick onboarding through the UI: essentials, who she hopes to meet, photo (skipped)
+  await expect(a.getByText('Step 1 of 3')).toBeVisible();
   await a.getByLabel('First name').fill('Ananya');
   await a.getByLabel('Date of birth').fill('1996-04-12');
   await a.getByRole('radio', { name: 'Woman' }).click();
   await a.getByRole('radio', { name: 'Never married' }).click();
-  await a.getByLabel('Current city').fill('Bengaluru');
-  await a.getByRole('button', { name: 'Continue' }).click();
-  await expect(a.getByText(/education/i).first()).toBeVisible();
+  await a.getByLabel('City you live in').fill('Bengaluru');
+  await a.getByRole('button', { name: 'Continue', exact: true }).click();
 
-  // Remaining sections via the same API the wizard calls
+  await expect(a.getByRole('heading', { name: /who are you hoping to meet/i })).toBeVisible();
+  await expect(a.getByText('Step 2 of 3')).toBeVisible();
+  await a.getByRole('button', { name: 'Continue', exact: true }).click(); // prefilled: men, age around hers
+
+  await expect(a.getByRole('heading', { name: /add a photo/i })).toBeVisible();
+  await a.getByRole('button', { name: 'Skip for now' }).click();
+
+  await expect(a.getByText('Your profile is with our team')).toBeVisible();
+  await expect(a.getByRole('heading', { name: /while you wait/i })).toBeVisible();
+  await expect(a.getByRole('link', { name: /values & future plans/i })).toHaveAttribute('href', '/app/profile?edit=values');
+  const { data: quick } = await admin().from('profiles').select('status').eq('first_name', 'Ananya').order('created_at', { ascending: false }).limit(1).single();
+  expect(quick?.status).toBe('in_review');
+
+  // A checklist item opens that section's editor directly
+  await a.getByRole('link', { name: /values & future plans/i }).click();
+  await expect(a).toHaveURL(/\/app\/profile\?edit=values/);
+  await expect(a.getByRole('dialog', { name: 'Values & future' })).toBeVisible();
+  await a.keyboard.press('Escape');
+  await expect(a).toHaveURL(/\/app\/profile$/);
+  await expect(a.locator('#photos')).toBeVisible();
+
+  // Later: the rest of the profile, via the same APIs the profile editor calls
   const prefs = await completeProfileViaApi(a, { firstName: 'Ananya', gender: 'female', seeking: 'male', dob: '1996-04-12', city: 'Bengaluru' });
   expect(prefs.completion.canActivate).toBe(true);
   expect(m.errs, m.errs.join('\n')).toEqual([]);
@@ -53,7 +73,7 @@ test('B registers and completes a profile', async ({ browser }) => {
   await expect(b).toHaveURL(/\/onboarding/);
   await b.getByRole('radio', { name: 'Myself' }).click();
   await b.locator('#terms').click();
-  await b.getByRole('button', { name: /let.s begin/i }).click();
+  await b.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect(b.getByLabel('First name')).toBeVisible();
   const prefs = await completeProfileViaApi(b, { firstName: 'Rohan', gender: 'male', seeking: 'female', dob: '1994-09-03', city: 'Bengaluru' });
   expect(prefs.completion.canActivate).toBe(true);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Alert, Pressable, Share, View } from 'react-native';
+import { Alert, Pressable, Share, View, type ScrollViewInstance } from 'react-native';
 import { router, type Href } from 'expo-router';
 import type { OwnProfileResponse } from '@2k/shared';
 import { errorMessage } from '@/lib/api';
@@ -10,6 +10,7 @@ import { Avatar, Badge, Button, Card, ErrorState, Icon, Notice, Screen, Section,
 import { PhotoManager } from '@/components/domain/PhotoManager';
 import { VideoManager } from '@/components/domain/VideoManager';
 import { DnaChart } from '@/components/domain/DnaChart';
+import { ProfileChecklist } from '@/components/domain/ProfileChecklist';
 
 const SECTIONS: { key: string; label: string }[] = [
   { key: 'basics', label: 'Basic details' }, { key: 'education', label: 'Education' }, { key: 'career', label: 'Career' },
@@ -35,11 +36,13 @@ export default function MyProfile() {
   const profile = useOwnProfile();
   const { signOut } = useAuth();
   const p: OwnProfileResponse | undefined = profile.data;
+  const scrollRef = React.useRef<ScrollViewInstance>(null);
+  const photosY = React.useRef(0);
 
   const refresh = () => { void profile.refetch(); void qc.invalidateQueries({ queryKey: keys.me }); };
 
   return (
-    <Screen edges={[]} refreshing={profile.isRefetching} onRefresh={refresh}>
+    <Screen edges={[]} refreshing={profile.isRefetching} onRefresh={refresh} scrollRef={scrollRef}>
       {profile.isLoading ? <Skeleton height={200} /> : profile.error || !p ? <ErrorState message={errorMessage(profile.error)} onRetry={refresh} /> : (
         <>
           <Card style={{ flexDirection: 'row', gap: space.md, alignItems: 'center' }}>
@@ -53,16 +56,17 @@ export default function MyProfile() {
               </View>
             </View>
           </Card>
-          {p.completion.missing.length > 0 && (
-            <Notice>To improve your matches, add: {p.completion.missing.map((m) => m.label).join(', ')}.</Notice>
-          )}
+          {p.status === 'in_review' && <Notice>Your profile is with our team for review — usually within 24 hours. You can keep adding details meanwhile.</Notice>}
+          <ProfileChecklist onPhotos={() => scrollRef.current?.scrollTo({ y: Math.max(0, photosY.current - 16), animated: true })} />
           <View style={{ flexDirection: 'row', gap: space.sm }}>
             <Button title="Preview as others see it" variant="secondary" size="sm" onPress={() => router.push(`/member/${p.profileId}` as Href)} />
             <Button title="Share" variant="ghost" size="sm" icon={<Icon name="share" size={16} />} onPress={() => Share.share({ message: `My 2K Marriage profile code is ${p.profileCode}.` })} />
           </View>
-          <Section title="Photos">
-            <PhotoManager photos={p.photos} max={p.limits.maxPhotos} onChanged={refresh} />
-          </Section>
+          <View onLayout={(e) => { photosY.current = e.nativeEvent.layout.y; }}>
+            <Section title="Photos">
+              <PhotoManager photos={p.photos} max={p.limits.maxPhotos} onChanged={refresh} />
+            </Section>
+          </View>
           {me.data?.featureFlags.video_intros !== false && (
             <Section title="Video introduction">
               <VideoManager video={p.video} limits={p.limits} onChanged={refresh} />

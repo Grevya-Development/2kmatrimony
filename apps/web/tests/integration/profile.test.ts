@@ -6,6 +6,7 @@ import { GET as getProfile, POST as startProfile, PATCH as patchProfile } from '
 import { PUT as putBasics } from '@/app/api/v1/profile/basics/route';
 import { PUT as putEducation } from '@/app/api/v1/profile/education/route';
 import { PUT as putCareer } from '@/app/api/v1/profile/career/route';
+import { PUT as putPrefs } from '@/app/api/v1/profile/preferences/route';
 import { PUT as putDna } from '@/app/api/v1/profile/dna/route';
 import { POST as interpret } from '@/app/api/v1/profile/dna/interpret/route';
 import { PUT as putPrivacy } from '@/app/api/v1/profile/privacy/route';
@@ -87,6 +88,22 @@ describe('profile start & sections', () => {
     expect(count).toBeGreaterThanOrEqual(4);
     const step = await call(patchProfile, request('/api/v1/profile', { token: u.token, method: 'PATCH', body: { onboardingStep: 'done' } }));
     expect(step.status).toBe(200);
+  });
+
+  it('quick onboarding: essentials + who they hope to meet is enough to go to screening; the rest is gathered later', async () => {
+    const u = await startedUser('a-quick');
+    const b = await call(putBasics, request('/api/v1/profile/basics', { token: u.token, method: 'PUT', body: { firstName: 'Kavya', dateOfBirth: '1996-02-10', gender: 'female', maritalStatus: 'never_married', currentCity: 'Chennai', languages: [] } }));
+    expect(b.status).toBe(200);
+    expect((await own(u.token)).status).toBe('draft');
+    const pr = await call(putPrefs, request('/api/v1/profile/preferences', { token: u.token, method: 'PUT', body: { seekingGenders: ['male'], ageMin: 26, ageMax: 34 } }));
+    expect(pr.status).toBe(200);
+    const p = await own(u.token);
+    expect(p.status).toBe('in_review');
+    expect(p.completion.canActivate).toBe(true);
+    const later = p.completion.missing.map((m) => m.section);
+    expect(later).toEqual(expect.arrayContaining(['values', 'dna', 'photos', 'education', 'career']));
+    expect(p.completion.missing.every((m) => !m.required)).toBe(true);
+    expect(p.completion.pct).toBe(30);
   });
 
   it('tracks DNA provenance: AI-accepted then user-corrected', async () => {

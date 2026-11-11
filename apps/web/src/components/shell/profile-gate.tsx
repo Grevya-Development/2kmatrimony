@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Hourglass, PenLine } from 'lucide-react';
 import { Button } from '@/components/ui';
 import { useMe } from './me-context';
+import { ProfileChecklist } from '@/components/profile/profile-checklist';
 
 /**
  * Browsing features are only for live profiles. While a new profile is with our
@@ -26,8 +27,8 @@ export function ActiveProfileGate({ children }: { children: React.ReactNode }) {
 export function InReviewState() {
   return (
     <GateCard icon={<Hourglass className="h-5 w-5" aria-hidden />} title="Your profile is with our team"
-      body="Every profile on 2K Marriage is reviewed by a real person before it goes live — usually within 24 hours. We’ll let you know the moment it’s approved. Meanwhile you can polish your profile or add photos."
-      action={<div className="flex flex-wrap justify-center gap-2"><Button asChild variant="secondary"><Link href="/app/profile">Review my profile</Link></Button><Button asChild variant="ghost"><Link href="/app/verification">Get verified</Link></Button></div>} />
+      body="A real person reviews every profile on 2K Marriage before it goes live, usually within 24 hours. We’ll let you know the moment it’s approved."
+      action={<div className="space-y-6 text-left"><ProfileChecklist title="While you wait, add a little more" /><div className="flex flex-wrap justify-center gap-2"><Button asChild variant="secondary"><Link href="/app/profile">Review my profile</Link></Button><Button asChild variant="ghost"><Link href="/app/verification">Get verified</Link></Button></div></div>} />
   );
 }
 

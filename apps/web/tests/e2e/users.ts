@@ -48,7 +48,7 @@ export async function createActiveMember(browser: Browser, opts: { label: string
   await expect(page).toHaveURL(/\/onboarding/);
   await page.getByRole('radio', { name: 'Myself' }).click();
   await page.locator('#terms').click();
-  await page.getByRole('button', { name: /let.s begin/i }).click();
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
   await expect(page.getByLabel('First name')).toBeVisible({ timeout: 60_000 });
   await completeProfileViaApi(page, { firstName: opts.firstName, gender: opts.gender, seeking: opts.seeking, dob: opts.dob ?? '1995-06-15', city: opts.city ?? 'Bengaluru' });
   const { data: profile } = await admin().from('profiles').select('id, status').eq('owner_user_id', user.userId).single();

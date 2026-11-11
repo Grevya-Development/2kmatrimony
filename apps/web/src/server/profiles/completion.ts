@@ -7,7 +7,7 @@ import { highestEducation, loadBundle, type ProfileBundle } from './load';
 
 export interface CompletionReport {
   pct: number;
-  /** Minimum required to activate (become discoverable). */
+  /** Minimum required to activate: the essentials and who they hope to meet. Everything else is gathered after onboarding. */
   canActivate: boolean;
   /** Profile status after this refresh ('in_review' while our team screens it). */
   status?: string;
@@ -22,8 +22,8 @@ const SECTIONS: { section: string; label: string; weight: number; required: bool
   { section: 'career', label: 'Profession', weight: 8, required: false, done: (b) => !!b.career?.profession },
   { section: 'family', label: 'Family details', weight: 8, required: false, done: (b) => !!(b.family?.family_structure || b.family?.family_values) },
   { section: 'lifestyle', label: 'Lifestyle & interests', weight: 8, required: false, done: (b) => !!b.lifestyle?.diet && (b.lifestyle.interests.length + b.lifestyle.hobbies.length) > 0 },
-  { section: 'values', label: 'Values & future plans', weight: 10, required: true, done: (b) => !!(b.values?.children_preference && b.values.settle_preference) && b.profile.core_values.length > 0 },
-  { section: 'dna', label: 'Relationship DNA', weight: 10, required: true, done: (b) => b.dna.length >= Math.ceil(DNA_DIMENSIONS.length * 0.7) },
+  { section: 'values', label: 'Values & future plans', weight: 10, required: false, done: (b) => !!(b.values?.children_preference && b.values.settle_preference) && b.profile.core_values.length > 0 },
+  { section: 'dna', label: 'Relationship DNA', weight: 10, required: false, done: (b) => b.dna.length >= Math.ceil(DNA_DIMENSIONS.length * 0.7) },
   { section: 'preferences', label: 'Partner preferences', weight: 10, required: true, done: (b) => !!b.prefs && b.prefs.seeking_genders.length > 0 && b.prefs.age_min !== null },
 ];
 

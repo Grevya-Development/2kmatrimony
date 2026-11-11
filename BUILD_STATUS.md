@@ -1,6 +1,6 @@
 # BUILD STATUS — 2K Marriage
 
-_Last updated: 2026-11-10. All 12 milestones are implemented. Everything listed as ✅ has passed automated tests on a database rebuilt from scratch._
+_Last updated: 2026-11-11. All 12 milestones are implemented. Everything listed as ✅ has passed automated tests on a database rebuilt from scratch._
 
 Legend: ✅ done & tested · ⚙️ built, needs credentials or provider setup · 🟡 partial · ⛔ not done
 
@@ -41,6 +41,21 @@ Verified: web + mobile typecheck, production build, 10/10 E2E, iOS/Android bundl
   - 187 integration and 11 E2E tests pass; all unit tests and typechecks pass.
   - Hosted migrations applied and checked.
   - Live: the quick-start flow, sign-in → onboarding, and the `/pricing` redirect.
+
+## Quick onboarding (2026-11-11)
+✅ **Onboarding cut from 10 steps (≈15 minutes) to 3 short steps (≈2 minutes)** on web and mobile.
+- **Steps:**
+  1. **Start:** who the profile is for, and the terms.
+  2. **Essentials:** first name, date of birth, gender, marital status, city, and optional mother tongue.
+  3. **Who they hope to meet:** gender and age range, prefilled from their own details or the landing page quick-start.
+  4. **Photo:** optional.
+- **Going live:** a profile goes to human screening once the essentials and partner basics are saved. Values and Relationship DNA are no longer required (`server/profiles/completion.ts`).
+- **Gathered after onboarding:** a "Complete your profile" checklist lists the missing sections with a one-line reason and minutes for each, and every item opens that section's editor directly (`/app/profile?edit=<section>`, `/app/dna`, `#photos`).
+  - Order: photo, introduction, values, DNA, work, education, family, lifestyle.
+  - Shown on the final onboarding screen, the in-review screen, the For you page and the profile page. On mobile: the For you tab and Me screen.
+- **Members mid-way through the old flow** resume at the matching quick step (`quickStepFor` in `packages/shared/src/onboarding.ts`).
+- **Matching:** thin profiles are handled. Missing answers lower match *confidence* instead of the score, so algorithmic suggestions grow as members fill in the checklist. Hand-picked introductions work from day one.
+- **Verified:** a new integration test (essentials + partner basics → `in_review`, 30% strength) plus a browser test of the full quick flow and a checklist link. 190 integration, 12 E2E and all unit tests pass; web and mobile typecheck clean.
 
 ## Production deployment (Vercel)
 ✅ **Live: https://2kmarriage.com** (also https://2k-matrimony.vercel.app; `www.2kmarriage.com` redirects to the apex with a 308 once its DNS record exists)

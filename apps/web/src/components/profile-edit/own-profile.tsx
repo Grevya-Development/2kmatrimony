@@ -20,6 +20,7 @@ import { LifestyleForm } from './lifestyle-form';
 import { ValuesForm } from './values-form';
 import { PreferencesForm } from './preferences-form';
 import { PhotoManager, VideoManager } from './photo-manager';
+import { ProfileChecklist } from '@/components/profile/profile-checklist';
 
 type Section = 'basics' | 'education' | 'career' | 'family' | 'lifestyle' | 'values' | 'preferences';
 const TITLES: Record<Section, string> = { basics: 'Basic details', education: 'Education', career: 'Work', family: 'Family', lifestyle: 'Lifestyle', values: 'Values & future', preferences: 'Partner preferences' };
@@ -118,13 +119,22 @@ export function OwnProfile() {
     catch (e) { setError((e as ApiClientError).message); }
   }, [preview]);
   React.useEffect(() => { void load(); }, [load]);
+  // Checklist links open a section directly: /app/profile?edit=values
+  const editParam = params.get('edit');
+  React.useEffect(() => {
+    if (data && editParam && editParam in TITLES) setEditing(editParam as Section);
+  }, [data, editParam]);
+  const closeEditor = () => {
+    setEditing(null);
+    if (editParam) router.replace('/app/profile', { scroll: false });
+  };
 
   if (error) return <ErrorState message={error} onRetry={load} />;
   if (!data) return <div className="space-y-6"><Skeleton className="h-40" /><div className="grid gap-6 lg:grid-cols-2"><Skeleton className="h-64" /><Skeleton className="h-64" /></div></div>;
 
   const d = data.detail;
   const subject = subjectCopy(data.createdFor);
-  const saved = async () => { setEditing(null); await load(); router.refresh(); };
+  const saved = async () => { closeEditor(); await load(); router.refresh(); };
 
   if (preview) {
     return (
@@ -169,16 +179,17 @@ export function OwnProfile() {
             {d?.verified.identity && <Badge tone="info"><BadgeCheck />ID verified</Badge>}
           </div>
           <div className="max-w-md space-y-1.5"><div className="flex justify-between text-sm"><span className="text-ink-2">Profile strength</span><span className="text-muted">{data.completion.pct}%</span></div><Progress value={data.completion.pct} label="Profile strength" /></div>
-          {data.completion.missing.length > 0 && <p className="text-sm text-muted">Next: {data.completion.missing.slice(0, 3).map((m) => m.label.toLowerCase()).join(', ')}.</p>}
         </div>
       </CardContent></Card>
+
+      <ProfileChecklist completion={data.completion} />
 
       <Card><CardContent className="space-y-3">
         <div className="flex items-center justify-between"><h2 className="font-serif text-2xl">About</h2><Button variant="ghost" size="sm" onClick={() => setEditing('basics')}><Pencil />Edit</Button></div>
         <p className="whitespace-pre-line text-ink-2">{d?.basics.about || 'Add a short introduction so people can get a sense of you.'}</p>
       </CardContent></Card>
 
-      <section className="space-y-4" aria-labelledby="photos-h">
+      <section id="photos" className="scroll-mt-24 space-y-4" aria-labelledby="photos-h">
         <h2 id="photos-h" className="font-serif text-3xl">Photos</h2>
         <PhotoManager photos={data.photos} maxPhotos={data.limits.maxPhotos} onChange={load} />
       </section>
@@ -204,7 +215,7 @@ export function OwnProfile() {
         </SectionCard>
       </div>
 
-      <Dialog open={editing !== null} onOpenChange={(o) => !o && setEditing(null)}>
+      <Dialog open={editing !== null} onOpenChange={(o) => !o && closeEditor()}>
         {editing && (
           <DialogContent side="right" title={TITLES[editing]} className="max-w-2xl">
             {editing === 'basics' && <BasicsForm initial={data.form.basics} subject={subject} onSaved={saved} />}

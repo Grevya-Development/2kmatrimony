@@ -2,40 +2,37 @@ import * as React from 'react';
 import { Alert, Pressable, View } from 'react-native';
 import { router } from 'expo-router';
 import { useQueryClient } from '@tanstack/react-query';
-import { CREATED_FOR_OPTIONS, ONBOARDING_STEPS, type CreatedFor, type OnboardingQuestion, type OnboardingStep, type OwnProfileResponse } from '@2k/shared';
+import { CREATED_FOR_OPTIONS, quickStepFor, type CreatedFor, type OwnProfileResponse, type QuickOnboardingStep } from '@2k/shared';
 import { api, errorMessage } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { haptic } from '@/lib/haptics';
 import { keys, useMe } from '@/hooks/queries';
 import { colors, space } from '@/theme';
 import { Button, ChipGroup, ErrorState, Loading, Notice, Screen, Switch, Text, TextField } from '@/components/ui';
-import { BasicsForm, CareerForm, EducationForm, FamilyForm, LifestyleForm, PreferencesForm, QuestionsForm } from '@/components/forms';
+import { EssentialsForm, PartnerBasicsForm } from '@/components/forms';
 import { PhotoManager } from '@/components/domain/PhotoManager';
 
-const ORDER = ONBOARDING_STEPS.filter((s) => s !== 'done');
-const TITLES: Record<OnboardingStep, [string, string]> = {
-  start: ['Let’s begin', 'Who is this profile for?'],
-  basics: ['The basics', 'Just the essentials — you can edit anything later.'],
-  education: ['Education', 'Optional, but it helps people understand {you}.'],
-  career: ['Work', 'What {you} do, and how {you} think about it.'],
-  family: ['Family', 'A little about {your} family.'],
-  lifestyle: ['Lifestyle', 'Everyday rhythms and interests.'],
-  values: ['Values & future', 'What matters most to {you}, and where {you} are headed.'],
-  dna: ['Relationship DNA', 'Where {you} sit on a few spectrums. There are no right answers.'],
-  preferences: ['Partner preferences', 'Who {you}’d like to meet. Only non-negotiables are strict.'],
-  photos: ['Photos', 'Profiles with photos receive more thoughtful interest.'],
-  done: ['All set', ''],
+/**
+ * Quick onboarding (about two minutes): who it's for → essentials → who they'd like to meet → photo.
+ * Everything else is gathered afterwards through the "Complete your profile" checklist.
+ */
+const STEPS = ['basics', 'preferences', 'photos'] as const;
+type Step = Exclude<QuickOnboardingStep, 'done'>;
+const TITLES: Record<Step, [string, string]> = {
+  start: ['Let’s begin', 'Who is this profile for? It takes about two minutes.'],
+  basics: ['The essentials', 'Just a few details. {You} can add the rest later.'],
+  preferences: ['Who {you}’d like to meet', 'A starting point. Adjust it anytime.'],
+  photos: ['Add a photo', 'Optional, but profiles with a clear photo get far more thoughtful interest.'],
 };
-const SECTION_OF: Partial<Record<OnboardingStep, string>> = { basics: 'basics', education: 'education', career: 'career', family: 'family', lifestyle: 'lifestyle', values: 'values', dna: 'dna', preferences: 'preferences', photos: 'photos' };
 
 export default function Onboarding() {
   const qc = useQueryClient();
   const { signOut } = useAuth();
   const me = useMe();
-  const [step, setStep] = React.useState<OnboardingStep | null>(null);
+  const [step, setStep] = React.useState<Step | null>(null);
   const [profile, setProfile] = React.useState<OwnProfileResponse | null>(null);
-  const [questions, setQuestions] = React.useState<OnboardingQuestion[]>([]);
   const [error, setError] = React.useState<string | null>(null);
+  const [finishing, setFinishing] = React.useState(false);
 
   const loadProfile = React.useCallback(async () => {
     const p = await api.get<OwnProfileResponse>('/profile');
@@ -43,58 +40,61 @@ export default function Onboarding() {
     return p;
   }, []);
 
-  // Resume where the member left off.
+  /** First required section still missing, as a quick-flow step. */
+  const firstRequiredStep = (p: OwnProfileResponse | null): Step | null => {
+    const req = (p?.completion.missing ?? []).filter((m) => m.required).map((m) => m.section);
+    return req.includes('basics') ? 'basics' : req.includes('preferences') ? 'preferences' : null;
+  };
+
+  // Resume where the member left off (older long-flow steps map onto the quick flow).
   React.useEffect(() => {
     if (!me.data) return;
-    if (!me.data.profile) { setStep('start'); return; }
-    if (me.data.consentsRequired.length) { setStep('start'); return; }
+    if (!me.data.profile || me.data.consentsRequired.length) { setStep('start'); return; }
+    const status = me.data.profile.status;
     loadProfile().then((p) => {
-      const saved = p.onboardingStep as OnboardingStep | null;
-      if (saved && saved !== 'done' && saved !== 'start' && ORDER.includes(saved)) return setStep(saved);
-      const firstMissing = ORDER.find((s) => p.completion.missing.some((m) => m.section === SECTION_OF[s] && m.required));
-      setStep(firstMissing ?? 'photos');
+      const next = quickStepFor(p.onboardingStep, true);
+      if (next !== 'done') return setStep(next);
+      if (status !== 'draft') return void router.replace('/');
+      setStep(firstRequiredStep(p) ?? 'photos');
     }).catch((e) => setError(errorMessage(e)));
   }, [me.data, loadProfile]);
 
-  React.useEffect(() => {
-    if (step === 'values' || step === 'dna') {
-      setQuestions([]);
-      api.get<OnboardingQuestion[]>('/onboarding/questions', { section: step }).then(setQuestions).catch((e) => setError(errorMessage(e)));
-    }
-  }, [step]);
-
   const forSelf = (profile?.createdFor ?? 'self') === 'self';
-  const copy = (s: string) => s.replace(/\{you\}/g, forSelf ? 'you' : 'they').replace(/\{your\}/g, forSelf ? 'your' : 'their');
-  const idx = step ? ORDER.indexOf(step as (typeof ORDER)[number]) : 0;
+  const copy = (s: string) => s
+    .replace(/\{You\}/g, forSelf ? 'You' : 'They').replace(/\{you\}/g, forSelf ? 'you' : 'they');
+  const idx = step ? STEPS.indexOf(step as (typeof STEPS)[number]) : -1;
 
-  const advance = async () => {
-    const next = ORDER[idx + 1] ?? 'done';
+  // Note: `me` is deliberately not refetched between steps. Once the essentials and partner
+  // preferences are saved the profile leaves 'draft', and the root gate would leave onboarding
+  // before the photo step.
+  const goTo = async (next: Step) => {
     await api.patch('/profile', { onboardingStep: next }).catch(() => undefined);
-    const p = await loadProfile().catch(() => null);
-    if (next === 'done') return finish(p);
+    await loadProfile().catch(() => null);
+    setError(null);
     setStep(next);
   };
 
-  const finish = async (p: OwnProfileResponse | null) => {
-    await qc.invalidateQueries({ queryKey: keys.me });
-    const refreshed = await me.refetch();
-    if (refreshed.data?.profile?.status === 'draft' || (p && !p.completion.canActivate)) {
-      const missing = (p?.completion.missing ?? []).filter((m) => m.required).map((m) => m.label).join(', ');
-      setError(`A few required sections are still missing: ${missing}.`);
-      const firstMissing = ORDER.find((s) => p?.completion.missing.some((m) => m.section === SECTION_OF[s] && m.required));
-      if (firstMissing) setStep(firstMissing);
-      return;
-    }
-    haptic.success();
-    if (refreshed.data?.profile?.status === 'in_review') {
-      Alert.alert('Your profile is with our team', 'Every profile is reviewed by a real person before it goes live — usually within 24 hours. We’ll notify you when it’s approved.');
-    }
-    router.replace('/');
-  };
-
-  const save = (path: string, method: 'put' | 'post' = 'put') => async (values: unknown) => {
-    await (method === 'put' ? api.put(path, values) : api.post(path, values));
-    await advance();
+  const finish = async () => {
+    setFinishing(true); setError(null);
+    try {
+      await api.patch('/profile', { onboardingStep: 'done' }).catch(() => undefined);
+      const p = await loadProfile().catch(() => null);
+      await qc.invalidateQueries({ queryKey: keys.profile });
+      await qc.invalidateQueries({ queryKey: keys.me });
+      const refreshed = await me.refetch();
+      if (refreshed.data?.profile?.status === 'draft') {
+        const missing = (p?.completion.missing ?? []).filter((m) => m.required).map((m) => m.label).join(', ');
+        setError(missing ? `A few details are still missing: ${missing}.` : 'We couldn’t finish setting up your profile. Please try again.');
+        const back = firstRequiredStep(p);
+        if (back) setStep(back);
+        return;
+      }
+      haptic.success();
+      if (refreshed.data?.profile?.status === 'in_review') {
+        Alert.alert('Your profile is with our team', 'Every profile is reviewed by a real person before it goes live — usually within 24 hours. We’ll notify you when it’s approved. Meanwhile, you can add more details from your profile.');
+      }
+      router.replace('/');
+    } finally { setFinishing(false); }
   };
 
   if (!step) return <Screen>{error ? <ErrorState message={error} onRetry={() => me.refetch()} /> : <Loading />}</Screen>;
@@ -105,34 +105,38 @@ export default function Onboarding() {
     <Screen edges={['top', 'bottom']} keyboardShouldPersistTaps="handled">
       <View style={{ gap: space.sm }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text variant="eyebrow">Step {idx + 1} of {ORDER.length}</Text>
+          <Text variant="eyebrow">{idx >= 0 ? `Step ${idx + 1} of ${STEPS.length}` : 'Welcome'}</Text>
           <View style={{ flexDirection: 'row', gap: space.md }}>
-            {idx > 1 && <Pressable onPress={() => setStep(ORDER[idx - 1]!)} accessibilityRole="button" hitSlop={8}><Text variant="label">Back</Text></Pressable>}
+            {idx > 0 && <Pressable onPress={() => { setError(null); setStep(STEPS[idx - 1]!); }} accessibilityRole="button" accessibilityLabel="Back to previous step" hitSlop={8}><Text variant="label">Back</Text></Pressable>}
             <Pressable onPress={() => signOut()} accessibilityRole="button" hitSlop={8}><Text variant="label">Sign out</Text></Pressable>
           </View>
         </View>
-        <View style={{ height: 4, borderRadius: 2, backgroundColor: colors.line }} accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: ORDER.length, now: idx + 1 }}>
-          <View style={{ height: 4, borderRadius: 2, width: `${((idx + 1) / ORDER.length) * 100}%`, backgroundColor: colors.emerald500 }} />
-        </View>
-        <Text variant="hero" accessibilityRole="header">{title}</Text>
+        {idx >= 0 && (
+          <View style={{ height: 4, borderRadius: 2, backgroundColor: colors.line }} accessibilityRole="progressbar" accessibilityLabel="Onboarding progress" accessibilityValue={{ min: 0, max: STEPS.length, now: idx + 1 }}>
+            <View style={{ height: 4, borderRadius: 2, width: `${((idx + 1) / STEPS.length) * 100}%`, backgroundColor: colors.emerald500 }} />
+          </View>
+        )}
+        <Text variant="hero" accessibilityRole="header">{copy(title)}</Text>
         <Text variant="bodyMuted">{copy(subtitle)}</Text>
       </View>
       {error && <ErrorState message={error} />}
 
       {step === 'start' && <StartStep existing={!!me.data?.profile} onDone={async () => { await me.refetch(); await loadProfile().catch(() => null); setStep('basics'); }} />}
-      {step === 'basics' && <BasicsForm forSelf={forSelf} initial={f?.basics ?? {}} onSubmit={save('/profile/basics')} />}
-      {step === 'education' && <EducationForm initial={{ items: f?.education ?? [] }} onSubmit={save('/profile/education')} onSkip={advance} />}
-      {step === 'career' && <CareerForm initial={f?.career ?? {}} onSubmit={save('/profile/career')} onSkip={advance} />}
-      {step === 'family' && <FamilyForm initial={f?.family ?? {}} onSubmit={save('/profile/family')} onSkip={advance} />}
-      {step === 'lifestyle' && <LifestyleForm initial={f?.lifestyle ?? {}} onSubmit={save('/profile/lifestyle')} onSkip={advance} />}
-      {(step === 'values' || step === 'dna') && (questions.length
-        ? <QuestionsForm key={step} questions={questions} onSubmit={async (answers) => { await api.post('/onboarding/answers', { answers }); await advance(); }} />
-        : <Loading label="Loading questions" />)}
-      {step === 'preferences' && <PreferencesForm forSelf={forSelf} initial={f?.preferences ?? {}} onSubmit={save('/profile/preferences')} />}
+      {step === 'basics' && (
+        <EssentialsForm key={profile?.profileId ?? 'new'} forSelf={forSelf} initial={f?.basics ?? {}}
+          onSubmit={async (values) => { await api.put('/profile/basics', values); await goTo('preferences'); }} />
+      )}
+      {step === 'preferences' && (
+        <PartnerBasicsForm key={profile?.profileId ?? 'new'} forSelf={forSelf} initial={f?.preferences ?? null} basics={f?.basics ?? {}}
+          onSubmit={async (values) => { await api.put('/profile/preferences', values); await goTo('photos'); }} />
+      )}
       {step === 'photos' && profile && (
         <View style={{ gap: space.lg }}>
           <PhotoManager photos={profile.photos} max={profile.limits.maxPhotos} onChanged={() => void loadProfile()} />
-          <Button title={profile.photos.length ? 'Finish' : 'Finish without photos'} size="lg" onPress={advance} full />
+          <View style={{ gap: space.sm }}>
+            <Button title="Finish" size="lg" onPress={finish} loading={finishing} full />
+            {!profile.photos.length && <Button title="Skip for now" variant="ghost" onPress={finish} disabled={finishing} />}
+          </View>
         </View>
       )}
     </Screen>
@@ -143,7 +147,8 @@ function StartStep({ existing, onDone }: { existing: boolean; onDone: () => Prom
   const [createdFor, setCreatedFor] = React.useState<CreatedFor[]>(['self']);
   const [relation, setRelation] = React.useState('');
   const [terms, setTerms] = React.useState(false);
-  const [ai, setAi] = React.useState(true);
+  // Optional consents are opt-in (DPDP): never pre-ticked.
+  const [ai, setAi] = React.useState(false);
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -177,7 +182,7 @@ function StartStep({ existing, onDone }: { existing: boolean; onDone: () => Prom
       </View>
       {!existing && (
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.md }}>
-          <Switch accessibilityLabel="Allow AI matchmaking features" value={ai} onValueChange={setAi} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
+          <Switch accessibilityLabel="Allow AI matchmaking features (optional)" value={ai} onValueChange={setAi} trackColor={{ true: colors.emerald500, false: colors.lineStrong }} />
           <Text variant="body" style={{ flex: 1 }}>Use AI to explain matches and help me search. AI never reads my private messages. (Optional)</Text>
         </View>
       )}

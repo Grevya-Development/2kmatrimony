@@ -4,16 +4,18 @@ import { router } from 'expo-router';
 import type { RecommendationItem } from '@2k/shared';
 import { api, errorMessage } from '@/lib/api';
 import { haptic } from '@/lib/haptics';
-import { keys, useMe, useQuery, useQueryClient } from '@/hooks/queries';
+import { keys, useMe, useOwnProfile, useQuery, useQueryClient } from '@/hooks/queries';
 import { colors, space } from '@/theme';
 import { Button, EmptyState, ErrorState, IconButton, Icon, Notice, OfflineBanner, Skeleton, Text } from '@/components/ui';
 import { ProfileCardView } from '@/components/domain/ProfileCardView';
 import { PrimaryAction, ShortlistButton, handleEntitlementError } from '@/components/domain/ProfileActions';
 import { SafetySheet } from '@/components/domain/SafetySheet';
+import { ProfileChecklist } from '@/components/domain/ProfileChecklist';
 
 export default function ForYou() {
   const qc = useQueryClient();
   const me = useMe();
+  const own = useOwnProfile(!!me.data?.profile);
   const recs = useQuery({ queryKey: keys.recommendations, queryFn: () => api.get<RecommendationItem[]>('/recommendations'), enabled: me.data?.profile?.status === 'active' });
   const [undo, setUndo] = React.useState<RecommendationItem | null>(null);
   const [safety, setSafety] = React.useState<RecommendationItem | null>(null);
@@ -41,10 +43,8 @@ export default function ForYou() {
       <Text variant="eyebrow">Today</Text>
       <Text variant="hero">Hello{me.data?.profile?.firstName ? `, ${me.data.profile.firstName}` : ''}</Text>
       <Text variant="bodyMuted">A few thoughtful introductions. Hand-picked ones from your matchmaker come first.</Text>
-      {inReview && <Notice>Your profile is with our team for review — usually within 24 hours. We’ll notify you as soon as it’s live.</Notice>}
-      {me.data?.profile && me.data.profile.completionPct < 80 && (
-        <Notice>Your profile is {me.data.profile.completionPct}% complete. <Text style={{ color: colors.info, textDecorationLine: 'underline' }} onPress={() => router.push('/me')}>Add more</Text> for better matches.</Notice>
-      )}
+      {inReview && <Notice>Your profile is with our team for review — usually within 24 hours. We’ll notify you as soon as it’s live. Meanwhile, adding a few more details helps us find better matches.</Notice>}
+      {me.data?.profile && <View style={{ marginTop: space.sm }}><ProfileChecklist /></View>}
     </View>
   );
 
@@ -56,7 +56,7 @@ export default function ForYou() {
         keyExtractor={(r) => r.id}
         contentContainerStyle={{ padding: space.lg, gap: space.lg, paddingBottom: 100 }}
         ListHeaderComponent={header}
-        refreshControl={<RefreshControl refreshing={recs.isRefetching} onRefresh={() => void recs.refetch()} tintColor={colors.emerald600} />}
+        refreshControl={<RefreshControl refreshing={recs.isRefetching || own.isRefetching} onRefresh={() => { void recs.refetch(); void own.refetch(); void me.refetch(); }} tintColor={colors.emerald600} />}
         ListEmptyComponent={
           inReview ? undefined
           : recs.isLoading ? <View style={{ gap: space.md }}><Skeleton height={360} /><Skeleton height={20} width="60%" /></View>

@@ -7,6 +7,7 @@ import { relativeTime, type ProfileViewersResponse, type RecommendationItem } fr
 import { Avatar, Button, Dialog, DialogContent, DialogTrigger, EmptyState, ErrorState, PageHeader, Skeleton } from '@/components/ui';
 import { useMe } from '@/components/shell/me-context';
 import { ProfileCardView } from '@/components/profile/profile-card';
+import { ProfileChecklist } from '@/components/profile/profile-checklist';
 import { api } from '@/lib/api';
 import { ProfileActions } from './profile-actions';
 import { showApiError, useApiData } from './hooks';
@@ -105,8 +106,10 @@ export function ForYou() {
         actions={viewers.data && viewers.data.count > 0 ? <ViewersButton data={viewers.data} /> : undefined}
       />
 
+      {profileActive && (me.profile?.completionPct ?? 0) < 100 && <ProfileChecklist className="mb-10" title="Better introductions start here" />}
+
       {!profileActive ? (
-        <EmptyState icon={<Sparkles />} title="Finish your profile to see introductions" description={`Your profile is ${me.profile?.completionPct ?? 0}% complete. Introductions begin once your values, Relationship DNA and partner preferences are in place.`} action={<Button asChild><Link href="/onboarding">Continue setting up</Link></Button>} />
+        <EmptyState icon={<Sparkles />} title="Finish your profile to see introductions" description="A few essentials are still missing. It takes about two minutes." action={<Button asChild><Link href="/onboarding">Continue setting up</Link></Button>} />
       ) : loading ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="aspect-[4/6]" />)}</div>
       ) : error ? (
